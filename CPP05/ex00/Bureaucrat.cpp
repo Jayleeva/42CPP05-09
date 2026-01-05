@@ -8,9 +8,9 @@ Bureaucrat::Bureaucrat()
 Bureaucrat::Bureaucrat(std::string name, int grade)
 {
     if (grade < 1)
-        throw GradeTooLowException();
-    else if (grade > 150)
         throw GradeTooHighException();
+    else if (grade > 150)
+        throw GradeTooLowException();
     this->name = name;
     this->grade = grade;
     std::cout << YELLOW << "[BUREAUCRAT]: String and int constructor called" << DEFAULT << std::endl;
@@ -38,19 +38,25 @@ Bureaucrat::~Bureaucrat()
     std::cout << YELLOW << "[BUREAUCRAT]: Default destructor called" << DEFAULT << std::endl;
 }
 
-int Bureaucrat::operator-=(int n) const
+/*int Bureaucrat::operator-=(int n)
 {
     if (this->grade - n < 1)
         throw GradeTooHighException();
-    return (this->grade - n);
+    else
+        std::cout << "HELLOOOOOOOOOOOOOO??" << std::endl;
+    this->grade = this->grade - n;
+    return (this->grade);
 }
 
-int Bureaucrat::operator+=(int n) const
+int Bureaucrat::operator+=(int n)
 {
     if (this->grade + n > 150)
         throw GradeTooLowException();
-    return (this->grade + n);
-}
+    else
+        std::cout << "HELLOOOOOOOOOOOOOO??" << std::endl;
+    this->grade = this->grade + n;
+    return (this->grade);
+}*/
 
 const std::string Bureaucrat::getName() const
 {
@@ -64,14 +70,18 @@ int Bureaucrat::getGrade() const
 
 void Bureaucrat::incrementGrade(int n)
 {
+    if (this->grade - n < 1)
+        throw GradeTooHighException();
     this->grade -= n;
-    std::cout << this->name << " 's grade incremented by " << n << std::endl;
+    std::cout << this->name << "'s grade incremented by " << n << std::endl;
 }
 
 void Bureaucrat::decrementGrade(int n)
 {
+    if (this->grade + n > 150)
+        throw GradeTooLowException();
     this->grade += n;
-    std::cout << this->name << " 's grade decremented by " << n << std::endl;
+    std::cout << this->name << "'s grade decremented by " << n << std::endl;
 }
 
 
