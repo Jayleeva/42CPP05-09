@@ -38,26 +38,6 @@ Bureaucrat::~Bureaucrat()
     std::cout << YELLOW << "[BUREAUCRAT]: Default destructor called" << DEFAULT << std::endl;
 }
 
-/*int Bureaucrat::operator-=(int n)
-{
-    if (this->grade - n < 1)
-        throw GradeTooHighException();
-    else
-        std::cout << "HELLOOOOOOOOOOOOOO??" << std::endl;
-    this->grade = this->grade - n;
-    return (this->grade);
-}
-
-int Bureaucrat::operator+=(int n)
-{
-    if (this->grade + n > 150)
-        throw GradeTooLowException();
-    else
-        std::cout << "HELLOOOOOOOOOOOOOO??" << std::endl;
-    this->grade = this->grade + n;
-    return (this->grade);
-}*/
-
 const std::string Bureaucrat::getName() const
 {
     return(this->name);

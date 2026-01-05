@@ -14,9 +14,6 @@ class Bureaucrat
         Bureaucrat const &operator=(Bureaucrat const &original);
         ~Bureaucrat();
 
-		//int	operator-=(int n);
-		//int	operator+=(int n);
-
         const std::string getName() const;
         int getGrade() const;
 
@@ -25,7 +22,7 @@ class Bureaucrat
 
     private:
         std::string       name;
-        int                     grade;
+        int               grade;
 
         class GradeTooHighException : public std::exception
         {
