@@ -1,0 +1,21 @@
+#ifndef SHRUBBERYCREATIONFORM_HPP
+# define SHRUBBERYCREATIONFORM_HPP
+
+# include <iostream>
+# include "AForm.hpp"
+
+//class Bureaucrat;
+
+class ShrubberyCreationForm: public AForm
+{
+	public:
+		ShrubberyCreationForm();
+		ShrubberyCreationForm(std::string target);
+		ShrubberyCreationForm(const ShrubberyCreationForm &original);
+		ShrubberyCreationForm const &operator=(ShrubberyCreationForm const &original);
+		~ShrubberyCreationForm();
+
+		void execute(Bureaucrat const &executor) const;
+};
+
+#endif
