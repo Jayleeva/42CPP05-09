@@ -9,24 +9,24 @@ int main(void)
             Bureaucrat  a("Bettany", 43);
             Bureaucrat  b("Bob", 108);
             Bureaucrat  e(a);
-            //Bureaucrat  f = b;
+            Bureaucrat  f = b;
 
             std::cout << a.getName() << ", bureaucrat grade " << a.getGrade() << std::endl;
             std::cout << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
             std::cout << e.getName() << ", bureaucrat grade " << e.getGrade() << std::endl;
-            //std::cout << f.getName() << ", bureaucrat grade " << f.getGrade() << std::endl;
+            std::cout << f.getName() << ", bureaucrat grade " << f.getGrade() << std::endl;
             std::cout << "---" << std::endl;
 
             a.incrementGrade(42);
             b.decrementGrade(42);
             e.incrementGrade(1);
-            //f.decrementGrade(1);
+            f.decrementGrade(1);
             std::cout << "---" << std::endl;
 
             std::cout << a.getName() << ", bureaucrat grade " << a.getGrade() << std::endl;
             std::cout << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
             std::cout << e.getName() << ", bureaucrat grade " << e.getGrade() << std::endl;
-            //std::cout << f.getName() << ", bureaucrat grade " << f.getGrade() << std::endl;
+            std::cout << f.getName() << ", bureaucrat grade " << f.getGrade() << std::endl;
             std::cout << "---" << std::endl;
         }
         catch(std::exception &e)
