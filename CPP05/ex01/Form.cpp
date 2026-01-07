@@ -25,14 +25,9 @@ Form::Form(const Form &original): name(original.name), grade_to_sign(original.gr
 
 Form const &Form::operator=(Form const &original)
 {
-    //const int  *gts_const = &(original.grade_to_sign);
-    //int        *gts = const_cast<int*>(gts_const);
-
     if (this != &original)
 	{
         *const_cast<std::string*>(this->name) = *(original.name);
-        //this->grade_to_sign = original.grade_to_sign;
-        //this->grade_to_execute = original.grade_to_execute;
         this->is_signed = false;
     }
     std::cout << YELLOW << "[FORM]: Assignment operator overload called" << DEFAULT << std::endl;
@@ -66,7 +61,6 @@ int Form::getGradeToExecute() const
 
 void Form::beSigned(Bureaucrat const *b)
 {
-    std::cout << b->getGrade() << " " << this->grade_to_sign << std::endl;
     if (b->getGrade() > this->grade_to_sign)
         throw GradeIsTooLowException();
     this->is_signed = true;

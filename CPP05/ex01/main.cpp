@@ -9,7 +9,7 @@ int main(void)
         {
             Bureaucrat  b("Bettany", 42);
             Form        f("Say hi", 84, 42);
-            Form        f1("Say bye", 20, 42);
+            Form        f1("Say bye", 60, 42);
             Form        f2(f);
             Form        f3 = f1;
 
