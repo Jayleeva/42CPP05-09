@@ -25,7 +25,7 @@ class Form
         void beSigned(Bureaucrat const *b);
 
     private:
-        const std::string   name;
+        const std::string   *name;
         bool                is_signed;
         const int           grade_to_sign;
         const int           grade_to_execute;

@@ -6,7 +6,7 @@ RM = rm -f
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 #-Wshadow -Wno-shadow
 
-NAME = bureaucrat
+NAME = form
 
 all: $(NAME)
 

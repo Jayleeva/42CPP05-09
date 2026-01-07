@@ -25,7 +25,7 @@ class Bureaucrat
         void signForm(Form &f);
 
     private:
-        const std::string       name;
+        const std::string       *name;
         int                     grade;
 
         class GradeTooHighException : public std::exception

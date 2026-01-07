@@ -1,13 +1,13 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
 
-Form::Form(): name("untitled"), grade_to_sign(150), grade_to_execute(150)
+Form::Form(): grade_to_sign(150), grade_to_execute(150)
 {
     this->is_signed = false;
     std::cout << YELLOW << "[FORM]: Default constructor called" << DEFAULT << std::endl;
 }
 
-Form::Form(const std::string name, const int grade_to_sign, const int grade_to_execute): name(name), grade_to_sign(grade_to_sign), grade_to_execute(grade_to_execute)
+Form::Form(const std::string name, const int grade_to_sign, const int grade_to_execute): name(&name), grade_to_sign(grade_to_sign), grade_to_execute(grade_to_execute)
 {
     if (grade_to_sign < 1 || grade_to_execute < 1)
         throw GradeIsTooHighException();
@@ -19,16 +19,18 @@ Form::Form(const std::string name, const int grade_to_sign, const int grade_to_e
 
 Form::Form(const Form &original): name(original.name), grade_to_sign(original.grade_to_sign), grade_to_execute(original.grade_to_execute)
 {
-    *this = original;
-    this->is_signed = false;
 	std::cout << YELLOW << "[FORM]: Copy constructor called" << DEFAULT << std::endl;
+    *this = original;
 }
 
 Form const &Form::operator=(Form const &original)
 {
+    //const int  *gts_const = &(original.grade_to_sign);
+    //int        *gts = const_cast<int*>(gts_const);
+
     if (this != &original)
 	{
-        //this->name = original.name;
+        *const_cast<std::string*>(this->name) = *(original.name);
         //this->grade_to_sign = original.grade_to_sign;
         //this->grade_to_execute = original.grade_to_execute;
         this->is_signed = false;
@@ -44,7 +46,7 @@ Form::~Form()
 
 std::string Form::getName() const
 {
-    return(this->name);
+    return(*(this->name));
 }
 
 bool Form::getIsSigned() const
@@ -64,6 +66,7 @@ int Form::getGradeToExecute() const
 
 void Form::beSigned(Bureaucrat const *b)
 {
+    std::cout << b->getGrade() << " " << this->grade_to_sign << std::endl;
     if (b->getGrade() > this->grade_to_sign)
         throw GradeIsTooLowException();
     this->is_signed = true;
