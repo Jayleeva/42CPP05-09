@@ -7,12 +7,10 @@ ShrubberyCreationForm::ShrubberyCreationForm() : AForm("ShrubberyCreationForm", 
 
 ShrubberyCreationForm::ShrubberyCreationForm(std::string target) : AForm("ShrubberyCreationForm", 145, 137), target(target)
 {
-    (void)target;
-	//std::cout << target << std::endl;
     std::cout << YELLOW << "[SHRUBBERRY]: String and int constructor called" << DEFAULT << std::endl;
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &original) : AForm("ShrubberyCreationForm", 145, 137), target(original.target)
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &original) : AForm("ShrubberyCreationForm", 145, 137)
 {
 	std::cout << YELLOW << "[SHRUBBERRY]: Copy constructor called" << DEFAULT << std::endl;
     *this = original;
@@ -22,7 +20,6 @@ ShrubberyCreationForm const &ShrubberyCreationForm::operator=(ShrubberyCreationF
 {
     if (this != &original)
 	{
-        *const_cast<std::string*>(this->name) = *(original.name);
         this->is_signed = false;
     }
     std::cout << YELLOW << "[SHRUBBERRY]: Assignment operator overload called" << DEFAULT << std::endl;
@@ -36,6 +33,6 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 
 void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 {
-	(void)executor;
+    this->AForm::checkGradeToExecute(executor);
     std::cout << YELLOW << "[SHRUBBERRY]: execute function called" << DEFAULT << std::endl;
 }

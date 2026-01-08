@@ -11,22 +11,23 @@ class Bureaucrat;
 class AForm
 {
     public:
-        AForm();
-        AForm(const std::string name, const int grade_to_sign, const int grade_to_execute);
-        AForm(const AForm &original);
         AForm const &operator=(AForm const &original);
         virtual ~AForm();
 
-        virtual std::string getName() const;
+        virtual std::string getTitle() const;
         bool getIsSigned() const;
         int getGradeToSign() const;
         int getGradeToExecute() const;
 
         void beSigned(Bureaucrat const *b);
         virtual void execute(Bureaucrat const &executor) const = 0;
+        void checkGradeToExecute(Bureaucrat const &executor) const;
 
     protected:
-        const std::string   *name;
+        AForm();
+        AForm(const std::string title, const int grade_to_sign, const int grade_to_execute);
+        AForm(const AForm &original);
+        const std::string   title;
         bool                is_signed;
         const int           grade_to_sign;
         const int           grade_to_execute;
