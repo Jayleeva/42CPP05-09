@@ -11,10 +11,10 @@ int main(void)
             Bureaucrat  e(a);
             Bureaucrat  f = b;
 
-            std::cout << a.getName() << ", bureaucrat grade " << a.getGrade() << std::endl;
-            std::cout << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
-            std::cout << e.getName() << ", bureaucrat grade " << e.getGrade() << std::endl;
-            std::cout << f.getName() << ", bureaucrat grade " << f.getGrade() << std::endl;
+            std::cout << a << std::endl;
+            std::cout << b << std::endl;
+            std::cout << e << std::endl;
+            std::cout << f << std::endl;
             std::cout << "---" << std::endl;
 
             a.incrementGrade(42);

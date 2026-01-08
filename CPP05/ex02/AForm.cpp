@@ -71,3 +71,12 @@ void AForm::execute(Bureaucrat const &executor) const
     (void)executor;
     std::cout << YELLOW << "[FORM]: execute function called" << DEFAULT << std::endl;
 }
+
+std::ostream &operator<<(std::ostream &out, AForm const &f)
+{
+	out << f.getName();
+    out << ", is signed = " << f.getIsSigned();
+    out << ", grade to sign = " << f.getGradeToSign();
+    out << ", grade to execute = " << f.getGradeToExecute();
+	return (out);
+}

@@ -13,7 +13,11 @@ int main(void)
             Form        f2(f);
             Form        f3 = f1;
 
-            std::cout << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
+            std::cout << b << std::endl;
+            std::cout << f << std::endl;
+            std::cout << f1 << std::endl;
+            std::cout << f2 << std::endl;
+            std::cout << f3 << std::endl;
             std::cout << "---" << std::endl;
 
             b.signForm(f);
@@ -21,7 +25,7 @@ int main(void)
             std::cout << "---" << std::endl;
 
             b.decrementGrade(42);
-            std::cout << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
+            std::cout << b << std::endl;
             std::cout << "---" << std::endl;
 
             b.signForm(f2);

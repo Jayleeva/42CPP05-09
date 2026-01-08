@@ -63,4 +63,8 @@ void Bureaucrat::decrementGrade(int n)
     std::cout << this->name << "'s grade decremented by " << n << std::endl;
 }
 
-
+std::ostream &operator<<(std::ostream &out, Bureaucrat const &b)
+{
+	out << b.getName() << ", grade " << b.getGrade();
+	return (out);
+}
