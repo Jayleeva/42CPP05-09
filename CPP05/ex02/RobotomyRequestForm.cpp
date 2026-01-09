@@ -34,5 +34,10 @@ RobotomyRequestForm::~RobotomyRequestForm()
 void RobotomyRequestForm::execute(Bureaucrat const &executor) const
 {
     this->AForm::checkGradeToExecute(executor);
+    std::cout << "** Drrrrrillzzz Noizzzzzezzzz **" << std::endl;
+    int robotomy = rand() % 2;
+    if (robotomy)
+        throw RobotomyFailedException();
+    std::cout << this->target << " has been robotomized successfully." << std::endl;
     std::cout << YELLOW << "[ROBOTOMY]: execute function called" << DEFAULT << std::endl;
 }

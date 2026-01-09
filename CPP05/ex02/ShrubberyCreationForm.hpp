@@ -17,6 +17,14 @@ class ShrubberyCreationForm: public AForm
 
 	private:
 		const std::string	target;
+        class OpenFileFailedException : public std::exception
+        {
+            public:
+                virtual const char *what() const throw()
+                {
+                    return ("Exception : could not open target.");
+                }
+        };
 };
 
 #endif

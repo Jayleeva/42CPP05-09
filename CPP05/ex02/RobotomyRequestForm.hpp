@@ -1,8 +1,11 @@
 #ifndef ROBOTOMYREQUESTFORM_HPP
 # define ROBOTOMYREQUESTFORM_HPP
 
-# include <fstream>
+# include <ostream>
+# include <ctime>
+# include <cstdlib>
 # include "AForm.hpp"
+
 
 class RobotomyRequestForm: public AForm
 {
@@ -17,6 +20,14 @@ class RobotomyRequestForm: public AForm
 
 	private:
 		const std::string	target;
+        class RobotomyFailedException : public std::exception
+        {
+            public:
+                virtual const char *what() const throw()
+                {
+                    return ("Exception : could not robotomize target.");
+                }
+        };
 };
 
 #endif

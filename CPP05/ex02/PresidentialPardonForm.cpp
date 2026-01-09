@@ -34,5 +34,6 @@ PresidentialPardonForm::~PresidentialPardonForm()
 void PresidentialPardonForm::execute(Bureaucrat const &executor) const
 {
     this->AForm::checkGradeToExecute(executor);
+    std::cout << this->target << " has been pardonned by Zaphod Beeblebrox" << std::endl;
     std::cout << YELLOW << "[PRESIDENTIAL]: execute function called" << DEFAULT << std::endl;
 }
