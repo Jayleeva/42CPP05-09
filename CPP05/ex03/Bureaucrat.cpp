@@ -30,7 +30,7 @@ Bureaucrat const &Bureaucrat::operator=(Bureaucrat const &original)
         *const_cast<std::string*>(this->name) = *(original.name);
         this->grade = original.grade;
     }
-    std::cout << YELLOW << "[BUREAUCRAT]: Assignment operator overload called" << DEFAULT << std::endl;
+    std::cout << YELLOW << "[BUREAUCRAT]: Assignment operator = called" << DEFAULT << std::endl;
     return (*this);
 }
 

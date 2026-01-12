@@ -28,7 +28,7 @@ Bureaucrat const &Bureaucrat::operator=(Bureaucrat const &original)
 	{
         this->grade = original.grade;
     }
-    std::cout << YELLOW << "[BUREAUCRAT]: Copy assignment operator = called" << DEFAULT << std::endl;
+    std::cout << YELLOW << "[BUREAUCRAT]: Assignment operator overload called" << DEFAULT << std::endl;
     return (*this);
 }
 

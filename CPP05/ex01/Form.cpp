@@ -1,7 +1,7 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
 
-Form::Form(): grade_to_sign(150), grade_to_execute(150)
+Form::Form(): title("untitled"), grade_to_sign(150), grade_to_execute(150)
 {
     this->is_signed = false;
     std::cout << YELLOW << "[FORM]: Default constructor called" << DEFAULT << std::endl;
