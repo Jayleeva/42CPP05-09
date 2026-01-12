@@ -22,6 +22,7 @@ class AForm
         void beSigned(Bureaucrat const *b);
         virtual void execute(Bureaucrat const &executor) const = 0;
         void checkGradeToExecute(Bureaucrat const &executor) const;
+        void checkIsSigned() const;
 
     protected:
         AForm();

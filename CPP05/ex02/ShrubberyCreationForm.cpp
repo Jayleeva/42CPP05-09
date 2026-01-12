@@ -35,6 +35,7 @@ void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 {
 	std::ofstream	outfile;
 
+    this->AForm::checkIsSigned();
     this->AForm::checkGradeToExecute(executor);
 	outfile.open((this->target + "_shrubbery").c_str());
 	if (outfile.good() == false)

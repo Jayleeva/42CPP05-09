@@ -20,14 +20,6 @@ class RobotomyRequestForm: public AForm
 
 	private:
 		const std::string	target;
-        class RobotomyFailedException : public std::exception
-        {
-            public:
-                virtual const char *what() const throw()
-                {
-                    return ("Exception : could not robotomize target.");
-                }
-        };
 };
 
 #endif

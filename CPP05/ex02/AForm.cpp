@@ -77,6 +77,12 @@ void AForm::checkGradeToExecute(Bureaucrat const &executor) const
         throw GradeIsTooLowException();
 }
 
+void AForm::checkIsSigned() const
+{
+    if (!this->getIsSigned())
+        throw FormNotSignedException();
+}
+
 std::ostream &operator<<(std::ostream &out, AForm const &f)
 {
 	out << f.getTitle() << "'s information: " << std::endl;

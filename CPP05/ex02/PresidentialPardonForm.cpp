@@ -1,16 +1,16 @@
 #include "PresidentialPardonForm.hpp"
 
-PresidentialPardonForm::PresidentialPardonForm() : AForm("PresidentialPardonForm", 145, 137), target("unknown")
+PresidentialPardonForm::PresidentialPardonForm() : AForm("PresidentialPardonForm", 25, 5), target("unknown")
 {
     std::cout << YELLOW << "[PRESIDENTIAL]: Default constructor called" << DEFAULT << std::endl;
 }
 
-PresidentialPardonForm::PresidentialPardonForm(std::string target) : AForm("PresidentialPardonForm", 145, 137), target(target)
+PresidentialPardonForm::PresidentialPardonForm(std::string target) : AForm("PresidentialPardonForm", 25, 5), target(target)
 {
     std::cout << YELLOW << "[PRESIDENTIAL]: String and int constructor called" << DEFAULT << std::endl;
 }
 
-PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &original) : AForm("PresidentialPardonForm", 145, 137)
+PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm &original) : AForm("PresidentialPardonForm", 25, 5)
 {
 	std::cout << YELLOW << "[PRESIDENTIAL]: Copy constructor called" << DEFAULT << std::endl;
     *this = original;
@@ -33,6 +33,7 @@ PresidentialPardonForm::~PresidentialPardonForm()
 
 void PresidentialPardonForm::execute(Bureaucrat const &executor) const
 {
+    this->AForm::checkIsSigned();
     this->AForm::checkGradeToExecute(executor);
     std::cout << this->target << " has been pardonned by Zaphod Beeblebrox" << std::endl;
     std::cout << YELLOW << "[PRESIDENTIAL]: execute function called" << DEFAULT << std::endl;
