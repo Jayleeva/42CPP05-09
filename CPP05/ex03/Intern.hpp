@@ -15,11 +15,11 @@ class Intern
 {
     public:
         Intern();
-        Intern(Intern &original);
-        Intern const &operator=(Intern & original);
+        Intern(const Intern &original);
+        Intern const &operator=(Intern const &original);
         ~Intern();
 
-        AForm *makeForm(std::string title, std::string target);
+        AForm *makeForm(std::string title, std::string target) const;
 };
 
 typedef AForm *(*constructorPtr)(const std::string);

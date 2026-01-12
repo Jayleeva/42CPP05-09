@@ -5,13 +5,13 @@ Intern::Intern()
     std::cout << YELLOW << "[INTERN]: Default constructor called" << DEFAULT << std::endl;
 }
 
-Intern::Intern(Intern &original)
+Intern::Intern(const Intern &original)
 {
 	std::cout << YELLOW << "[INTERN]: Copy constructor called" << DEFAULT << std::endl;
     *this = original;
 }
 
-Intern const &Intern::operator=(Intern &original)
+Intern const &Intern::operator=(Intern const &original)
 {
     (void)original;
     std::cout << YELLOW << "[INTERN]: Assignment operator overload called" << DEFAULT << std::endl;
@@ -52,7 +52,7 @@ static int	ft_to_index(std::string f)
 	return (-1);
 }
 
-AForm *Intern::makeForm(std::string title, std::string target)
+AForm *Intern::makeForm(std::string title, std::string target) const
 {
     AForm *form = NULL;
     constructorPtr	FormConstruct[3] = {&newShrubbery, &newRobotomy, &newPresidential};
