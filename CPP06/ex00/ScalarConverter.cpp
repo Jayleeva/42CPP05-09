@@ -1,4 +1,4 @@
-#include "ScaleConverter.hpp"
+#include "ScalarConverter.hpp"
 
 ScalarConverter::ScalarConverter()
 {
@@ -23,7 +23,60 @@ ScalarConverter::~ScalarConverter()
     std::cout << YELLOW << "[CONVERTER]: Default destructor called" << DEFAULT << std::endl;
 }
 
-static void ScalarConverter::convert(std::string litteral)
+static void convert_and_display_from_char(char c)
+{
+    display_char(c);
+    display_int(char_to_int(c));
+    display_float(char_to_float(c));
+    display_double(char_to_double(c));
+}
+
+static void convert_and_display_from_int(int i)
+{
+    if (i < 0 || i > 255)
+        std::cout << "char : impossible" << std::endl;
+    else
+        display_char(int_to_char(i));
+    display_int(i);
+    display_float(int_to_float(i));
+    display_double(int_to_double(i));
+}
+
+static void convert_and_display_from_float(float f, std::string litteral)
+{
+    if (f < 0.0f || f > 255.0f)
+        std::cout << "char : impossible" << std::endl;
+    else
+        display_char(float_to_char(f));
+    if (litteral == "nanf" || litteral == "nan"
+        || litteral == "-inff" || litteral == "-inf"
+        || litteral == "+inff" || litteral == "+inf"
+        || is_over_int_borders(litteral))
+        std::cout << "int : impossible" << std::endl;
+    else
+        display_int(float_to_int(f));
+    display_float(f);
+    display_double(float_to_double(f));
+}
+
+static void convert_and_display_from_double(double d, std::string litteral)
+{
+    if (d < 0.0 || d > 255.0)
+        std::cout << "char : impossible" << std::endl;
+    else
+        display_char(double_to_char(d));
+    if (litteral == "nanf" || litteral == "nan"
+        || litteral == "-inff" || litteral == "-inf"
+        || litteral == "+inff" || litteral == "+inf"
+        || is_over_int_borders(litteral))
+        std::cout << "int : impossible" << std::endl;
+    else
+        display_int(double_to_int(d));
+    display_float(double_to_float(d));
+    display_double(d);
+}
+
+void ScalarConverter::convert(std::string litteral)
 {
     char    c;
     int     i;
@@ -31,75 +84,11 @@ static void ScalarConverter::convert(std::string litteral)
     double  d;
 
     if (is_char(&c, litteral))
-    {
-        display_char(c);
-        i = char_to_int(c);
-        display_int(i);
-        f = char_to_float(c);
-        display_float(f);
-        d = char_to_double(c);
-        display_double(d);
-    }
+        convert_and_display_from_char(c);
     else if (is_int(&i, litteral))
-    {
-        if (i < 0 || i > 255)
-            std::cout << "char : impossible" << std::endl;
-        else
-        {
-            c = int_to_char(i);
-            display_char(c);
-        }
-        display_int(i);
-        f = int_to_float(i);
-        display_float(f);
-        d = int_to_double(i);
-        display_double(d);
-    }
+        convert_and_display_from_int(i);
     else if (is_float(&f, litteral))
-    {
-        if (f < 0.0f || f > 255.0f)
-            std::cout << "char : impossible" << std::endl;
-        else
-        {
-            c = float_to_char(f);
-            display_char(c);
-        }
-        if (litteral == "nanf" || litteral == "nan"
-            || litteral == "-inff" || litteral == "-inf"
-            || litteral == "+inff" || litteral == "+inf"
-            || is_over_borders(litteral))
-            std::cout << "int : impossible" << std::endl;
-        else
-        {
-            i = float_to_int(f);
-            display_int(i);
-        }
-        display_float(f);
-        d = float_to_double(f);
-        display_double(d);
-    }
+        convert_and_display_from_float(f, litteral);
     else if (is_double(&d, litteral))
-    {
-        if (d < 0.0 || d > 255.0)
-            std::cout << "char : impossible" << std::endl;
-        else
-        {
-            c = double_to_char(d);
-            display_char(c);
-        }
-        if (litteral == "nanf" || litteral == "nan"
-            || litteral == "-inff" || litteral == "-inf"
-            || litteral == "+inff" || litteral == "+inf"
-            || is_over_borders(litteral))
-            std::cout << "int : impossible" << std::endl;
-        else
-        {
-            i = float_to_int(f);
-            display_int(i);
-        }
-        display_int(i);
-        f = double_to_float(litteral);
-        display_float(f);
-        display_double(d);
-    }
+        convert_and_display_from_double(d, litteral);
 }
