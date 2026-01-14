@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <cctype>
+# include <string>
 
 void        display_char(char c);
 void        display_int(int i);
@@ -10,10 +11,6 @@ void        display_int(int i);
 void        display_float(float f);
 void        display_double(double d);
 
-std::string cpp_substr(std::string s, int start, int end);
-float       cpp_ato(std::string s, int sign);
-float       getPrecomma(std::string litteral, int k);
-float       getPastcomma(std::string litteral, int k, int len);
 int         is_over_int_borders(std::string litteral);
 
 int         is_char(char *c, std::string litteral);
