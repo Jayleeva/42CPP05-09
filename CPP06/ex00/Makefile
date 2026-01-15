@@ -1,4 +1,4 @@
-SRC = main.cpp ScalarConverter.cpp ato.cpp is_type.cpp is_over.cpp from_char.cpp from_int.cpp from_float.cpp from_double.cpp display.cpp 
+SRC = main.cpp ScalarConverter.cpp is_type.cpp from_char.cpp from_int.cpp from_float.cpp from_double.cpp display.cpp 
 OBJ = $(SRC:.cpp=.o)
 
 CC = c++

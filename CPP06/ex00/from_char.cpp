@@ -2,18 +2,15 @@
 
 int char_to_int(char litteral)
 {
-    int i = litteral;
-    return (i);
+    return (int(litteral));
 }
 
 float   char_to_float(char litteral)
 {
-    float   f = litteral;
-    return (f);
+    return (float(litteral));
 }
 
 double  char_to_double(char litteral)
 {
-    double  d = litteral;
-    return (d);
+    return (double(litteral));
 }

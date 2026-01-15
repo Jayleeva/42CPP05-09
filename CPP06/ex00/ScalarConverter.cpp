@@ -50,8 +50,7 @@ static void convert_and_display_from_float(float f, std::string litteral)
         display_char(float_to_char(f));
     if (litteral == "nanf" || litteral == "nan"
         || litteral == "-inff" || litteral == "-inf"
-        || litteral == "+inff" || litteral == "+inf"
-        || is_over_int_borders(litteral))
+        || litteral == "+inff" || litteral == "+inf")
         std::cout << "int : impossible" << std::endl;
     else
         display_int(float_to_int(f));
@@ -67,8 +66,7 @@ static void convert_and_display_from_double(double d, std::string litteral)
         display_char(double_to_char(d));
     if (litteral == "nanf" || litteral == "nan"
         || litteral == "-inff" || litteral == "-inf"
-        || litteral == "+inff" || litteral == "+inf"
-        || is_over_int_borders(litteral))
+        || litteral == "+inff" || litteral == "+inf")
         std::cout << "int : impossible" << std::endl;
     else
         display_int(double_to_int(d));

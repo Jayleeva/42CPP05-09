@@ -25,7 +25,7 @@ int  is_char(char *c, std::string litteral)
 
 int  is_int(int *i, std::string litteral)
 {
-    int len = litteral.length();
+    /*int len = litteral.length();
 
     if (is_over_borders(litteral, len, 0))
         return (0);
@@ -35,20 +35,33 @@ int  is_int(int *i, std::string litteral)
             return (0);
         if (!isdigit(litteral[j]))
             return (0);
+    }*/
+    try
+    {
+        *i = stoi(litteral);
+        return (1);
     }
-    *i = stoi(litteral);
-    return (1);
+    catch (std::exception &e)
+        return (0);
 }
 
 
 int is_float(float *f, std::string litteral)
 {
-    int     len = litteral.length();
-    int     dot = 0;
+    /*int     len = litteral.length();
+    int     dot = 0;*/
 
-    // + check les min max?
-    // gérer cas nanf et inff++ inff--
-    for (int j = 0; j < len; j++)
+    if (litteral == "nanf")
+    {
+        *f = nanf(litteral);
+        return (1);
+    }
+    if (litteral == "+inff")
+    {
+        *f = inff(litteral);
+        return (1);
+    }
+    /*for (int j = 0; j < len; j++)
     {
         if (litteral[j] == '.')
         {
@@ -64,19 +77,27 @@ int is_float(float *f, std::string litteral)
             return (0);
         if (j == len && litteral[j] != 'f')
             return (0);
+    }*/
+    try
+    {
+        *f = stof(litteral);
+        return (1);
     }
-    *f = stof(litteral);
-    return (1);
+    catch (std::exception &e)
+        return (0);
 }
 
 int is_double(double *d, std::string litteral)
 {
-    int     len = litteral.length();
-    int     dot = 0;
+    /*int     len = litteral.length();
+    int     dot = 0;*/
 
-    // + check les min max?
-    // gérer cas nan et inf++ inf--
-    for (int j = 0; j < len; j++)
+    if (litteral == "nan")
+    {
+        *d = nan(litteral);
+        return (1);
+    }
+    /*for (int j = 0; j < len; j++)
     {
         if (litteral[j] == '.')
         {
@@ -90,7 +111,12 @@ int is_double(double *d, std::string litteral)
             return (0);
         if (j != len && !isdigit(litteral[j]) && litteral[j] != '.')
             return (0);
+    }*/
+    try
+    {
+        *d = stod(litteral);
+        return (1);
     }
-    *d = stod(litteral);
-    return (1);
+    catch (std::exception &e)
+        return (0);
 }

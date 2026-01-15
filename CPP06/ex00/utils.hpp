@@ -4,6 +4,8 @@
 # include <iostream>
 # include <cctype>
 # include <string>
+# include <cmath>
+# include <limits>
 
 void        display_char(char c);
 void        display_int(int i);
