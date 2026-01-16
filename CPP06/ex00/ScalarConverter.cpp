@@ -48,9 +48,15 @@ static void convert_and_display_from_float(float f)
         std::cout << "char : impossible" << std::endl;
     else
         display_char(float_to_char(f));
-    display_int(float_to_int(f));
+    if (f < MIN_INT || f > MAX_INT)
+        std::cout << "int : impossible" << std::endl;
+    else
+        display_int(float_to_int(f));
     display_float(f);
-    display_double(float_to_double(f));
+    if (f < MIN_DOUBLE || f > MAX_DOUBLE)
+        std::cout << "double : impossible" << std::endl;
+    else
+        display_double(float_to_double(f));
 }
 
 static void convert_and_display_from_double(double d)
@@ -59,8 +65,14 @@ static void convert_and_display_from_double(double d)
         std::cout << "char : impossible" << std::endl;
     else
         display_char(double_to_char(d));
-    display_int(double_to_int(d));
-    display_float(double_to_float(d));
+    if (d < MIN_INT || d > MAX_INT)
+        std::cout << "int : impossible" << std::endl;
+    else
+        display_int(double_to_int(d));
+    if (d < MIN_FLOAT || d > MAX_FLOAT)
+        std::cout << "float : impossible" << std::endl;
+    else
+        display_float(double_to_float(d));
     display_double(d);
 }
 
@@ -85,5 +97,7 @@ void ScalarConverter::convert(std::string litteral)
             convert_and_display_from_float(f);
         else if (is_double(&d, litteral))
             convert_and_display_from_double(d);
+        else
+            display_error(litteral);
     }
 }

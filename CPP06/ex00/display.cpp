@@ -1,19 +1,7 @@
 #include "utils.hpp"
 
-char *cpp_substr(const char *s, int start, int end)
-{
-    char res[end - start + 1];
-    int         j = 0;
-
-    for (int i = start; i < end; i++)
-        res[j++] = s[i];
-    return (res);
-}
-
 void    display_pseudo(std::string litteral)
 {
-    char *tmp;
-
     std::cout << "char : impossible" << std::endl;
     std::cout << "int : impossible" << std::endl;
     if (litteral == "nan" || litteral == "-inf" || litteral == "+inf")
@@ -31,9 +19,12 @@ void    display_pseudo(std::string litteral)
             std::cout << "-inf" << std::endl;
         else if (litteral == "+inff")
             std::cout << "+inf" << std::endl;
-        tmp = cpp_substr(litteral.c_str(), 0, litteral.length() -1);
-        std::cout << "double : " << tmp << std::endl;
     }
+}
+
+void    display_error(std::string litteral)
+{
+    std::cout << "Error: " << litteral << " is not a valid litteral." << std::endl;
 }
 
 void    display_char(char c)
@@ -46,15 +37,15 @@ void    display_char(char c)
 
 void    display_int(int i)
 {
-    std::cout << "int : " << i << std::endl;
+    std::cout << "int : " <<  static_cast<int>(i) << std::endl;
 }
 
 void    display_float(float f)
 {
-    std::cout << "float : " << f << std::endl;
+    std::cout << "float : " <<  static_cast<float>(f) << 'f' << std::endl;
 }
 
 void    display_double(double d)
 {
-    std::cout << "double : " << d << std::endl;
+    std::cout << "double : " <<  static_cast<double>(d) << std::endl;
 }

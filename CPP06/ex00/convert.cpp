@@ -2,10 +2,12 @@
 
 int ft_stoi(std::string litteral)
 {
-    int i;
+    long    l;
 
-	i = atol(litteral.c_str());
-    return (i);
+	l = atol(litteral.c_str());
+    if (l < MIN_INT || l > MAX_INT)
+        throw ;
+    return (int(l));
 }
 
 float   ft_stof(std::string litteral)
@@ -13,12 +15,17 @@ float   ft_stof(std::string litteral)
     float   f;
     
     f = atof(litteral.c_str());
+	if (f < MIN_FLOAT || f > MAX_FLOAT)
+        throw ;
     return (f);
 }
 
 double  ft_stod(std::string litteral)
 {
     double  d;
+
     d = atof(litteral.c_str());
+    if (d < MIN_DOUBLE || d > MAX_DOUBLE)
+        throw ;
     return (d);
 }
