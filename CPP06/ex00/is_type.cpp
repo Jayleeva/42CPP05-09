@@ -1,6 +1,5 @@
 #include "utils.hpp"
 
-
 int  is_char(char *c, std::string litteral)
 {
     int len = litteral.length();

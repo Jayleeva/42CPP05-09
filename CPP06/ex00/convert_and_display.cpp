@@ -36,7 +36,7 @@ void convert_and_display_from_float(float f)
     else
         display_int(float_to_int(f));
     display_float(f, tolerance);
-    if (f < MIN_DOUBLE || f > MAX_DOUBLE)
+    if (f < MIN_INT || f > MAX_INT)
         std::cout << "double : impossible" << std::endl;
     else
         display_double(float_to_double(f), tolerance);
@@ -54,7 +54,7 @@ void convert_and_display_from_double(double d)
         std::cout << "int : impossible" << std::endl;
     else
         display_int(double_to_int(d));
-    if (d < MIN_FLOAT || d > MAX_FLOAT)
+    if (d < MIN_INT || d > MAX_INT)
         std::cout << "float : impossible" << std::endl;
     else
         display_float(double_to_float(d), tolerance);

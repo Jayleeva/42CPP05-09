@@ -1,50 +1,41 @@
 NAME = converter
 
-SRC_DIR = ./src
-OBJ_DIR = ./obj
-DIR = ./obj ./obj/utils
-
-SRC =	main.cpp \
+SRC = 	main.cpp \
 		ScalarConverter.cpp \
-		utils/is_type.cpp \
-		utils/sto.cpp \
-		utils/convert_and_display.cpp \
-		utils/from_char.cpp \
-		utils/from_int.cpp \
-		utils/from_float.cpp \
-		utils/from_double.cpp \
-		utils/display.cpp 
+		is_type.cpp \
+		sto.cpp \
+		convert_and_display.cpp \
+		from_char.cpp \
+		from_int.cpp \
+		from_float.cpp \
+		from_double.cpp \
+		display.cpp
 
-SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
+OBJ = $(SRC:.cpp=.o)
 
-OBJ = $(SRC:.c=.o)
-OBJS = $(addprefix $(OBJ_DIR)/, $(OBJ))
-
-INCLUDES = -I/usr/include
+DIR = ./utils
 
 CC = c++
-CPPFLAGS = -Wall -Wextra -Werror -I ./inc -g -std=c++98
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 #-Wshadow -Wno-shadow
+
 MKDIR = mkdir -p
-RM = rm -f
+RM = rm -rf
 
 all: $(NAME)
 
 $(DIR):
 	$(MKDIR) $(DIR)
 
-$(NAME): $(OBJS) | $(DIR)
-	@${CC} ${CPPFLAGS} ${OBJS} -o $(NAME)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(DIR)
-	@$(CC) $(CFLAGS) -o $@ -c $< $(INCLUDES)
+$(NAME): $(OBJ) | $(DIR)
+	$(CC) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 clean:
-	@$(RM) $(OBJ_DIR)
+	$(RM) $(OBJ)
 
 fclean: clean
-	@$(RM) $(NAME)
+	$(RM) $(NAME)
 
-re: fclean all
+re: fclean $(NAME)
 
 .PHONY: all clean fclean re
