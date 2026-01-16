@@ -2,12 +2,8 @@
 # define UTILS_HPP
 
 # include <iostream>
-# include <istream>
-# include <cctype>
-# include <string>
 # include <cmath>
 # include <limits>
-
 
 # define MIN_INT std::numeric_limits<int>::min() //-2147483648
 # define MAX_INT std::numeric_limits<int>::max() //2147483647
@@ -22,8 +18,8 @@ void    	display_pseudo(std::string litteral);
 void        display_char(char c);
 void        display_int(int i);
 void        display_int(int i);
-void        display_float(float f);
-void        display_double(double d);
+void        display_float(float f, bool tolerance);
+void        display_double(double d, bool tolerance);
 
 int 		ft_stoi(std::string litteral);
 float   	ft_stof(std::string litteral);
@@ -49,6 +45,10 @@ char        double_to_char(double litteral);
 int         double_to_int(double litteral);
 float       double_to_float(double litteral);
 
+void        convert_and_display_from_char(char c);
+void        convert_and_display_from_int(int i);
+void        convert_and_display_from_float(float f);
+void        convert_and_display_from_double(double d);
 
 class OverMinMaxException : public std::exception
 {
@@ -56,6 +56,15 @@ class OverMinMaxException : public std::exception
         virtual const char *what() const throw()
         {
             return ("Exception : Value is over min or max.");
+        }
+};
+
+class UnexpectedCharException : public std::exception
+{
+    public:
+        virtual const char *what() const throw()
+        {
+            return ("Exception : Unexpected character.");
         }
 };
 

@@ -29,10 +29,10 @@ void    display_error(std::string litteral)
 
 void    display_char(char c)
 {
-    if (c < '!' || c == 127)
+    if (c < 33 || c == 127)
         std::cout << "char : Non displayable" << std::endl;
     else
-        std::cout << "char : " << c << std::endl;
+        std::cout << "char : " << "'" << static_cast<char>(c) << "'" << std::endl;
 }
 
 void    display_int(int i)
@@ -40,12 +40,12 @@ void    display_int(int i)
     std::cout << "int : " <<  static_cast<int>(i) << std::endl;
 }
 
-void    display_float(float f)
+void    display_float(float f, bool tolerance)
 {
-    std::cout << "float : " <<  static_cast<float>(f) << 'f' << std::endl;
+    std::cout << "float : " <<  static_cast<float>(f) << (tolerance ? ".0f" : "f") << std::endl;
 }
 
-void    display_double(double d)
+void    display_double(double d, bool tolerance)
 {
-    std::cout << "double : " <<  static_cast<double>(d) << std::endl;
+    std::cout << "double : " <<  static_cast<double>(d) << (tolerance ? ".0" : "") << std::endl;
 }
