@@ -38,18 +38,20 @@ int  is_int(int *i, std::string litteral)
     }*/
     try
     {
-        *i = stoi(litteral);
+        *i = std::stoi(litteral);
         return (1);
     }
     catch (std::exception &e)
+    {
         return (0);
+    }
 }
 
 
 int is_float(float *f, std::string litteral)
 {
     /*int     len = litteral.length();
-    int     dot = 0;*/
+    int     dot = 0;
 
     if (litteral == "nanf")
     {
@@ -61,7 +63,7 @@ int is_float(float *f, std::string litteral)
         *f = inff(litteral);
         return (1);
     }
-    /*for (int j = 0; j < len; j++)
+    for (int j = 0; j < len; j++)
     {
         if (litteral[j] == '.')
         {
@@ -80,24 +82,26 @@ int is_float(float *f, std::string litteral)
     }*/
     try
     {
-        *f = stof(litteral);
+        *f = std::stof(litteral);
         return (1);
     }
     catch (std::exception &e)
+    {
         return (0);
+    }
 }
 
 int is_double(double *d, std::string litteral)
 {
     /*int     len = litteral.length();
-    int     dot = 0;*/
+    int     dot = 0;
 
     if (litteral == "nan")
     {
         *d = nan(litteral);
         return (1);
     }
-    /*for (int j = 0; j < len; j++)
+    for (int j = 0; j < len; j++)
     {
         if (litteral[j] == '.')
         {
@@ -114,9 +118,11 @@ int is_double(double *d, std::string litteral)
     }*/
     try
     {
-        *d = stod(litteral);
+        *d = std::stod(litteral);
         return (1);
     }
     catch (std::exception &e)
+    {
         return (0);
+    }
 }
