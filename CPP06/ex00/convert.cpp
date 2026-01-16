@@ -6,7 +6,7 @@ int ft_stoi(std::string litteral)
 
 	l = atol(litteral.c_str());
     if (l < MIN_INT || l > MAX_INT)
-        throw ;
+        throw OverMinMaxException();
     return (int(l));
 }
 
@@ -16,7 +16,7 @@ float   ft_stof(std::string litteral)
     
     f = atof(litteral.c_str());
 	if (f < MIN_FLOAT || f > MAX_FLOAT)
-        throw ;
+        throw OverMinMaxException();
     return (f);
 }
 
@@ -26,6 +26,6 @@ double  ft_stod(std::string litteral)
 
     d = atof(litteral.c_str());
     if (d < MIN_DOUBLE || d > MAX_DOUBLE)
-        throw ;
+        throw OverMinMaxException();
     return (d);
 }

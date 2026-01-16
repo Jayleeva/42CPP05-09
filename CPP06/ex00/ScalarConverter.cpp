@@ -90,14 +90,28 @@ void ScalarConverter::convert(std::string litteral)
     else
     {
         if (is_char(&c, litteral))
+        {
+            std::cout << YELLOW << "[DEBUG] is a char" << DEFAULT << std::endl;
             convert_and_display_from_char(c);
+        }
         else if (is_int(&i, litteral))
+        {
+            std::cout << YELLOW << "[DEBUG] is an int" << DEFAULT << std::endl;
             convert_and_display_from_int(i);
-        else if (is_float(&f, litteral))
-            convert_and_display_from_float(f);
+        }
         else if (is_double(&d, litteral))
+        {
+            std::cout << YELLOW << "[DEBUG] is a double" << DEFAULT << std::endl;
             convert_and_display_from_double(d);
+        }
+        else if (is_float(&f, litteral))
+        {
+            std::cout << YELLOW << "[DEBUG] is a float" << DEFAULT << std::endl;
+            convert_and_display_from_float(f);
+        }
         else
+        {
             display_error(litteral);
+        }
     }
 }

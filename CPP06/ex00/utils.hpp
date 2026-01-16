@@ -49,4 +49,14 @@ char        double_to_char(double litteral);
 int         double_to_int(double litteral);
 float       double_to_float(double litteral);
 
+
+class OverMinMaxException : public std::exception
+{
+    public:
+        virtual const char *what() const throw()
+        {
+            return ("Exception : Value is over min or max.");
+        }
+};
+
 #endif
