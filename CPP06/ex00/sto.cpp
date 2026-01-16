@@ -86,6 +86,9 @@ double  ft_stod(std::string litteral)
     }
     d = atof(litteral.c_str());
     if (d < MIN_DOUBLE || d > MAX_DOUBLE)
+    {
+        std::cout << d << std::endl;
         throw OverMinMaxException();
+    }
     return (d);
 }
