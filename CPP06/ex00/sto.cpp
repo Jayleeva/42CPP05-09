@@ -51,10 +51,7 @@ float   ft_stof(std::string litteral)
         throw UnexpectedCharException();
     f = atof(litteral.c_str());
 	if (f < MIN_FLOAT || f > MAX_FLOAT)
-    {
-        std::cout << "float = " << f << std::endl;
         throw OverMinMaxException();
-    }
     return (float(f));
 }
 
@@ -88,9 +85,6 @@ double  ft_stod(std::string litteral)
         throw UnexpectedCharException();
     d = atof(litteral.c_str());
     if (d < MIN_DOUBLE || d > MAX_DOUBLE)
-    {
-        std::cout << "double = " << d << std::endl;
         throw OverMinMaxException();
-    }
     return (d);
 }

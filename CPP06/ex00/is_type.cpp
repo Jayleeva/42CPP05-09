@@ -24,7 +24,7 @@ int  is_int(int *i, std::string litteral)
     }
     catch (std::exception &e)
     { 
-        std::cout << "is NOT int! " << e.what() << std::endl;
+        std::cout  << YELLOW << "[DEBUG] is NOT int! " << e.what() << DEFAULT  << std::endl;
         return (0);
     }
 }
@@ -39,7 +39,7 @@ int is_float(float *f, std::string litteral)
     }
     catch (std::exception &e)
     {
-        std::cout << "is NOT float! " << e.what() << std::endl;
+        std::cout << YELLOW << "[DEBUG] is NOT float! " << e.what() << DEFAULT << std::endl;
         return (0);
     }
 }
@@ -53,7 +53,7 @@ int is_double(double *d, std::string litteral)
     }
     catch (std::exception &e)
     {
-        std::cout << "is NOT double! " << e.what() << std::endl;
+        std::cout << YELLOW << "[DEBUG] is NOT double! " << e.what() << DEFAULT << std::endl;
         return (0);
     }
 }

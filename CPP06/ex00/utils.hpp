@@ -5,12 +5,17 @@
 # include <cmath>
 # include <limits>
 
-# define MIN_INT std::numeric_limits<int>::min() //-2147483648
-# define MAX_INT std::numeric_limits<int>::max() //2147483647
-# define MIN_FLOAT std::numeric_limits<float>::min() //-3.40282e+38
-# define MAX_FLOAT std::numeric_limits<float>::max() //3.40282e+38
-# define MIN_DOUBLE std::numeric_limits<double>::min() //-1.79769e+308
-# define MAX_DOUBLE std::numeric_limits<double>::max() //1.79769e+308
+
+# define DEFAULT "\001\033[0;39m\002"
+# define YELLOW "\001\033[1;93m\002"
+
+
+# define MIN_INT -2147483648
+# define MAX_INT 2147483647
+# define MIN_FLOAT -13961276984
+# define MAX_FLOAT 13961276983
+# define MIN_DOUBLE -101324546824
+# define MAX_DOUBLE 101324546823
 
 
 void    	display_error(std::string litteral);
