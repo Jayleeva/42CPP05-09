@@ -47,15 +47,15 @@ float   ft_stof(std::string litteral)
         if ((!isdigit(litteral[j]) && litteral[j] != '.' && litteral[j] != 'f'))
             throw UnexpectedCharException();
     }
-    if (dot == 1 && litteral[len -1] != 'f')
+    if (dot == 0 || litteral[len -1] != 'f')
         throw UnexpectedCharException();
     f = atof(litteral.c_str());
 	if (f < MIN_FLOAT || f > MAX_FLOAT)
     {
-        std::cout << f << std::endl;
+        std::cout << "float = " << f << std::endl;
         throw OverMinMaxException();
     }
-    return (f);
+    return (float(f));
 }
 
 double  ft_stod(std::string litteral)
@@ -84,10 +84,12 @@ double  ft_stod(std::string litteral)
         if ((!isdigit(litteral[j]) && litteral[j] != '.'))
             throw UnexpectedCharException();
     }
+    if (dot == 0)
+        throw UnexpectedCharException();
     d = atof(litteral.c_str());
     if (d < MIN_DOUBLE || d > MAX_DOUBLE)
     {
-        std::cout << d << std::endl;
+        std::cout << "double = " << d << std::endl;
         throw OverMinMaxException();
     }
     return (d);

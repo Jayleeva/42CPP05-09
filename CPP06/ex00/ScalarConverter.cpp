@@ -25,10 +25,10 @@ ScalarConverter::~ScalarConverter()
 
 void ScalarConverter::convert(std::string litteral)
 {
-    char    c;
-    int     i;
-    float   f;
-    double  d;
+    char    c = 0;
+    int     i = 0;
+    float   f = 0;
+    double  d = 0;
 
     if (litteral == "nanf" || litteral == "nan"
         || litteral == "-inff" || litteral == "-inf"
