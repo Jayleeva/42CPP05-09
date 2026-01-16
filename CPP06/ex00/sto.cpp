@@ -32,7 +32,9 @@ float   ft_stof(std::string litteral)
         start = 1;
     for (int j = start; j < len; j++)
     {
-        if (litteral[j] == '.')
+        if (litteral[start] == '.')
+            throw UnexpectedCharException();
+        if (j != 0 && litteral[j] == '.')
         {
             dot ++;
             if (dot > 1)
@@ -64,7 +66,9 @@ double  ft_stod(std::string litteral)
         start = 1;
     for (int j = start; j < len; j++)
     {
-        if (litteral[j] == '.')
+        if (litteral[start] == '.')
+            throw UnexpectedCharException();
+        if (j != 0 && litteral[j] == '.')
         {
             dot ++;
             if (dot > 1)
