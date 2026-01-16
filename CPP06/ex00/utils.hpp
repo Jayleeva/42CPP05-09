@@ -2,18 +2,23 @@
 # define UTILS_HPP
 
 # include <iostream>
+# include <istream>
 # include <cctype>
 # include <string>
 # include <cmath>
 # include <limits>
 
+char 		*cpp_substr(const char *s, int start, int end);
+void    	display_pseudo(std::string litteral);
 void        display_char(char c);
 void        display_int(int i);
 void        display_int(int i);
 void        display_float(float f);
 void        display_double(double d);
 
-int         is_over_int_borders(std::string litteral);
+int 		ft_stoi(std::string litteral);
+float   	ft_stof(std::string litteral);
+double  	ft_stod(std::string litteral);
 
 int         is_char(char *c, std::string litteral);
 int         char_to_int(char litteral);

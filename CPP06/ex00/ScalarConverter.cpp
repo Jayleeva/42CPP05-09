@@ -33,7 +33,7 @@ static void convert_and_display_from_char(char c)
 
 static void convert_and_display_from_int(int i)
 {
-    if (i < 0 || i > 255)
+    if (i < 0 || i > 127)
         std::cout << "char : impossible" << std::endl;
     else
         display_char(int_to_char(i));
@@ -42,34 +42,24 @@ static void convert_and_display_from_int(int i)
     display_double(int_to_double(i));
 }
 
-static void convert_and_display_from_float(float f, std::string litteral)
+static void convert_and_display_from_float(float f)
 {
-    if (f < 0.0f || f > 255.0f)
+    if (f < 0.0f || f > 127.0f)
         std::cout << "char : impossible" << std::endl;
     else
         display_char(float_to_char(f));
-    if (litteral == "nanf" || litteral == "nan"
-        || litteral == "-inff" || litteral == "-inf"
-        || litteral == "+inff" || litteral == "+inf")
-        std::cout << "int : impossible" << std::endl;
-    else
-        display_int(float_to_int(f));
+    display_int(float_to_int(f));
     display_float(f);
     display_double(float_to_double(f));
 }
 
-static void convert_and_display_from_double(double d, std::string litteral)
+static void convert_and_display_from_double(double d)
 {
-    if (d < 0.0 || d > 255.0)
+    if (d < 0.0 || d > 127.0)
         std::cout << "char : impossible" << std::endl;
     else
         display_char(double_to_char(d));
-    if (litteral == "nanf" || litteral == "nan"
-        || litteral == "-inff" || litteral == "-inf"
-        || litteral == "+inff" || litteral == "+inf")
-        std::cout << "int : impossible" << std::endl;
-    else
-        display_int(double_to_int(d));
+    display_int(double_to_int(d));
     display_float(double_to_float(d));
     display_double(d);
 }
@@ -81,12 +71,19 @@ void ScalarConverter::convert(std::string litteral)
     float   f;
     double  d;
 
-    if (is_char(&c, litteral))
-        convert_and_display_from_char(c);
-    else if (is_int(&i, litteral))
-        convert_and_display_from_int(i);
-    else if (is_float(&f, litteral))
-        convert_and_display_from_float(f, litteral);
-    else if (is_double(&d, litteral))
-        convert_and_display_from_double(d, litteral);
+    if (litteral == "nanf" || litteral == "nan"
+        || litteral == "-inff" || litteral == "-inf"
+        || litteral == "+inff" || litteral == "+inf")
+        display_pseudo(litteral);
+    else
+    {
+        if (is_char(&c, litteral))
+            convert_and_display_from_char(c);
+        else if (is_int(&i, litteral))
+            convert_and_display_from_int(i);
+        else if (is_float(&f, litteral))
+            convert_and_display_from_float(f);
+        else if (is_double(&d, litteral))
+            convert_and_display_from_double(d);
+    }
 }

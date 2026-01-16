@@ -1,5 +1,6 @@
 #include "utils.hpp"
 
+
 int  is_char(char *c, std::string litteral)
 {
     int len = litteral.length();
@@ -38,7 +39,7 @@ int  is_int(int *i, std::string litteral)
     }*/
     try
     {
-        *i = std::stoi(litteral);
+        *i = ft_stoi(litteral);
         return (1);
     }
     catch (std::exception &e)
@@ -82,7 +83,7 @@ int is_float(float *f, std::string litteral)
     }*/
     try
     {
-        *f = std::stof(litteral);
+        *f = ft_stof(litteral);
         return (1);
     }
     catch (std::exception &e)
@@ -118,7 +119,7 @@ int is_double(double *d, std::string litteral)
     }*/
     try
     {
-        *d = std::stod(litteral);
+        *d = ft_stod(litteral);
         return (1);
     }
     catch (std::exception &e)
