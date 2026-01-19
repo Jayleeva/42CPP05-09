@@ -7,7 +7,7 @@ int ft_stoi(std::string litteral)
 	l = atol(litteral.c_str());
     if (l < MIN_INT || l > MAX_INT)
         throw OverMinMaxException();
-    return (int(l));
+    return (static_cast<int>(l));
 }
 
 float   ft_stof(std::string litteral)

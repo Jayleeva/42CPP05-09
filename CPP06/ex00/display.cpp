@@ -32,20 +32,20 @@ void    display_char(char c)
     if (c < 33 || c == 127)
         std::cout << "char : Non displayable" << std::endl;
     else
-        std::cout << "char : " << "'" << static_cast<char>(c) << "'" << std::endl;
+        std::cout << "char : " << "'" << c << "'" << std::endl;
 }
 
 void    display_int(int i)
 {
-    std::cout << "int : " <<  static_cast<int>(i) << std::endl;
+    std::cout << "int : " << i << std::endl;
 }
 
 void    display_float(float f, bool tolerance)
 {
-    std::cout << "float : " <<  static_cast<float>(f) << (tolerance ? ".0f" : "f") << std::endl;
+    std::cout << "float : " <<  f << (tolerance ? ".0f" : "f") << std::endl;
 }
 
 void    display_double(double d, bool tolerance)
 {
-    std::cout << "double : " <<  static_cast<double>(d) << (tolerance ? ".0" : "") << std::endl;
+    std::cout << "double : " <<  d << (tolerance ? ".0" : "") << std::endl;
 }

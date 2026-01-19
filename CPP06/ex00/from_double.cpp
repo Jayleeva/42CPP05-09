@@ -2,15 +2,15 @@
 
 char    double_to_char(double litteral)
 {
-    return (char(litteral));
+    return (static_cast<char>(litteral));
 }
 
 int double_to_int(double litteral)
 {
-    return (int(litteral));
+    return (static_cast<int>(litteral));
 }
 
 float   double_to_float(double litteral)
 {
-    return (float(litteral));
+    return (static_cast<float>(litteral));
 }

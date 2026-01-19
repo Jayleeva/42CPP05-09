@@ -31,7 +31,7 @@ void convert_and_display_from_float(float f)
         std::cout << "char : impossible" << std::endl;
     else
         display_char(float_to_char(f));
-    if (f < MIN_INT || f > MAX_INT)
+    if (f < MIN_INT || f > MAX_INT || float_to_int(f) == -2147483648)
         std::cout << "int : impossible" << std::endl;
     else
         display_int(float_to_int(f));
