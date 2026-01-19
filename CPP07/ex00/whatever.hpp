@@ -6,13 +6,13 @@
 # define YELLOW "\001\033[1;93m\002"
 
 template<typename T>
-const T &max(T a, T b)
+const T max(T a, T b)
 {
     return (b < a ? a : b);
 }
 
 template<typename T>
-const T &min(T a, T b)
+const T min(T a, T b)
 {
     return (b > a ? a : b);
 }
