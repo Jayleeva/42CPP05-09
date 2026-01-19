@@ -13,7 +13,6 @@ SRC = 	main.cpp \
 
 OBJ = $(SRC:.cpp=.o)
 
-DIR = ./utils
 
 CC = c++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
@@ -24,10 +23,7 @@ RM = rm -rf
 
 all: $(NAME)
 
-$(DIR):
-	$(MKDIR) $(DIR)
-
-$(NAME): $(OBJ) | $(DIR)
+$(NAME): $(OBJ)
 	$(CC) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 clean:
