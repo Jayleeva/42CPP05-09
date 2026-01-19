@@ -12,14 +12,14 @@ int main(void)
         array[0] = a;
         array[1] = b;
         std::cout << "between the first int (" << array[0] << ") and the second one (" << array[1] << ")," << std::endl;
-        std::cout << "- max is : " << max(a, b) << std::endl;
-        std::cout << "- min is : " << min(a, b) << std::endl;
+        std::cout << "- max is : " << ::max(a, b) << std::endl;
+        std::cout << "- min is : " << ::min(a, b) << std::endl;
 
-        swap(array[0], array[1]);
+        ::swap(array[0], array[1]);
 
         std::cout << "between the first int (" << array[0] << ") and the second one (" << array[1] << ")," << std::endl;
-        std::cout << "- max is : " << max(a, b) << std::endl;
-        std::cout << "- min is : " << min(a, b) << std::endl;
+        std::cout << "- max is : " << ::max(a, b) << std::endl;
+        std::cout << "- min is : " << ::min(a, b) << std::endl;
         std::cout << "=============" << std::endl;
     }
     {
@@ -32,14 +32,14 @@ int main(void)
         array[0] = a;
         array[1] = b;
         std::cout << "between the first char (" << array[0] << ") and the second one (" << array[1] << ")," << std::endl;
-        std::cout << "- max is : " << max(a, b) << std::endl;
-        std::cout << "- min is : " << min(a, b) << std::endl;
+        std::cout << "- max is : " << ::max(a, b) << std::endl;
+        std::cout << "- min is : " << ::min(a, b) << std::endl;
 
-        swap(array[0], array[1]);
+        ::swap(array[0], array[1]);
 
         std::cout << "between the first char (" << array[0] << ") and the second one (" << array[1] << ")," << std::endl;
-        std::cout << "- max is : " << max(a, b) << std::endl;
-        std::cout << "- min is : " << min(a, b) << std::endl;
+        std::cout << "- max is : " << ::max(a, b) << std::endl;
+        std::cout << "- min is : " << ::min(a, b) << std::endl;
         std::cout << "=============" << std::endl;
     }
     {
@@ -52,14 +52,14 @@ int main(void)
         array[0] = a;
         array[1] = b;
         std::cout << "between the first float (" << array[0] << ") and the second one (" << array[1] << ")," << std::endl;
-        std::cout << "- max is : " << max(a, b) << std::endl;
-        std::cout << "- min is : " << min(a, b) << std::endl;
+        std::cout << "- max is : " << ::max(a, b) << std::endl;
+        std::cout << "- min is : " << ::min(a, b) << std::endl;
 
-        swap(array[0], array[1]);
+        ::swap(array[0], array[1]);
 
         std::cout << "between the first float (" << array[0] << ") and the second one (" << array[1] << ")," << std::endl;
-        std::cout << "- max is : " << max(a, b) << std::endl;
-        std::cout << "- min is : " << min(a, b) << std::endl;
+        std::cout << "- max is : " << ::max(a, b) << std::endl;
+        std::cout << "- min is : " << ::min(a, b) << std::endl;
         std::cout << "=============" << std::endl;
     }
     {
