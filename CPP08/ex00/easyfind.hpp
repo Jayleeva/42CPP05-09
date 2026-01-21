@@ -4,7 +4,6 @@
 # include <iostream>
 # include <algorithm>
 
-
 class NotFoundException: public std::exception
 {
 	public:
@@ -14,15 +13,16 @@ class NotFoundException: public std::exception
         }
 };
 
-template<typename F, typename T>
+template<typename T>
 void	easyfind(T container, int n)
 {
 	typename T::iterator it;
 
+	std::cout << "[DEBUG] : trying to find " << n << std::endl;
 	it = std::find(container.begin(), container.end(), n);
 	if (it == container.end())
 		throw NotFoundException();
-	std::cout << "Value " << n << " found in container." << std::endl;
+	std::cout << "Value found in container." << std::endl;
 }
 
 #endif
