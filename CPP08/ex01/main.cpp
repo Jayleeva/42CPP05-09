@@ -111,6 +111,7 @@ int	main(void)
 		}
 		std::cout << "=============" << std::endl;
 	}
+
 	{
 		std::cout << "Main 5:\n***Testing constructors: everything should work.\n------" << std::endl;
 		Span	sp1 = Span(3);
@@ -129,6 +130,27 @@ int	main(void)
 		std::cout << sp1 << std::endl;
 		std::cout << sp2 << std::endl;
 		std::cout << sp3 << std::endl;
+	}
+	{
+		std::cout << "Main 1:\n***Testing addRange with enormous range: should work.\n------" << std::endl;
+		std::vector<int>	v;
+		int					n = 1000000;
+		Span				sp = Span(n);
+	
+		v.reserve(n);
+		for (int i = 0; i < n; i++) 
+			v.push_back(i);
+		try
+		{
+			sp.addRange(v);
+			std::cout << sp.shortestSpan() << std::endl;
+			std::cout << sp.longestSpan() << std::endl;
+		}
+		catch(const std::exception& e)
+		{
+			std::cout << e.what() << '\n';
+		}
+		std::cout << "=============" << std::endl;
 	}
 	return (0);
 }
