@@ -2,6 +2,7 @@
 
 Span::Span()
 {
+	//this->container.reserve(0);
     std::cout << YELLOW << "[SPAN]: Default constructor called" << DEFAULT << std::endl;
 }
 
@@ -46,14 +47,15 @@ int		Span::shortestSpan()
 	int					N = this->container.size();
 	std::vector<int> 	tmp(this->container);
 
-	std::sort(tmp.begin(), tmp.end());
-	int shortest = tmp[1] - tmp[0];
-
 	if (N <= 1)
 		throw NoNumberStoredException();
 
+	std::sort(tmp.begin(), tmp.end());
+	int shortest = tmp[1] - tmp[0];
+
 	for (int i = 2; i < N; i ++)
 	{
+		//if (std::distance(tmp.at(i -1), tmp.at(i)) < shortest)
 		if (tmp[i] - tmp[i - 1] < shortest)
 			shortest = tmp[i] - tmp[i - 1];
 	}
@@ -68,5 +70,36 @@ int		Span::longestSpan()
 	if (N <= 1)
 		throw NoNumberStoredException();
 	std::sort(tmp.begin(), tmp.end());
-	return tmp[tmp[N -1]] - tmp[0];
+	//return (std::distance(tmp.begin(), tmp.end()));
+	return (tmp[N -1] - tmp[0]);
+}
+
+void	Span::addRange(std::vector<int> range)
+{
+	std::vector<int>::iterator begin = range.begin();
+	std::vector<int>::iterator end = range.end();
+
+	if (range.size() > this->container.capacity())
+		throw FullException();
+	this->container.insert(this->container.end(), begin, end);
+}
+
+std::vector<int>	Span::getContainer() const
+{
+	return(this->container);
+}
+
+std::ostream &operator<<(std::ostream &out, Span const &s)
+{
+	std::vector<int>	tmp = s.getContainer();
+	int	N = tmp.size();
+
+	for (int i = 0; i < N; i ++)
+	{
+		if (i == N -1)
+			out << tmp[i];
+		else
+			out << tmp[i] << ", ";
+	}
+	return (out);
 }

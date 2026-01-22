@@ -11,7 +11,6 @@
 class Span
 {
 	public:
-		Span();
 		Span(unsigned int N);
 		Span(Span const &original);
 		Span &operator=(Span const &original);
@@ -21,9 +20,12 @@ class Span
 		int		shortestSpan();
 		int		longestSpan();
 
-		void	addMultipleNumbers(std::vector<int> container);
+		void	addRange(std::vector<int> container);
+
+		std::vector<int>	getContainer() const;
 
 	private:
+		Span();
 		std::vector<int>	container;
 
 		class NoNumberStoredException : public std::exception
@@ -38,9 +40,11 @@ class Span
 		{
 			virtual const char *what() const throw()
 			{
-				return ("Exception : Container is full.");
+				return ("Exception : Container is already full.");
 			}
 		};
 };
+
+std::ostream &operator<<(std::ostream &out, Span const &s);
 
 #endif
