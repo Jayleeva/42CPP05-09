@@ -10,5 +10,6 @@
 # include <map>
 # include <vector>
 
+void bitcoin(std::map<std::string, int> lines);
 
 #endif

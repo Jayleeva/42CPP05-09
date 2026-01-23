@@ -92,7 +92,7 @@ int	is_day_valid(std::string day, int month, int year)
 	date = atoi(day.c_str());
 	if (!is_valid(date, min, max))
 		return (0);
-	if (year == 2009 && month == 1 && date < 3)
+	if (year == 2009 && month == 1 && date < 2)
 		return (0);
 	if (year == 2026 && month == 2 && date > 26)
 		return (0);
@@ -220,7 +220,7 @@ int	main(int argc, char **argv)
 	std::getline(infile, firstline);
 	if (firstline != "date | value")
 	{
-		std::cout << "Error: wrong first line." << std::endl;
+		std::cout << "Error: wrong format." << std::endl;
 		return (0);
 	}
     for (std::string line; std::getline(infile, line);)
@@ -230,7 +230,6 @@ int	main(int argc, char **argv)
 
 		if (!is_line_valid(line))
 		{
-			std::cout << "Error: wrong format." << std::endl;
 			infile.close();
 			return (1);
 		}
@@ -238,7 +237,7 @@ int	main(int argc, char **argv)
 		value = atof(line.substr(12, line.size()).c_str());
 		lines.insert({key, value});
 	}
-	//bitcoin(lines);
 	infile.close();
+	bitcoin(lines);
 	return (0);
 }
