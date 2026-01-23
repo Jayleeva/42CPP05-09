@@ -101,7 +101,7 @@ int	is_day_valid(std::string day, int month, int year)
 
 int	is_key_valid(std::string key)
 {
-	if (key.empty() || key[4] != '-' || key[7] != '-')
+	if (key[4] != '-' || key[7] != '-')
 		return (0);
 	if (!is_year_valid(key.substr(0, 4)))
 		return (0);
@@ -183,61 +183,53 @@ int	is_line_valid(std::string line)
 {
 	std::string		key;
 	std::string		value;
+	float			rate;
 
-	if (line.empty() || line[11] != '|')
+	if (line.empty())
+	{
+		std::cout << "Error: allocation failed." << std::endl;
 		return (0);
+	}
+	if (line[11] != '|')
+	{
+		std::cout << "Error: wrong format." << std::endl;
+		return (0);
+	}
  	key = line.substr(0,11);
+	if (key.empty())
+	{
+		std::cout << "Error: allocation failed." << std::endl;
+		return (0);
+	}
 	if (!is_key_valid(key))
 	{
 		std::cout << "Error: bad input => " << key << std::endl;
 		return (0);
 	}
 	value = line.substr(12, line.size());
+	if (value.empty())
+	{
+		std::cout << "Error: allocation failed." << std::endl;
+		return (0);
+	}
 	if (!is_value_valid(value))
 		return (0);
+	
+	std::cout << key << " => " << value << " = " << std::stof(value) * rate;
 	return (1);
 }
 
 
 int	main(int argc, char **argv)
 {
-	std::ifstream				infile;
-	std::map<std::string, int>	lines;
+	BitcoinExchange	btc;
 
 	if (argc != 2)
 	{
 		std::cout << "Error: no file submitted." << std::endl;
 		return (1);
 	}
-
-	infile.open(argv[1]);
-	if (infile.fail())
-	{
-		std::cout << "Error: could not open file." << std::endl;
-		return (1);
-	}
-	std::string firstline;
-	std::getline(infile, firstline);
-	if (firstline != "date | value")
-	{
-		std::cout << "Error: wrong format." << std::endl;
-		return (0);
-	}
-    for (std::string line; std::getline(infile, line);)
-	{
-		std::string		key;
-		int				value;
-
-		if (!is_line_valid(line))
-		{
-			infile.close();
-			return (1);
-		}
-		key = line.substr(0, 11);
-		value = atof(line.substr(12, line.size()).c_str());
-		lines.insert({key, value});
-	}
-	infile.close();
-	bitcoin(lines);
+	btc.setMap("data.csv");
+	btc.printRes(argv[1]);
 	return (0);
 }
