@@ -220,6 +220,7 @@ float	find_closest(std::string key, std::map<std::string, int> data)
 	try
 	{
 		rate = data.at(key);
+		
 	}
 	catch(const std::exception& e)
 	{

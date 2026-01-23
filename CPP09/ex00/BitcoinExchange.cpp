@@ -15,7 +15,7 @@ BitcoinExchange &BitcoinExchange::operator=(BitcoinExchange const &original)
 {
 	if (this != &original)
 	{
-
+		this->dataLines = original.dataLines;
 	}
     std::cout << YELLOW << "[BTC] : Assignment operator overload called." << DEFAULT << std::endl;
 	return (*this);
