@@ -26,16 +26,16 @@ BitcoinExchange::~BitcoinExchange()
     std::cout << YELLOW << "[BTC] : Default destructor called." << DEFAULT << std::endl;
 }
 
-std::map<std::string, int>	BitcoinExchange::getMap() const
+std::map<std::string, float>	BitcoinExchange::getMap() const
 {
 	return(this->dataLines);
 }
 
-void	BitcoinExchange::setMap(char *dataFile)
+void	BitcoinExchange::setMap(std::string dataFile)
 {
 	std::ifstream				data;
 
-	data.open(dataFile);
+	data.open(dataFile.c_str());
 	if (data.fail())
 	{
 		std::cout << "Error: could not open file." << std::endl;
@@ -57,25 +57,20 @@ void	BitcoinExchange::setMap(char *dataFile)
 		valuestr = line.substr(12, line.size());
 		if (valuestr.empty())
 			return ;
-		value = std::stof(valuestr);
+		value = std::atof(valuestr.c_str());
+		std::map<std::string, float>::iterator it = this->dataLines.upper_bound(trim(vectorLine[0]));
 		this->dataLines.insert({key, value});
 	}
 	data.close();
-}
-
-std::vector<std::string> is_line_valid(std::string line)
-{
-	std::vector<std::string>	v[2];
-
-	if (line.empty() || line[11] != '|')
-		return ();
 }
 
 
 void	BitcoinExchange::printRes(char *inputFile)
 {
 	std::ifstream				file;
-	std::vector<std::string>	v[2];
+	std::string					key;
+	std::string					value;
+	float						rate;
 
 	file.open(inputFile);
 	if (file.fail())
@@ -91,6 +86,10 @@ void	BitcoinExchange::printRes(char *inputFile)
 		return ;
 	}
     for (std::string line; std::getline(file, line);)
-		v = is_line_valid(line);
+	{
+		rate = is_line_valid(line, key, value, this->dataLines);
+		if (rate > -1)
+			std::cout << key << " => " << value << " = " << std::atof(value.c_str()) * rate << std::endl;
+	}
 	file.close();
 }

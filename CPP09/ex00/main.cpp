@@ -137,7 +137,7 @@ int	is_value_valid(std::string value)
 	int	sign = 0;
 	int	dot = 0;
 
-	if (value.empty() || value[12 != ' '])
+	if (value[12 != ' '])
 		return (0);
 
 	if (value[1] == '-')
@@ -179,46 +179,56 @@ int	is_value_valid(std::string value)
 	return (1);
 }
 
-int	is_line_valid(std::string line)
+float is_line_valid(std::string line, std::string key, std::string value, std::map<std::string, int> data)
 {
-	std::string		key;
-	std::string		value;
-	float			rate;
-
 	if (line.empty())
 	{
 		std::cout << "Error: allocation failed." << std::endl;
-		return (0);
+		return (-1);
 	}
 	if (line[11] != '|')
 	{
 		std::cout << "Error: wrong format." << std::endl;
-		return (0);
+		return (-1);
 	}
- 	key = line.substr(0,11);
+ 	key = (line.substr(0,11));
 	if (key.empty())
 	{
 		std::cout << "Error: allocation failed." << std::endl;
-		return (0);
+		return (-1);
 	}
 	if (!is_key_valid(key))
 	{
 		std::cout << "Error: bad input => " << key << std::endl;
-		return (0);
+		return (-1);
 	}
 	value = line.substr(12, line.size());
 	if (value.empty())
 	{
 		std::cout << "Error: allocation failed." << std::endl;
-		return (0);
+		return (-1);
 	}
 	if (!is_value_valid(value))
-		return (0);
-	
-	std::cout << key << " => " << value << " = " << std::stof(value) * rate;
-	return (1);
+		return (-1);
+	return (find_closest(key, data));
 }
 
+float	find_closest(std::string key, std::map<std::string, int> data)
+{
+	float	rate;
+
+	try
+	{
+		rate = data.at(key);
+	}
+	catch(const std::exception& e)
+	{
+		//find closest;
+		rate = -1;
+		std::cout << e.what() << std::endl;
+	}
+	return (rate);
+}
 
 int	main(int argc, char **argv)
 {
