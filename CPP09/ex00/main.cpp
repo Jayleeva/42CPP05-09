@@ -38,17 +38,29 @@ int	is_month_valid(std::string month, int year)
 	int	date;
 
 	if (month.empty())
+	{
+		std::cout << "month empty" << std::endl;
 		return (0);
+	}
 	for (int i = 0; month[i]; i ++)
 	{
 		if (!isdigit(month[i]))
+		{
+			std::cout << month[i] << " is not a digit" << std::endl;
 			return (0);
+		}
 	}
 	date = atoi(month.c_str());
 	if (!is_valid(date, 1, 12))
+	{
+		std::cout << "not a month" << std::endl;
 		return (0);
+	}
 	if (year == 2026 && date > 2)
+		{
+		std::cout << "in the futuuure" << std::endl;
 		return (0);
+	}
 	return (1);
 }
 
@@ -101,13 +113,21 @@ int	is_day_valid(std::string day, int month, int year)
 
 int	is_key_valid(std::string key)
 {
+	std::string	year;
+	std::string	month;
+	std::string	day;
+
 	if (key[4] != '-' || key[7] != '-')
 		return (0);
-	if (!is_year_valid(key.substr(0, 4)))
+
+	year = key.substr(0, 4);
+	if (!is_year_valid(year))
 		return (0);
-	if (!is_month_valid(key.substr(5, 7), atoi(key.substr(0, 4).c_str())))
+	month = key.substr(5, 2);
+	if (!is_month_valid(month, atoi(year.c_str())))
 		return (0);
-	if (!is_day_valid(key.substr(8, 11), atoi(key.substr(5, 7).c_str()), atoi(key.substr(0, 4).c_str())))
+	day = key.substr(8, 2);
+	if (!is_day_valid(day, atoi(month.c_str()), atoi(year.c_str())))
 		return (0);
 	return (1);
 }
@@ -179,7 +199,26 @@ int	is_value_valid(std::string value)
 	return (1);
 }
 
-float is_line_valid(std::string line, std::string key, std::string value, std::map<std::string, int> data)
+float	find_closest(std::string key, std::map<std::string, float> data)
+{
+	float	rate = -1;
+
+	try
+	{
+		std::cout << "hello" << std::endl;
+		rate = data.at(key);
+
+	}
+	catch(const std::exception& e)
+	{
+		//find closest;
+		rate = -1;
+		std::cout << e.what() << std::endl;
+	}
+	return (rate);
+}
+
+float is_line_valid(std::string line, std::string key, std::string value, std::map<std::string, float> data)
 {
 	if (line.empty())
 	{
@@ -211,24 +250,6 @@ float is_line_valid(std::string line, std::string key, std::string value, std::m
 	if (!is_value_valid(value))
 		return (-1);
 	return (find_closest(key, data));
-}
-
-float	find_closest(std::string key, std::map<std::string, int> data)
-{
-	float	rate;
-
-	try
-	{
-		rate = data.at(key);
-		
-	}
-	catch(const std::exception& e)
-	{
-		//find closest;
-		rate = -1;
-		std::cout << e.what() << std::endl;
-	}
-	return (rate);
 }
 
 int	main(int argc, char **argv)

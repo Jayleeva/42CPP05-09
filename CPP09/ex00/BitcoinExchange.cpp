@@ -49,7 +49,7 @@ void	BitcoinExchange::setMap(std::string dataFile)
 	{
 		std::string		key;
 		std::string		valuestr;
-		int				value;
+		float			value;
 
 		key = line.substr(0, 11);
 		if (key.empty())
@@ -58,8 +58,8 @@ void	BitcoinExchange::setMap(std::string dataFile)
 		if (valuestr.empty())
 			return ;
 		value = std::atof(valuestr.c_str());
-		std::map<std::string, float>::iterator it = this->dataLines.upper_bound(trim(vectorLine[0]));
-		this->dataLines.insert({key, value});
+		std::pair<std::string, float> p = std::make_pair(key, value);
+		this->dataLines.insert(p);
 	}
 	data.close();
 }
@@ -88,6 +88,7 @@ void	BitcoinExchange::printRes(char *inputFile)
     for (std::string line; std::getline(file, line);)
 	{
 		rate = is_line_valid(line, key, value, this->dataLines);
+		std::cout << "hey" << std::endl;
 		if (rate > -1)
 			std::cout << key << " => " << value << " = " << std::atof(value.c_str()) * rate << std::endl;
 	}
