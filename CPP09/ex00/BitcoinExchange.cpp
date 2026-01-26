@@ -51,12 +51,24 @@ void	BitcoinExchange::setMap(std::string dataFile)
 		std::string		valuestr;
 		float			value;
 
-		key = line.substr(0, 11);
-		if (key.empty())
-			return;
-		valuestr = line.substr(12, line.size());
-		if (valuestr.empty())
+		try
+		{
+			key = (line.substr(0,10));
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
 			return ;
+		}
+		try
+		{
+			valuestr = line.substr(11, line.size());
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+			return ;
+		}
 		value = std::atof(valuestr.c_str());
 		std::pair<std::string, float> p = std::make_pair(key, value);
 		this->dataLines.insert(p);
@@ -87,8 +99,24 @@ void	BitcoinExchange::printRes(char *inputFile)
 	}
     for (std::string line; std::getline(file, line);)
 	{
-		rate = is_line_valid(line, key, value, this->dataLines);
-		std::cout << "hey" << std::endl;
+		if (line.empty())
+			continue;
+		key = getKey(line);
+		if (!is_key_valid(key))
+		{
+			std::cout << "Error: bad input => " << key << std::endl;
+			continue ;
+		}
+		if (!line[10] || !line[11] || line[11] != '|')
+		{
+			std::cout << "Error: wrong format." << std::endl;
+			continue;
+		}
+		value = getValue(line);
+		if (!is_value_valid(value))
+			continue ;
+		rate = find_closest(key, this->dataLines);
+		std::cout << "rate " << rate << std::endl;
 		if (rate > -1)
 			std::cout << key << " => " << value << " = " << std::atof(value.c_str()) * rate << std::endl;
 	}

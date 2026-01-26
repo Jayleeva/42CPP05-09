@@ -28,7 +28,7 @@ int	is_year_valid(std::string year)
 			return (0);
 	}
 	date = atoi(year.c_str());
-	if (date < 2009 || date > 2026)
+	if (!is_valid(date, 2009, 2026))
 		return (0);
 	return (1);
 }
@@ -39,26 +39,26 @@ int	is_month_valid(std::string month, int year)
 
 	if (month.empty())
 	{
-		std::cout << "month empty" << std::endl;
+		//std::cout << "month empty" << std::endl;
 		return (0);
 	}
 	for (int i = 0; month[i]; i ++)
 	{
 		if (!isdigit(month[i]))
 		{
-			std::cout << month[i] << " is not a digit" << std::endl;
+			//std::cout << month[i] << " is not a digit" << std::endl;
 			return (0);
 		}
 	}
 	date = atoi(month.c_str());
 	if (!is_valid(date, 1, 12))
 	{
-		std::cout << "not a month" << std::endl;
+		//std::cout << "not a month" << std::endl;
 		return (0);
 	}
 	if (year == 2026 && date > 2)
-		{
-		std::cout << "in the futuuure" << std::endl;
+	{
+		//std::cout << "in the futuuure" << std::endl;
 		return (0);
 	}
 	return (1);
@@ -117,6 +117,9 @@ int	is_key_valid(std::string key)
 	std::string	month;
 	std::string	day;
 
+	if (key.empty())
+		return (0);
+
 	if (key[4] != '-' || key[7] != '-')
 		return (0);
 
@@ -157,9 +160,8 @@ int	is_value_valid(std::string value)
 	int	sign = 0;
 	int	dot = 0;
 
-	if (value[12 != ' '])
+	if (value.empty())
 		return (0);
-
 	if (value[1] == '-')
 	{
 		std::cout << "Error: not a positive number." << std::endl;
@@ -181,7 +183,7 @@ int	is_value_valid(std::string value)
 		l = atol(value.c_str());
 		if (l < 0 || l > 1000)
 		{
-			std::cout << "Error: too large a number." << std::endl;
+			std::cout << "Error: too large an int." << std::endl;
 			return (0);
 		}
 	}
@@ -192,7 +194,7 @@ int	is_value_valid(std::string value)
 		f = atof(value.c_str());
 		if (f < 0.0f || f > 1000.0f)
 		{
-			std::cout << "Error: too large a number." << std::endl;
+			std::cout << "Error: too large a float." << std::endl;
 			return (0);
 		}
 	}
@@ -201,13 +203,11 @@ int	is_value_valid(std::string value)
 
 float	find_closest(std::string key, std::map<std::string, float> data)
 {
-	float	rate = -1;
+	float	rate = -2;
 
 	try
 	{
-		std::cout << "hello" << std::endl;
 		rate = data.at(key);
-
 	}
 	catch(const std::exception& e)
 	{
@@ -218,39 +218,37 @@ float	find_closest(std::string key, std::map<std::string, float> data)
 	return (rate);
 }
 
-float is_line_valid(std::string line, std::string key, std::string value, std::map<std::string, float> data)
+std::string	getKey(std::string line)
 {
-	if (line.empty())
+	std::string key;
+
+	try
 	{
-		std::cout << "Error: allocation failed." << std::endl;
-		return (-1);
+		key = (line.substr(0,10));
 	}
-	if (line[11] != '|')
+	catch (std::exception &e)
 	{
-		std::cout << "Error: wrong format." << std::endl;
-		return (-1);
+		std::cout << e.what() << std::endl;
 	}
- 	key = (line.substr(0,11));
-	if (key.empty())
-	{
-		std::cout << "Error: allocation failed." << std::endl;
-		return (-1);
-	}
-	if (!is_key_valid(key))
-	{
-		std::cout << "Error: bad input => " << key << std::endl;
-		return (-1);
-	}
-	value = line.substr(12, line.size());
-	if (value.empty())
-	{
-		std::cout << "Error: allocation failed." << std::endl;
-		return (-1);
-	}
-	if (!is_value_valid(value))
-		return (-1);
-	return (find_closest(key, data));
+	return (key);
 }
+
+std::string getValue(std::string line)
+{
+	std::string	value;
+
+	try
+	{
+		value = line.substr(13, line.size());
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+		return (NULL);
+	}
+	return (value);
+}
+
 
 int	main(int argc, char **argv)
 {
