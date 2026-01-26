@@ -115,8 +115,7 @@ void	BitcoinExchange::printRes(char *inputFile)
 		value = getValue(line);
 		if (!is_value_valid(value))
 			continue ;
-		rate = find_closest(key, this->dataLines);
-		std::cout << "rate " << rate << std::endl;
+		rate = getRate(key, this->dataLines);
 		if (rate > -1)
 			std::cout << key << " => " << value << " = " << std::atof(value.c_str()) * rate << std::endl;
 	}

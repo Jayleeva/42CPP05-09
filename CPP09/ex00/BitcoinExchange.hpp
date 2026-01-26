@@ -14,7 +14,7 @@
 # define DEFAULT "\001\033[0;39m\002"
 # define YELLOW "\001\033[1;93m\002"
 
-void bitcoin(std::map<std::string, int> lines);
+void bitcoin(std::map<std::string, float> lines);
 
 class	BitcoinExchange
 {
@@ -32,7 +32,7 @@ class	BitcoinExchange
 		std::map<std::string, float>	dataLines;
 };
 
-float		find_closest(std::string key, std::map<std::string, float> data);
+float		getRate(std::string key, std::map<std::string, float> data);
 std::string	getKey(std::string line);
 std::string	getValue(std::string line);
 //int			is_line_valid(std::string line);

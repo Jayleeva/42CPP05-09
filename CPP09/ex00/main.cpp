@@ -162,12 +162,12 @@ int	is_value_valid(std::string value)
 
 	if (value.empty())
 		return (0);
-	if (value[1] == '-')
+	if (value[0] == '-')
 	{
 		std::cout << "Error: not a positive number." << std::endl;
 		return (0);
 	}
-	if (value[1] == '+')
+	if (value[0] == '+')
 		sign = 1;
 
 	dot = unexpectedchar(sign, value);
@@ -183,7 +183,7 @@ int	is_value_valid(std::string value)
 		l = atol(value.c_str());
 		if (l < 0 || l > 1000)
 		{
-			std::cout << "Error: too large an int." << std::endl;
+			std::cout << "Error: too large a number." << std::endl;
 			return (0);
 		}
 	}
@@ -194,28 +194,11 @@ int	is_value_valid(std::string value)
 		f = atof(value.c_str());
 		if (f < 0.0f || f > 1000.0f)
 		{
-			std::cout << "Error: too large a float." << std::endl;
+			std::cout << "Error: too large a number." << std::endl;
 			return (0);
 		}
 	}
 	return (1);
-}
-
-float	find_closest(std::string key, std::map<std::string, float> data)
-{
-	float	rate = -2;
-
-	try
-	{
-		rate = data.at(key);
-	}
-	catch(const std::exception& e)
-	{
-		//find closest;
-		rate = -1;
-		std::cout << e.what() << std::endl;
-	}
-	return (rate);
 }
 
 std::string	getKey(std::string line)
@@ -249,6 +232,20 @@ std::string getValue(std::string line)
 	return (value);
 }
 
+float	getRate(std::string key, std::map<std::string, float> data)
+{
+	float	rate = -2;
+
+	std::map<std::string, float>::const_iterator it = data.find(key);
+	if (it == data.end())
+	{
+		it = data.upper_bound(key);
+		if (it != data.begin())
+			it--;
+	}
+	rate = it->second;
+	return (rate);
+}
 
 int	main(int argc, char **argv)
 {
