@@ -1,7 +1,7 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
 
-Form::Form(): title("untitled"), grade_to_sign(150), grade_to_execute(150)
+Form::Form(): name(), grade_to_sign(150), grade_to_execute(150)
 {
     this->is_signed = false;
     std::cout << YELLOW << "[FORM]: Default constructor called" << DEFAULT << std::endl;
@@ -28,6 +28,8 @@ Form const &Form::operator=(Form const &original)
     if (this != &original)
 	{
         *const_cast<std::string*>(this->name) = *(original.name);
+        //*const_cast<int>(this->grade_to_sign) = *(original.grade_to_sign);
+        //*const_cast<int>(this->grade_to_execute) = *(original.grade_to_execute);
         this->is_signed = false;
     }
     std::cout << YELLOW << "[FORM]: Assignment operator overload called" << DEFAULT << std::endl;
