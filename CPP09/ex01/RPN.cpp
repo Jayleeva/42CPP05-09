@@ -53,41 +53,39 @@ std::queue<std::string>	RPN::getQueue() const
 
 void	RPN::printRes()
 {
-	double		res;
+	long		res;
 	char		tmp;
-	std::string	operator_;
-	double		operated;
+	char		operator_;
+	long		operated;
 
-	//std::cout << "first res = " << res << std::endl;
 	tmp = *this->expression.front().c_str();
-	//res = atof(this->expression.front().c_str());
-	std::cout << "first res = " << tmp << std::endl;
 	if (!isdigit(tmp))
 	{
 		std::cout << "Error: first not a digit" << std::endl;
 		return ;
 	}
-	res = tmp;
+	res = atol(&tmp);
 	this->expression.pop();
-
+	std::cout << "first =" << res << std::endl;
 	while (this->expression.size())
 	{
-		operated = atof(this->expression.front().c_str());
-		if (!isdigit(operated))
+		tmp = *this->expression.front().c_str();
+		if (!isdigit(tmp))
 		{
 			std::cout << "Error: not a digit" << std::endl;
 			break;
 		}
+		operated = atol(&tmp);
 		this->expression.pop();
 
-		operator_ = this->expression.front();
-		if (operator_ == "+")
+		operator_ = *this->expression.front().c_str();
+		if (operator_ == '+')
 			res += operated;
-		else if (operator_ == "-")
+		else if (operator_ == '-')
 			res -= operated;
-		else if (operator_ == "/")
+		else if (operator_ == '/')
 			res /= operated;
-		else if (operator_ == "*")
+		else if (operator_ == '*')
 			res *= operated;
 		else
 		{
@@ -95,6 +93,7 @@ void	RPN::printRes()
 			break;
 		}
 		this->expression.pop();
+		std::cout << "temp res = " << res << std::endl;
 	}
 	std::cout << res << std::endl;
 }
