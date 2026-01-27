@@ -39,58 +39,55 @@ void	RPN::setQueue(std::string arg)
 			&& arg[i] != '+' && arg[i] != '-'
 			&& arg[i] != '/' && arg[i] != '*'
 			&& arg[i] != ' ')
-			{
-				std::cout << "Error" << std::endl;
-				return ;
-			}
+			std::cout << "Error" << std::endl;
 	}
+
     while (getline(ss, element, ' '))
         this->expression.push(element);
 }
 
-std::queue<int>	RPN::getQueue() const
+std::queue<std::string>	RPN::getQueue() const
 {
 	return (this->expression);
 }
 
 void	RPN::printRes()
 {
-	double		res = 0;
-	
-	int			tmp;
-	char		operator_;
+	double		res;
+	char		tmp;
+	std::string	operator_;
 	double		operated;
 
-	//std::cout << "first front = " << this->expression.front() << std::endl;
-	tmp = this->expression.front();
-	std::cout << "first = " << res << std::endl;
+	//std::cout << "first res = " << res << std::endl;
+	tmp = *this->expression.front().c_str();
+	//res = atof(this->expression.front().c_str());
+	std::cout << "first res = " << tmp << std::endl;
 	if (!isdigit(tmp))
 	{
 		std::cout << "Error: first not a digit" << std::endl;
 		return ;
 	}
-	res += tmp;
+	res = tmp;
 	this->expression.pop();
 
 	while (this->expression.size())
 	{
-		tmp = this->expression.front();
-		if (!isdigit(tmp))
+		operated = atof(this->expression.front().c_str());
+		if (!isdigit(operated))
 		{
 			std::cout << "Error: not a digit" << std::endl;
 			break;
 		}
-		operated = tmp;
 		this->expression.pop();
 
-		operator_ = char(this->expression.front());
-		if (operator_ == '+')
+		operator_ = this->expression.front();
+		if (operator_ == "+")
 			res += operated;
-		else if (operator_ == '-')
+		else if (operator_ == "-")
 			res -= operated;
-		else if (operator_ == '/')
+		else if (operator_ == "/")
 			res /= operated;
-		else if (operator_ == '*')
+		else if (operator_ == "*")
 			res *= operated;
 		else
 		{

@@ -19,14 +19,12 @@ class RPN
 		~RPN();
 
 		void					setQueue(std::string arg);
-		std::queue<int>	getQueue() const;
+		std::queue<std::string>	getQueue() const;
 		void					printRes();
 	private:
-		std::queue<int>	expression;
+		std::queue<std::string>	expression;
 
 };
 
 double	operate_front(double res, std::string element);
-int	is_in_set(char c, std::string set);
-
 #endif
