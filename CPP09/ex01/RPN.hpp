@@ -19,10 +19,10 @@ class RPN
 		~RPN();
 
 		void					setQueue(std::string arg);
-		std::queue<std::string>	getQueue() const;
+		std::queue<int>	getQueue() const;
 		void					printRes();
 	private:
-		std::queue<std::string>	expression;
+		std::queue<int>	expression;
 
 };
 
