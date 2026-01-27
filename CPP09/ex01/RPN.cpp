@@ -55,45 +55,33 @@ void	RPN::printRes()
 {
 	long		res;
 	char		tmp;
-	char		operator_;
 	long		operated;
 
 	tmp = *this->expression.front().c_str();
-	if (!isdigit(tmp))
-	{
-		std::cout << "Error: first not a digit" << std::endl;
-		return ;
-	}
 	res = atol(&tmp);
 	this->expression.pop();
-	std::cout << "first =" << res << std::endl;
+
 	while (this->expression.size())
 	{
 		tmp = *this->expression.front().c_str();
-		if (!isdigit(tmp))
+		if (isdigit(tmp))
 		{
-			std::cout << "Error: not a digit" << std::endl;
-			break;
+			operated = atol(&tmp);
 		}
-		operated = atol(&tmp);
-		this->expression.pop();
-
-		operator_ = *this->expression.front().c_str();
-		if (operator_ == '+')
-			res += operated;
-		else if (operator_ == '-')
-			res -= operated;
-		else if (operator_ == '/')
-			res /= operated;
-		else if (operator_ == '*')
-			res *= operated;
 		else
 		{
-			std::cout << "Error: not an operator" << std::endl;
-			break;
+			std::cout << res << tmp << operated;
+			if (tmp == '+')
+				res += operated;
+			else if (tmp == '-')
+				res -= operated;
+			else if (tmp == '/')
+				res /= operated;
+			else if (tmp == '*')
+				res *= operated;
+			std::cout << " = " << res << std::endl;
 		}
 		this->expression.pop();
-		std::cout << "temp res = " << res << std::endl;
 	}
 	std::cout << res << std::endl;
 }
