@@ -37,11 +37,23 @@
 
 int main(void)
 {
-	PmergeMe	p;
+	PmergeMe			p;
+	int					size = 21;
+	std::vector<int>	vec(size);
 
-	p.setContainer();
-	std::cout << p << std::endl;
+	std::srand((unsigned) time(0));
+	for (int i = 0; i < size; i++)
+	{
+		int tmp = rand();
+		while (find(vec.begin(), vec.end(), tmp) != vec.end())
+			tmp = rand();
+		vec.push_back(tmp);
+	}
+
+	p.setContainer(vec.begin(), vec.end());
+	p.printContainer();
+
 	p.sortContainer();
-	std::cout << p << std::endl;
+	p.printContainer();
 	return (0);
 }

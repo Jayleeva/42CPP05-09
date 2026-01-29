@@ -2,6 +2,8 @@
 # define PMERGEME_HPP
 
 # include <iostream>
+# include <ctime>
+# include <algorithm>
 # include <vector>
 
 # define DEFAULT "\001\033[0;39m\002"
@@ -15,15 +17,16 @@ class	PmergeMe
 		PmergeMe &operator=(PmergeMe const &original);
 		~PmergeMe();
 
+		typedef typename std::vector<int>::iterator iterator;
+
 		std::vector<unsigned int>	getContainer() const;
-		void	setContainer();
+		void						setContainer(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 
 		void	sortContainer();
+		void	printContainer();
 
 	private:
-		std::vector<unsigned int>	vec;
+		std::vector<unsigned int>	container;
 };
-
-std::ostream &operator<<(std::ostream &out, PmergeMe const &p);
 
 #endif
