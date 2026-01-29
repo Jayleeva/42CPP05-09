@@ -15,22 +15,33 @@
 
 // 11 2 17 0 16 8 6 15 10 3 21 1 18 9 14 19
 
-// 11 2 | 17 0 | 16 8 | 6 15 | 10 3 | 21 1 | 18 9 | 14 19
-// 2 [11] | 0 [17] | 8 [16] | 6 [15] | 3 [10] | 1 [21] | 9 [18] | 14 [19]
+// 11 2 | 17 0 | 16 8 | 6 15 | 10 3 | 21 1 | 18 9 | 14 19						niveau 1
+// 2 [11] | 0 [17] | 8 [16] | 6 [15] | 3 [10] | 1 [21] | 9 [18] | 14 [19]		
 
-// 2 [11] | 0 [17] || 8 [16] | 6 [15] || 3 [10] | 1 [21] || 9 [18] | 14 [19]
+// 2 [11] | 0 [17] || 8 [16] | 6 [15] || 3 [10] | 1 [21] || 9 [18] | 14 [19]	niveau 2
 // 2 [11] | 0 [17] || 6 [15] | 8 [16] || 3 [10] | 1 [21] || 9 [18] | 14 [19]
 
-// 2 [11] | 0 [17] || 6 [15] | 8 [16] ||| 3 [10] | 1 [21] || 9 [18] | 14 [19]
+// 2 [11] | 0 [17] || 6 [15] | 8 [16] ||| 3 [10] | 1 [21] || 9 [18] | 14 [19]	niveau 3
 // 6 [15] | 8 [16] || 2 [11] | 0 [17] ||| 9 [18] | 14 [19] || 3 [10] | 1 [21]
-
-// 6 [15] | 8 [16] || 2 [11] 0 [17] ||| 9 [18] | 14 [19] || 3 [10] | 1 [21] already "sorted"
 
 // next would be de tout englober, donc plus de paire de paire de paire... avec quoi comparer, donc fini.
 
-// une fois ce point atteint,
+// une fois ce point atteint, on va effectuer initialisation et insertion sur chaque niveau.
+
+
+// une fois cette etape atteinte, on effectue le merge?
+
+
+
+// former une paire = merge ?
 
 int main(void)
 {
+	PmergeMe	p;
+
+	p.setContainer();
+	std::cout << p << std::endl;
+	p.sortContainer();
+	std::cout << p << std::endl;
 	return (0);
 }
