@@ -40,11 +40,11 @@ void	PmergeMe::setContainer(std::vector<int>::iterator begin, std::vector<int>::
 
 void	PmergeMe::sortContainer()
 {
-
-	merge_();
-	this->container = insert_();
-	this->sortContainer();
-
+	if (merge_(this->container))
+	{
+		this->container = insert_(this->container);
+		this->sortContainer();
+	}
 }
 
 void	PmergeMe::printContainer()
