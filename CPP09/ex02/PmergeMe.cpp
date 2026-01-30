@@ -77,15 +77,12 @@ void	PmergeMe::insertLeftover()
 
 void	PmergeMe::sortContainer(size_t size)
 {
-	//this->formPairs();
-
 	if (size / 2 > 1)
 	{
 		this->mergePairs();
 		this->sortContainer(size / 2);
 	}
 	this->insertBigInSmall();
-	//this->insertLeftover();
 }
 
 void	PmergeMe::printContainer()
