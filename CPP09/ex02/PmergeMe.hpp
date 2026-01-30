@@ -22,11 +22,18 @@ class	PmergeMe
 		std::vector<unsigned int>	getContainer() const;
 		void						setContainer(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 
+		//void	merge_small(std::vector<unsigned int> container, size_t first, size_t last);
+		//void	merge_big(std::vector<unsigned int> container, size_t first, size_t last);
+		void	insert_big_in_small();
+
 		void	sortContainer();
 		void	printContainer();
 
 	private:
 		std::vector<unsigned int>	container;
+		std::vector<unsigned int>	small;
+		std::vector<unsigned int>	big;
+		std::vector<unsigned int>	leftover;
 };
 
 #endif
