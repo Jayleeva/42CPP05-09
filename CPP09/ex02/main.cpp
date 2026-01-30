@@ -55,7 +55,7 @@ int main(void)
 	p.printContainer();
 
 	//p.formPairs();
-	p.sortContainer();
+	p.sortContainer(p.getContainer().size());
 	//p.insertLeftover();
 	p.printContainer();
 	return (0);

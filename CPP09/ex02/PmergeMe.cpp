@@ -61,7 +61,9 @@ void	PmergeMe::formPairs()
 }
 void	PmergeMe::mergePairs()
 {
-
+	// boucle qui verifie tous les etages en ne comparant que les big et swap uniquement par paire
+	// recreer un big et small en fonction du plus grand (plutot que swap?)
+	// 
 }
 void	PmergeMe::insertBigInSmall()
 {
@@ -73,15 +75,14 @@ void	PmergeMe::insertLeftover()
 }
 
 
-void	PmergeMe::sortContainer()
+void	PmergeMe::sortContainer(size_t size)
 {
-
 	//this->formPairs();
-	
-	if ()
+
+	if (size / 2 > 1)
 	{
 		this->mergePairs();
-		this->sortContainer();
+		this->sortContainer(size / 2);
 	}
 	this->insertBigInSmall();
 	//this->insertLeftover();

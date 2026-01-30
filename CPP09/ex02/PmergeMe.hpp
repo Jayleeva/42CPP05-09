@@ -32,7 +32,7 @@ class	PmergeMe
 		void	insertBigInSmall();
 		void	insertLeftover();
 
-		void	sortContainer();
+		void	sortContainer(size_t size);
 		void	printContainer();
 
 	private:
