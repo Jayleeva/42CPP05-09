@@ -37,18 +37,10 @@ void	PmergeMe::setContainer(std::vector<int>::iterator begin, std::vector<int>::
 	this->container.insert(this->container.end(), begin, end);
 }
 
-
-void	PmergeMe::sortContainer()
+void	PmergeMe::formPairs()
 {
-	//static	size_t						rank = 2;
-	//std::vector<unsigned int>::iterator it;
-	//std::vector<unsigned int>::iterator first;
-	//std::vector<unsigned int>::iterator middle;
-	//std::vector<unsigned int>::iterator last;
-	size_t								size = this->container.size();
+	size_t	size = this->container.size();
 
-
-	//--- FORM INITIAL PAIRS -----
 	size_t	i = 0;
 	while (i + 1 < size)
 	{
@@ -66,58 +58,33 @@ void	PmergeMe::sortContainer()
 	}
 	if ()
 		this->leftover.push_back();
+}
+void	PmergeMe::mergePairs()
+{
 
+}
+void	PmergeMe::insertBigInSmall()
+{
+
+}
+void	PmergeMe::insertLeftover()
+{
+
+}
+
+
+void	PmergeMe::sortContainer()
+{
+
+	//this->formPairs();
 	
-	/*for (it = this->container.begin(); ; it++)
+	if ()
 	{
-		std::vector<unsigned int> pair;
-
-	}
-
-	std::vector<unsigned int>			tmp_small;
-
-	size_t n = sqrt(size);
-	while (n > 0)
-	{
-		std::cout << n << std::endl;
-		n --;
-	}
-
-	if (size > 1)
-	{
-		first = this->container.begin();
-		middle = this->container.begin() + size / 2;
-		//this->container.erase(first, middle);
-		size /= rank;
-		rank += 2;
+		this->mergePairs();
 		this->sortContainer();
 	}
-
-	{
-		first = this->container.begin();
-		middle = this->container.begin() + this->container.size() / 2;
-		if (size % rank == 0)
-			last = this->container.end();
-		else
-			last = this->container.end() - size % rank;
-
-		this->small.insert(this->small.end(), first, middle);
-		this->big.insert(this->big.end(), middle + 1, last);
-
-		this->container.erase(first, last);
-
-		if (this->container.size() > 0)
-			this->leftover.insert(this->leftover.end(), this->container.begin(), this->container.end());
-
-		rank += 2;
-
-		//merge_small(this, 0, size / 2);
-		//merge_big(this, size / 2, size);
-		insert_big_in_small();
-		insert_leftover();
-		this->sortContainer();
-	}*/
-	return;
+	this->insertBigInSmall();
+	//this->insertLeftover();
 }
 
 void	PmergeMe::printContainer()
