@@ -27,6 +27,11 @@ class	PmergeMe
 		//void	merge_big(std::vector<unsigned int> container, size_t first, size_t last);
 		//void	insert_big_in_small();
 
+		void	formPairs();
+		void	mergePairs();
+		void	insertBigInSmall();
+		void	insertLeftover();
+
 		void	sortContainer();
 		void	printContainer();
 

@@ -37,6 +37,7 @@ void	PmergeMe::setContainer(std::vector<int>::iterator begin, std::vector<int>::
 	this->container.insert(this->container.end(), begin, end);
 }
 
+
 void	PmergeMe::sortContainer()
 {
 	//static	size_t						rank = 2;
@@ -47,11 +48,9 @@ void	PmergeMe::sortContainer()
 	size_t								size = this->container.size();
 
 
-	//size_t n = sqrt(size);
-	//std::cout << "size = " << size << " n = " << n << std::endl;
-
+	//--- FORM INITIAL PAIRS -----
 	size_t	i = 0;
-	while (size / 2 > 1)
+	while (i + 1 < size)
 	{
 		if (this->container[i] < this->container[i + 1])
 		{
@@ -64,9 +63,11 @@ void	PmergeMe::sortContainer()
 			this->big.push_back(this->container[i]);
 		}
 		i += 2;
-		size /= 2;
 	}
+	if ()
+		this->leftover.push_back();
 
+	
 	/*for (it = this->container.begin(); ; it++)
 	{
 		std::vector<unsigned int> pair;
