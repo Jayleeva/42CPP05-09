@@ -36,24 +36,18 @@
 // former une paire = merge ?
 
 
-
-
-
-
-
-
 int main(void)
 {
 	PmergeMe			p;
-	int					size = 21;
-	std::vector<int>	vec(size);
+	size_t				size = 21;
+	std::vector<int>	vec;
 
 	std::srand((unsigned) time(0));
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		int tmp = rand();
+		int tmp = rand() / 21474836;
 		while (find(vec.begin(), vec.end(), tmp) != vec.end())
-			tmp = rand();
+			tmp = rand() / 21474836;
 		vec.push_back(tmp);
 	}
 

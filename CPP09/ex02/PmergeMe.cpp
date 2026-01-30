@@ -37,21 +37,61 @@ void	PmergeMe::setContainer(std::vector<int>::iterator begin, std::vector<int>::
 	this->container.insert(this->container.end(), begin, end);
 }
 
-void	insert_big_in_small()
-{
-
-}
-
-
 void	PmergeMe::sortContainer()
 {
-	static	size_t						rank = 2;
-	std::vector<unsigned int>::iterator first;
-	std::vector<unsigned int>::iterator middle;
-	std::vector<unsigned int>::iterator last;
+	//static	size_t						rank = 2;
+	//std::vector<unsigned int>::iterator it;
+	//std::vector<unsigned int>::iterator first;
+	//std::vector<unsigned int>::iterator middle;
+	//std::vector<unsigned int>::iterator last;
 	size_t								size = this->container.size();
 
+
+	//size_t n = sqrt(size);
+	//std::cout << "size = " << size << " n = " << n << std::endl;
+
+	size_t	i = 0;
+	while (size / 2 > 1)
+	{
+		if (this->container[i] < this->container[i + 1])
+		{
+			this->small.push_back(this->container[i]);
+			this->big.push_back(this->container[i + 1]);
+		}
+		else
+		{
+			this->small.push_back(this->container[i + 1]);
+			this->big.push_back(this->container[i]);
+		}
+		i += 2;
+		size /= 2;
+	}
+
+	/*for (it = this->container.begin(); ; it++)
+	{
+		std::vector<unsigned int> pair;
+
+	}
+
+	std::vector<unsigned int>			tmp_small;
+
+	size_t n = sqrt(size);
+	while (n > 0)
+	{
+		std::cout << n << std::endl;
+		n --;
+	}
+
 	if (size > 1)
+	{
+		first = this->container.begin();
+		middle = this->container.begin() + size / 2;
+		//this->container.erase(first, middle);
+		size /= rank;
+		rank += 2;
+		this->sortContainer();
+	}
+
 	{
 		first = this->container.begin();
 		middle = this->container.begin() + this->container.size() / 2;
@@ -75,7 +115,7 @@ void	PmergeMe::sortContainer()
 		insert_big_in_small();
 		insert_leftover();
 		this->sortContainer();
-	}
+	}*/
 	return;
 }
 
@@ -83,7 +123,7 @@ void	PmergeMe::printContainer()
 {
 	size_t	size = this->container.size();
 
-	for (int i = 0; i < size -2 ; i++)
+	for (size_t i = 0; i < size -1 ; i++)
 	{
 		std::cout << this->container[i] << ' ';
 	}

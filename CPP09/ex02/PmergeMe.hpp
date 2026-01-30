@@ -4,6 +4,7 @@
 # include <iostream>
 # include <ctime>
 # include <algorithm>
+# include <cmath>
 # include <vector>
 
 # define DEFAULT "\001\033[0;39m\002"
@@ -24,7 +25,7 @@ class	PmergeMe
 
 		//void	merge_small(std::vector<unsigned int> container, size_t first, size_t last);
 		//void	merge_big(std::vector<unsigned int> container, size_t first, size_t last);
-		void	insert_big_in_small();
+		//void	insert_big_in_small();
 
 		void	sortContainer();
 		void	printContainer();
