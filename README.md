@@ -1,69 +1,84 @@
-# 42CPP05-09
-Projet du 6ème cercle du cursus 42
+# Exceptions
+Désormais, on a accès à un outil bien utile, à savoir les exceptions. 
+Plutôt que de faire un if(!test_function() return 1), on peut utiliser un "try catch" et "throw" des exceptions.
+
+Comment ça marche?
+
+Imaginons par exemple que l'on veuille convertir un double en int, sauf qu'il est possible que le double en question soit plus grand que INT_MAX ou plus petit que INT_MIN. Hé bien, mettez l'appel de votre fonction de conversion dans un "try", et un throw dans la condition qui vérifie si le double est trop grand/petit. Dans votre "catch", imprimez l'exception.
+
+ça se présente comme ça:
+````
+int	main(void)
+{
+	int	i;
+
+	try
+	{
+		i = yourFunction(2147483649);
+	}
+	catch (std::exception &e) // le &e sert à pouvoir imprimer le retour de l'exception avec la fonction .what()
+	{
+		std::cout >> e.what() >> std::endl;
+	}
+	return (0);
+}
+
+int	yourFunction(double d)
+{
+	if (d > INT_MAX || d < INT_MIN)
+		throw OutOfBoundException();
+	return (static_cast<int>(d));
+}
+````
+Définissez vos exceptions dans un header:
+```` 
+class OutOfBoundException : public std::exception // pour hériter des exceptions de la std
+{
+    public:
+        virtual const char *what() const throw()
+        {
+            return ("Exception: Out of bound.");	//personnalisez votre message qui servira de valeur de retour.
+        }
+};
+````
+
+Et vous voyez, là ce qui est génial, c'est qu'au lieu d'avoir une fonction qui retourne 0 quand elle n'a pas marché, alors même qu'elle *pourrait* rendre un 0 en *ayant* marché, on a une fonction qui s'interrompt et envoie un signal d'erreur récupérable en cas de pépin, sans causer aucun crash. N'est-ce pas merveilleux??? Moi, ça a changé ma vie. Non, je n'exagère pas.
+
+# Static cast, dynamic cast, const cast, reinterpret cast
+En C++, on ne se contente plus de faire des conversions ou réinterprétations implicites comme en C. On dit les choses clairement et on ne mélange pas tout!!
+
+## Static cast
+Effectuée à la compilation.
+
+## Dynamic cast
+Effectuée pendant l'exécution (!!DANGER!!).
+
+Si on fait un dynamic_cast sur un pointeur, on sait que la conversion n'a pas marché si le pointeur est nul.
+
+Si on fait un dynamic_cast sur une référence, on protège la converson avec un try catch, au cas où la conversion ne marcherait pas.
 
 
-## L'algorithme Ford-Johnson
+## Const cast
+A n'utiliser strictement que si obligé d'utiliser un code mal foutu. Autrement dit, OUI, on nous demande de fournir un code mal foutu.
+Les bonnes pratiques excluent la possibilité de changer une constante!!! On évite!!! Comme la peste!!!
+
+Cependant, si obligé (et on est obligés à cause des consignes), on peut utiliser const cast pour modifier une constante.
+
+## Reinterpret cast
+Permet de redonner le type d'un élément qui avait du le laisser derrière pour passer une fonction. Concrètement, c'est quelque chose qui peut arriver avec les chaussettes d'internet (les sockets).
+
+
+# Containers
+
+# Itérateurs
+
+# L'algorithme Ford-Johnson
 Il s'agit d'un algorithme de tri qui vise à faire le moins de comparaisons possibles pour limiter le temps de calcul.
 
-Je vais d'abord expliquer l'approche mathématiques de l'algorithme, puis on verra comment l'implémenter en code.
+Je pensais d'abord expliquer l'approche mathématique puis l'implémentation en code, mais j'ai peur que ça ne crée plus de confusion que nécessaire (comme ça a été le cas pour moi).
 
-En gros, il fonctionne de manière récursive, en 3 étapes: 
-- on forme des paires et on en compare et trie les éléments; les éléments forts (max de chaque paire) seront les seuls importants pour la suite.
-- 
+En gros, l'algorithme fonctionne de manière récursive, en 3 étapes: 
+1. On lance la fonction récursive. Si on peut diviser la taille de la séquence par 2 et obtenir un résultat plus grand que 1, on relance la fonction récursive avec taille / 2. Si cette condition n'est pas remplie, on exécute l'étape suivante. Cela permet de d'abord arriver au plus petit niveau de paire (deux unsigned int) et d'exécuter l'étape suivante sur ce niveau, puis sur le niveau au-dessus (deux paires d'unsigned int), puis le suivant (deux paires de paires d'unsigned int, etc.).
+2. On compare chaque élément de la séquence actuelle avec son suivant (paires) et on les répartit en éléments forts (max de chaque paire) et en éléments faibles (min de chaque paire). Au total, nous avons donc 3 séquences: celle actuelle, celle des éléments forts, et celle des éléments faibles. A la première itération, la séquence "actuelle" est celle reçue par l'algorithme. Ensuite, elle est d'abord nettoyée (.clear()) puis copie la séquence des éléments forts. Ainsi, on sépare d'abord les éléments forts et faibles de chaque paire, puis de chaque paire de paire, puis de chaque paire de paire de paire, etc. **ATTENTION:** la séquence des éléments faibles doit être remplie avec un **binary insert**, afin qu'elle soit triée au fur et à mesure. Les éventuels éléments "de trop" (en cas de taille impaire) sont également insérés, de la même manière, dans la séquence des éléments faibles.
+3. On sort de la fonction récursive. Il nous reste à combiner notre séquence d'éléments forts restant avec celle des éléments faibles déjà triée. Pour ce faire, nous allons également utiliser le binary insert, avec une couche supplémentaire: la suite de Jacobsthal.
 
-# Etape 1: les paires de paires de paires de...
-
-On forme et compare des paires, puis des paires de paires, puis des paires de paires de paires, ... Jusqu'à ce qu'une "paire de paire de..." englobe en réalité toute la séquence. 
-
-Par exemple, sur la séquence suivante:
-````
-21 4 56 92 3 15 47 8 39 16 2 73 45 19 12 24
-````
-On forme les premières paires suivantes (|):
-````
-21 4 | 56 92 | 3 15 | 47 8 | 39 16 | 2 73 | 45 19 | 12 24
-````
-A l'intérieur de chaque paire, on compare et trie les éléments: si l'élément A est plus grand que l'élément B, on les inverse.
-Dans notre exemple, on obtiendrait alors:
-````
-4 21 | 56 92 | 3 15 | 8 47 | 16 39 | 2 73 | 19 45 | 12 24
-````
-Nous savons désormais quels sont les **éléments forts ([])** de la suite:
-````
-4 [21] | 56 [92] | 3 [15] | 8 [47] | 16 [39] | 2 [73] | 19 [45] | 12 [24]
-````
-
-Puis on forme les paires de paires (||) suivantes:
-````
-4 [21] | 56 [92] || 3 [15] | 8 [47] || 16 [39] 2 | [73] || 19 [45] | 12 [24]
-````
-A l'intérieur de chaque paire de paire, on compare et trie en se basant sur les éléments forts uniquement.
-Dans notre exemple, on obtiendrait alors:
-````
-4 [21] | 56 [92] || 3 [15] | 8 [47] || 16 [39] | 2 [73] || 12 [24] | 19 [45]
-````
-Puis on forme les paires de paires de paires (|||). Les éléments forts sont désormais uniquement ceux en fin de paire de paire de paire:
-````
-4 21 | 56 [92] || 3 15 | 8 [47] ||| 16 39 | 2 [73] || 12 24 | 19 [45]
-````
-A l'intérieur de chaque paire de paire de paire, on compare et trie en se basant sur les éléments forts uniquement.
-Dans notre exemple, on obtiendrait alors:
-````
-3 15 | 8 [47] || 4 21 | 56 [92] ||| 12 24 | 19 [45] || 16 39 | 2 [73]
-````
-
-On s'arrête là pour la division en couche de paires, car le prochain niveau reviendrait à regrouper toute la séquence.
-
-On peut néanmoins encore comparer et trier l'intérieur de chaque paire de paire de paire de paire, en se basant sur les éléments forts uniquement.
-````
-3 15 | 8 47 || 4 21 | 56 [92] ||| 12 24 | 19 45 || 16 39 | 2 [73]
-```` 
-Dans notre exemple, on obtiendrait alors:
-````
-12 24 | 19 45 || 16 39 | 2 [73] ||| 3 15 | 8 47 || 4 21 | 56 [92]
-````
-
-
-En réalité, dans notre code, nous n'allons pas nous embêter à faire des swap: on crée deux nouvelles séquences, l'une qui contient les éléments faibles, et l'autre qui contient les éléments forts.
-
-ATTENTION, les éléments faibles doivent être triés au fur et à mesure: on utilise le binary insert pour s'en assurer: à chaque fois qu'on identifie un élément faible, on l'insère à la séquence des faibles directement au bon endroit (s'il est plus petit que tous les précédents, il prend la première place, s'il est plus grand que tous les précédents, il prend la dernière place, etc.).
