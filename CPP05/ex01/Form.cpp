@@ -1,13 +1,17 @@
 #include "Form.hpp"
 #include "Bureaucrat.hpp"
 
-Form::Form(): name("untitled"), grade_to_sign(150), grade_to_execute(150)
+Form::Form()
 {
+    const std::string   defaultName = "untitled";
+    *const_cast<std::string*>(this->name) = defaultName;
+    *const_cast<int*>(this->grade_to_sign) = 150;
+    *const_cast<int*>(this->grade_to_execute) = 150;
     this->is_signed = false;
     std::cout << YELLOW << "[FORM]: Default constructor called" << DEFAULT << std::endl;
 }
 
-Form::Form(const std::string name, const int grade_to_sign, const int grade_to_execute): name(name), grade_to_sign(grade_to_sign), grade_to_execute(grade_to_execute)
+Form::Form(const std::string name, const int grade_to_sign, const int grade_to_execute): name(&name), grade_to_sign(&grade_to_sign), grade_to_execute(&grade_to_execute)
 {
     if (grade_to_sign < 1 || grade_to_execute < 1)
         throw GradeIsTooHighException();
@@ -27,9 +31,9 @@ Form const &Form::operator=(Form const &original)
 {
     if (this != &original)
 	{
-        const_cast<std::string&>(this->name) = original.name;  //MAUVAISE PRATIQUE! mais exigé par les consignes?
-        const_cast<int&>(this->grade_to_sign) = original.grade_to_sign;
-        const_cast<int&>(this->grade_to_execute) = original.grade_to_execute;
+        *const_cast<std::string*>(this->name) = *(original.name);  //MAUVAISE PRATIQUE! mais exigé par les consignes?
+        *const_cast<int*>(this->grade_to_sign) = *(original.grade_to_sign);
+        *const_cast<int*>(this->grade_to_execute) = *(original.grade_to_execute);
         this->is_signed = false;
     }
     std::cout << YELLOW << "[FORM]: Assignment operator overload called" << DEFAULT << std::endl;
@@ -43,7 +47,7 @@ Form::~Form()
 
 std::string Form::getName() const
 {
-    return(this->name);
+    return(*(this->name));
 }
 
 bool Form::getIsSigned() const
@@ -53,17 +57,17 @@ bool Form::getIsSigned() const
 
 int Form::getGradeToSign() const
 {
-    return(this->grade_to_sign);
+    return(*(this->grade_to_sign));
 }
 
 int Form::getGradeToExecute() const
 {
-    return(this->grade_to_execute);
+    return(*(this->grade_to_execute));
 }
 
 void Form::beSigned(Bureaucrat const *b)
 {
-    if (b->getGrade() > this->grade_to_sign)
+    if (b->getGrade() > *(this->grade_to_sign))
         throw GradeIsTooLowException();
     this->is_signed = true;
 }
