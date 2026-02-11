@@ -47,6 +47,24 @@ Et vous voyez, là ce qui est génial, c'est qu'au lieu d'avoir une fonction qui
 # Static cast, dynamic cast, const cast, reinterpret cast
 En C++, on ne se contente plus de faire des conversions ou réinterprétations implicites comme en C. On dit les choses clairement et on ne mélange pas tout!!
 
+De manière générale, on les utilise avec le squelette suivant:
+````
+x_cast<type_you_want>(variable_to_convert);
+````
+Exemples:
+````
+float				*f1 = 33.0f;
+float				&f2 = 33.0f;
+const std::string	s = "hello";
+
+static_cast<char>(*f);
+dynamic_cast<int*>(f);
+dynamic_cast<int&>(f);
+const_cast<std::string>(s);
+reinterpret_cast<dptr>(f);
+reinterpret_cast<fptr>(f);
+````
+
 ## Static cast
 Effectuée à la compilation.
 
