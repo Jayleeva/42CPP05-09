@@ -37,52 +37,79 @@ void	PmergeMe::setContainer(std::vector<int>::iterator begin, std::vector<int>::
 	this->container.insert(this->container.end(), begin, end);
 }
 
-void	PmergeMe::formPairs()
+
+void	PmergeMe::binaryInsertSmall(unsigned int ui)
 {
-	size_t	size = this->container.size();
+	size_t	size = this->small.size();
+	size_t	i = 0;
+
+	if (size == 0)
+	{
+		this->small.push_back(ui);
+		return ;
+	}
+
+	std::vector<unsigned int>::iterator it = this->small.begin();
+	while (i < size)
+	{
+		if (ui < this->small[i])
+		{
+			this->small.insert(it, ui);
+			return ;
+		}
+		else
+		{
+			this->small.push_back(ui);
+			return ;
+		}
+		it++;
+		i++;
+	}
+}
+
+void	PmergeMe::splitBigSmall()
+{
+	size_t	size = this->current.size();
 
 	size_t	i = 0;
 	while (i + 1 < size)
 	{
-		if (this->container[i] < this->container[i + 1])
+		if (this->current[i] < this->current[i + 1])
 		{
-			this->small.push_back(this->container[i]);
-			this->big.push_back(this->container[i + 1]);
+			binaryInsertSmall(this->current[i]);
+			this->big.push_back(this->current[i + 1]);
 		}
 		else
 		{
-			this->small.push_back(this->container[i + 1]);
-			this->big.push_back(this->container[i]);
+			binaryInsertSmall(this->current[i + 1]);
+			this->big.push_back(this->current[i]);
 		}
 		i += 2;
 	}
-	if ()
-		this->leftover.push_back();
-}
-void	PmergeMe::mergePairs()
-{
-	// boucle qui verifie tous les etages en ne comparant que les big et swap uniquement par paire
-	// recreer un big et small en fonction du plus grand (plutot que swap?)
-	// 
-}
-void	PmergeMe::insertBigInSmall()
-{
-
-}
-void	PmergeMe::insertLeftover()
-{
-
+	if (i < size)
+		binaryInsertSmall(this->current[size]);
+	this->current.clear();
+	this->current = this->big;
 }
 
-
-void	PmergeMe::sortContainer(size_t size)
+void	PmergeMe::mergePairs(size_t size)
 {
 	if (size / 2 > 1)
-	{
-		this->mergePairs();
-		this->sortContainer(size / 2);
-	}
-	this->insertBigInSmall();
+		this->mergePairs(size / 2);
+	this->splitBigSmall();
+}
+
+void	PmergeMe::binaryInsertBig()
+{
+
+}
+
+
+void	PmergeMe::sortContainer()
+{
+	this->current = this->container;
+	this->mergePairs(this->current.size());
+	this->binaryInsertBig();
 }
 
 void	PmergeMe::printContainer()

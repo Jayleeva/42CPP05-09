@@ -54,10 +54,7 @@ int main(void)
 	p.setContainer(vec.begin(), vec.end());
 	p.printContainer();
 
-	p.formPairs();
-	p.sortContainer(size);
-	p.insertLeftover();
-	
+	p.sortContainer();	
 	p.printContainer();
 	return (0);
 }
