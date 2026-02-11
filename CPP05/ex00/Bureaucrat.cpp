@@ -26,6 +26,7 @@ Bureaucrat const &Bureaucrat::operator=(Bureaucrat const &original)
 {
     if (this != &original)
 	{
+        const_cast<std::string&>(this->name) = original.name; //MAUVAISE PRATIQUE! mais exigé par les consignes?
         this->grade = original.grade;
     }
     std::cout << YELLOW << "[BUREAUCRAT]: Assignment operator overload called" << DEFAULT << std::endl;

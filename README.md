@@ -55,12 +55,12 @@ Exemples:
 ````
 float				*f1 = 33.0f;
 float				&f2 = 33.0f;
-const std::string	s = "hello";
+const std::string	&s = "hello";
 
 static_cast<char>(*f);
 dynamic_cast<int*>(f);
 dynamic_cast<int&>(f);
-const_cast<std::string>(s);
+const_cast<std::string&>(s);
 reinterpret_cast<dptr>(f);
 reinterpret_cast<fptr>(f);
 ````
@@ -73,7 +73,7 @@ Effectuée pendant l'exécution (!!DANGER!!).
 
 Si on fait un dynamic_cast sur un pointeur, on sait que la conversion n'a pas marché si le pointeur est nul.
 
-Si on fait un dynamic_cast sur une référence, on protège la converson avec un try catch, au cas où la conversion ne marcherait pas.
+Si on fait un dynamic_cast sur une référence, on protège la conversion avec un try catch, au cas où elle ne marcherait pas.
 
 
 ## Const cast
@@ -82,11 +82,15 @@ Les bonnes pratiques excluent la possibilité de changer une constante!!! On év
 
 Cependant, si obligé (et on est obligés à cause des consignes), on peut utiliser const cast pour modifier une constante.
 
+**A savoir**
+- Un const_cast ne peut marcher QUE sur des pointeurs ou des références.
+
 ## Reinterpret cast
 Permet de redonner le type d'un élément qui avait du le laisser derrière pour passer une fonction. Concrètement, c'est quelque chose qui peut arriver avec les chaussettes d'internet (les sockets).
 
 
 # Containers
+
 
 # Itérateurs
 

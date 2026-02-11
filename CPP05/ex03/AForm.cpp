@@ -1,13 +1,13 @@
 #include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
-AForm::AForm(): title("untitled"), grade_to_sign(150), grade_to_execute(150)
+AForm::AForm(): name("untitled"), grade_to_sign(150), grade_to_execute(150)
 {
     this->is_signed = false;
     std::cout << YELLOW << "[FORM]: Default constructor called" << DEFAULT << std::endl;
 }
 
-AForm::AForm(const std::string title, const int grade_to_sign, const int grade_to_execute): title(title), grade_to_sign(grade_to_sign), grade_to_execute(grade_to_execute)
+AForm::AForm(const std::string name, const int grade_to_sign, const int grade_to_execute): name(name), grade_to_sign(grade_to_sign), grade_to_execute(grade_to_execute)
 {
     if (grade_to_sign < 1 || grade_to_execute < 1)
         throw GradeIsTooHighException();
@@ -17,7 +17,7 @@ AForm::AForm(const std::string title, const int grade_to_sign, const int grade_t
     std::cout << YELLOW << "[FORM]: String and int constructor called" << DEFAULT << std::endl;
 }
 
-AForm::AForm(const AForm &original): title(original.title), grade_to_sign(original.grade_to_sign), grade_to_execute(original.grade_to_execute)
+AForm::AForm(const AForm &original): name(original.name), grade_to_sign(original.grade_to_sign), grade_to_execute(original.grade_to_execute)
 {
 	std::cout << YELLOW << "[FORM]: Copy constructor called" << DEFAULT << std::endl;
     *this = original;
@@ -27,6 +27,9 @@ AForm const &AForm::operator=(AForm const &original)
 {
     if (this != &original)
 	{
+        const_cast<std::string&>(this->name) = original.name;  //MAUVAISE PRATIQUE! mais exigé par les consignes?
+        const_cast<int&>(this->grade_to_sign) = original.grade_to_sign;
+        const_cast<int&>(this->grade_to_execute) = original.grade_to_execute;
         this->is_signed = false;
     }
     std::cout << YELLOW << "[FORM]: Assignment operator overload called" << DEFAULT << std::endl;
@@ -38,9 +41,9 @@ AForm::~AForm()
     std::cout << YELLOW << "[FORM]: Default destructor called" << DEFAULT << std::endl;
 }
 
-std::string AForm::getTitle() const
+std::string AForm::getName() const
 {
-    return(this->title);
+    return(this->name);
 }
 
 bool AForm::getIsSigned() const
@@ -85,7 +88,7 @@ void AForm::checkIsSigned() const
 
 std::ostream &operator<<(std::ostream &out, AForm const &f)
 {
-	out << f.getTitle() << "'s information: " << std::endl;
+	out << f.getName() << "'s information: " << std::endl;
     out << "- is signed = " << f.getIsSigned() << std::endl;
     out << "- grade to sign = " << f.getGradeToSign() << std::endl;
     out << "- grade to execute = " << f.getGradeToExecute() << std::endl;
