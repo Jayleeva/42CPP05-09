@@ -31,6 +31,8 @@ Nous savons désormais quels sont les éléments forts de la suite:
 
 En réalité, dans notre code, nous n'allons pas nous embêter à faire des swap: on crée deux nouvelles séquences, l'une qui contient les éléments faibles, et l'autre qui contient les éléments forts.
 
+ATTENTION, les éléments faibles doivent être triés au fur et à mesure: on utilise le binary insert pour s'en assurer: à chaque fois qu'on identifie un élément faible, on l'insère à la séquence des faibles directement au bon endroit (s'il est plus petit que tous les précédents, il prend la première place, s'il est plus grand que tous les précédents, il prend la dernière place, etc.).
+
 Puis on forme les paires de paires suivantes:
 ````
 4 21 56 92 | 3 15 8 47 | 16 39 2 73 | 19 45 12 24

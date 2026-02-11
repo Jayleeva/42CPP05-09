@@ -50,16 +50,21 @@ void	PmergeMe::binaryInsertSmall(unsigned int ui)
 	}
 
 	std::vector<unsigned int>::iterator it = this->small.begin();
-	while (i < size)
+	while (i + 1 < size)
 	{
-		if (ui < this->small[i])
+		if (i == 0 && ui < this->small[i])
 		{
-			this->small.insert(it, ui);
+			this->small.insert(this->small.begin(), ui);
 			return ;
 		}
-		else
+		if (i == size && ui > this->small[i])
 		{
 			this->small.push_back(ui);
+			return ;
+		}
+		if (ui > this->small[i] && ui < this->small[i + 1])
+		{
+			this->small.insert(it + 1, ui);
 			return ;
 		}
 		it++;
@@ -67,48 +72,80 @@ void	PmergeMe::binaryInsertSmall(unsigned int ui)
 	}
 }
 
-void	PmergeMe::splitBigSmall()
+void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
 {
-	size_t	size = this->current.size();
+	size_t	size = current.size();
 
+	this->big.clear();
 	size_t	i = 0;
 	while (i + 1 < size)
 	{
-		if (this->current[i] < this->current[i + 1])
+		if (current[i] < current[i + 1])
 		{
-			binaryInsertSmall(this->current[i]);
-			this->big.push_back(this->current[i + 1]);
+			binaryInsertSmall(current[i]);
+			this->big.push_back(current[i + 1]);
 		}
 		else
 		{
-			binaryInsertSmall(this->current[i + 1]);
-			this->big.push_back(this->current[i]);
+			binaryInsertSmall(current[i + 1]);
+			this->big.push_back(current[i]);
 		}
 		i += 2;
 	}
 	if (i < size)
-		binaryInsertSmall(this->current[size]);
-	this->current.clear();
-	this->current = this->big;
+		binaryInsertSmall(current[size]);
+	current.clear();
+	current = this->big;
+	//this->current.clear();
+	//this->current = this->big;
 }
 
-void	PmergeMe::mergePairs(size_t size)
+void	PmergeMe::mergePairs(size_t size, std::vector<unsigned int>&current)
 {
 	if (size / 2 > 1)
-		this->mergePairs(size / 2);
-	this->splitBigSmall();
+		this->mergePairs(size / 2, current);
+	this->splitBigSmall(current);
 }
 
 void	PmergeMe::binaryInsertBig()
 {
+	size_t			size = this->big.size();
+	size_t			i = 0;
+	unsigned int	ui;
 
+	if (size == 0)
+	{
+		this->big.push_back(ui);
+		return ;
+	}
+
+	std::vector<unsigned int>::iterator it = this->big.begin();
+	while (i + 1 < size)
+	{
+		if (i == 0 && ui < this->big[i])
+		{
+			this->big.insert(this->big.begin(), ui);
+			return ;
+		}
+		if (i == size && ui > this->big[i])
+		{
+			this->big.push_back(ui);
+			return ;
+		}
+		if (ui > this->big[i] && ui < this->big[i + 1])
+		{
+			this->big.insert(it + 1, ui);
+			return ;
+		}
+		it++;
+		i++;
+	}
 }
-
 
 void	PmergeMe::sortContainer()
 {
-	this->current = this->container;
-	this->mergePairs(this->current.size());
+	//this->current = this->container;
+	this->mergePairs(this->container.size(), this->container);
 	this->binaryInsertBig();
 }
 

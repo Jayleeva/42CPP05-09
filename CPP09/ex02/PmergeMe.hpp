@@ -27,9 +27,9 @@ class	PmergeMe
 		//void	merge_big(std::vector<unsigned int> container, size_t first, size_t last);
 		//void	insert_big_in_small();
 
-		void	splitBigSmall();
+		void	splitBigSmall(std::vector<unsigned int>&current);
 		void	binaryInsertSmall(unsigned int ui);
-		void	mergePairs(size_t size);
+		void	mergePairs(size_t size, std::vector<unsigned int>&current);
 		void	binaryInsertBig();
 
 		void	sortContainer();
@@ -37,7 +37,7 @@ class	PmergeMe
 
 	private:
 		std::vector<unsigned int>	container;
-		std::vector<unsigned int>	current;
+		//std::vector<unsigned int>	current;
 		std::vector<unsigned int>	small;
 		std::vector<unsigned int>	big;
 		std::vector<unsigned int>	leftover;
