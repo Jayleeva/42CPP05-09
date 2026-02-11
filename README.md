@@ -5,6 +5,8 @@ Projet du 6ème cercle du cursus 42
 ## L'algorithme Ford-Johnson
 Il s'agit d'un algorithme de tri qui vise à faire le moins de comparaisons possibles pour limiter le temps de calcul.
 
+Je vais d'abord expliquer l'approche mathématiques de l'algorithme, puis on verra comment l'implémenter en code.
+
 En gros, il fonctionne de manière récursive, en 3 étapes: 
 - on forme des paires et on en compare et trie les éléments; les éléments forts (max de chaque paire) seront les seuls importants pour la suite.
 - 
@@ -17,7 +19,7 @@ Par exemple, sur la séquence suivante:
 ````
 21 4 56 92 3 15 47 8 39 16 2 73 45 19 12 24
 ````
-On forme les premières paires suivantes:
+On forme les premières paires suivantes (|):
 ````
 21 4 | 56 92 | 3 15 | 47 8 | 39 16 | 2 73 | 45 19 | 12 24
 ````
@@ -26,22 +28,42 @@ Dans notre exemple, on obtiendrait alors:
 ````
 4 21 | 56 92 | 3 15 | 8 47 | 16 39 | 2 73 | 19 45 | 12 24
 ````
-Nous savons désormais quels sont les éléments forts de la suite:
-4 **21** 56 **92** 3 **15** 8 **47** 16 **39** 2 **73** 19 **45** 12 **24**
+Nous savons désormais quels sont les **éléments forts ([])** de la suite:
+````
+4 [21] | 56 [92] | 3 [15] | 8 [47] | 16 [39] | 2 [73] | 19 [45] | 12 [24]
+````
+
+Puis on forme les paires de paires (||) suivantes:
+````
+4 [21] | 56 [92] || 3 [15] | 8 [47] || 16 [39] 2 | [73] || 19 [45] | 12 [24]
+````
+A l'intérieur de chaque paire de paire, on compare et trie en se basant sur les éléments forts uniquement.
+Dans notre exemple, on obtiendrait alors:
+````
+4 [21] | 56 [92] || 3 [15] | 8 [47] || 16 [39] | 2 [73] || 12 [24] | 19 [45]
+````
+Puis on forme les paires de paires de paires (|||). Les éléments forts sont désormais uniquement ceux en fin de paire de paire de paire:
+````
+4 21 | 56 [92] || 3 15 | 8 [47] ||| 16 39 | 2 [73] || 12 24 | 19 [45]
+````
+A l'intérieur de chaque paire de paire de paire, on compare et trie en se basant sur les éléments forts uniquement.
+Dans notre exemple, on obtiendrait alors:
+````
+3 15 | 8 [47] || 4 21 | 56 [92] ||| 12 24 | 19 [45] || 16 39 | 2 [73]
+````
+
+On s'arrête là pour la division en couche de paires, car le prochain niveau reviendrait à regrouper toute la séquence.
+
+On peut néanmoins encore comparer et trier l'intérieur de chaque paire de paire de paire de paire, en se basant sur les éléments forts uniquement.
+````
+3 15 | 8 47 || 4 21 | 56 [92] ||| 12 24 | 19 45 || 16 39 | 2 [73]
+```` 
+Dans notre exemple, on obtiendrait alors:
+````
+12 24 | 19 45 || 16 39 | 2 [73] ||| 3 15 | 8 47 || 4 21 | 56 [92]
+````
+
 
 En réalité, dans notre code, nous n'allons pas nous embêter à faire des swap: on crée deux nouvelles séquences, l'une qui contient les éléments faibles, et l'autre qui contient les éléments forts.
 
 ATTENTION, les éléments faibles doivent être triés au fur et à mesure: on utilise le binary insert pour s'en assurer: à chaque fois qu'on identifie un élément faible, on l'insère à la séquence des faibles directement au bon endroit (s'il est plus petit que tous les précédents, il prend la première place, s'il est plus grand que tous les précédents, il prend la dernière place, etc.).
-
-Puis on forme les paires de paires suivantes:
-````
-4 21 56 92 | 3 15 8 47 | 16 39 2 73 | 19 45 12 24
-````
-
-Puis on forme les paires de paires de paires suivantes:
-````
-21 4 56 92 3 15 47 8 | 39 16 2 73 45 19 12 24
-````
-On s'arrête là, car le prochain niveau reviendrait à regrouper toute la séquence.
-
-

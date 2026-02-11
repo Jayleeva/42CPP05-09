@@ -113,28 +113,31 @@ void	PmergeMe::binaryInsertBig()
 	size_t			i = 0;
 	unsigned int	ui;
 
+	this->container.clear();
+	this->container = this->small;
+
 	if (size == 0)
 	{
-		this->big.push_back(ui);
+		this->container.push_back(ui);
 		return ;
 	}
 
-	std::vector<unsigned int>::iterator it = this->big.begin();
+	std::vector<unsigned int>::iterator it = this->container.begin();
 	while (i + 1 < size)
 	{
 		if (i == 0 && ui < this->big[i])
 		{
-			this->big.insert(this->big.begin(), ui);
+			this->container.insert(this->container.begin(), ui);
 			return ;
 		}
 		if (i == size && ui > this->big[i])
 		{
-			this->big.push_back(ui);
+			this->container.push_back(ui);
 			return ;
 		}
-		if (ui > this->big[i] && ui < this->big[i + 1])
+		if (ui > this->container[i] && ui < this->container[i + 1])
 		{
-			this->big.insert(it + 1, ui);
+			this->container.insert(it + 1, ui);
 			return ;
 		}
 		it++;
