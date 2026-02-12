@@ -44,6 +44,13 @@ class OutOfBoundException : public std::exception // pour hériter des exception
 
 Et vous voyez, là ce qui est génial, c'est qu'au lieu d'avoir une fonction qui retourne 0 quand elle n'a pas marché, alors même qu'elle *pourrait* rendre un 0 en *ayant* marché, on a une fonction qui s'interrompt et envoie un signal d'erreur récupérable en cas de pépin, sans causer aucun crash. N'est-ce pas merveilleux??? Moi, ça a changé ma vie. Non, je n'exagère pas.
 
+# Static method
+Une fonction membre qui peut etre appelle sans instancier la classe a laquelle elle appartient.
+
+Cependant, n'a acces qu'aux attributs et fonctions statiques.
+
+
+ 
 # Static cast, dynamic cast, const cast, reinterpret cast
 En C++, on ne se contente plus de faire des conversions ou réinterprétations implicites comme en C. On dit les choses clairement et on ne mélange pas tout!!
 
@@ -68,22 +75,26 @@ reinterpret_cast<fptr>(f);
 ## Static cast
 Effectuée à la compilation.
 
+A utiliser par defaut.
+
 ## Dynamic cast
 Effectuée pendant l'exécution (!!DANGER!!).
+
+A utiliser lorsque le type d'une donnee a cast n'est defini que pendant l'execution (ex.: le type est genere aleatoirement), et pas a la compilation.
 
 Si on fait un dynamic_cast sur un pointeur, on sait que la conversion n'a pas marché si le pointeur est nul.
 
 Si on fait un dynamic_cast sur une référence, on protège la conversion avec un try catch, au cas où elle ne marcherait pas.
 
-
 ## Const cast
-A n'utiliser strictement que si obligé d'utiliser un code mal foutu. Autrement dit, OUI, on nous demande de fournir un code mal foutu.
+A n'utiliser strictement que si obligé d'utiliser un code mal foutu.
 Les bonnes pratiques excluent la possibilité de changer une constante!!! On évite!!! Comme la peste!!!
 
-Cependant, si obligé (et on est obligés à cause des consignes), on peut utiliser const cast pour modifier une constante.
+Cependant, si obligé, on peut utiliser const cast pour modifier une constante.
 
 **A savoir**
 - Un const_cast ne peut marcher QUE sur des pointeurs ou des références.
+- Vous n'avez pas besoin d'utiliser de const_cast pour le CPP05. Ignorez simplement la reassignation lors de la surcharge de l'operateur d'assignation.
 
 ## Reinterpret cast
 Permet de redonner le type d'un élément qui avait du le laisser derrière pour passer une fonction. Concrètement, c'est quelque chose qui peut arriver avec les chaussettes d'internet (les sockets).

@@ -6,9 +6,13 @@
 # define YELLOW "\001\033[1;93m\002"
 
 template<typename T>
-const T max(T a, T b)
+void swap(T &a, T &b)
 {
-    return (b < a ? a : b);
+    T   tmp = a;
+
+    a = b;
+    b = tmp;
+    std::cout << YELLOW << "[DEBUG] : Elements have been swapped!" << DEFAULT << std::endl;
 }
 
 template<typename T>
@@ -18,13 +22,9 @@ const T min(T a, T b)
 }
 
 template<typename T>
-void swap(T &a, T &b)
+const T max(T a, T b)
 {
-    T   tmp = a;
-
-    a = b;
-    b = tmp;
-    std::cout << YELLOW << "[DEBUG] : Elements have been swapped!" << DEFAULT << std::endl;
+    return (b < a ? a : b);
 }
 
 #endif

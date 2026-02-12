@@ -11,13 +11,12 @@ class ScalarConverter
 {
     public:
         static void convert(std::string litteral);
-        virtual ~ScalarConverter() = 0;
-    
-    protected:
+        
+    private:
         ScalarConverter();
         ScalarConverter(const ScalarConverter &original);
         ScalarConverter const &operator=(ScalarConverter const &original);
-        
+        virtual ~ScalarConverter() = 0;
 };
 
 #endif

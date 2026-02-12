@@ -50,6 +50,8 @@ float   ft_stof(std::string litteral)
     if (dot == 0 || litteral[len -1] != 'f')
         throw UnexpectedCharException();
     f = atof(litteral.c_str());
+    if (f == 0)
+        {return (0.0f);}
 	if (f < MIN_FLOAT || f > MAX_FLOAT)
         throw OverMinMaxException();
     return (float(f));
@@ -84,6 +86,8 @@ double  ft_stod(std::string litteral)
     if (dot == 0)
         throw UnexpectedCharException();
     d = atof(litteral.c_str());
+    if (d == 0)
+        return (0.0);
     if (d < MIN_DOUBLE || d > MAX_DOUBLE)
         throw OverMinMaxException();
     return (d);
