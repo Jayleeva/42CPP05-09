@@ -8,25 +8,25 @@ int main(void)
         {
             Bureaucrat  a("Bettany", 43);
             Bureaucrat  b("Bob", 108);
-            Bureaucrat  e(a);
-            Bureaucrat  f = b;
+            Bureaucrat  c(a);
+            Bureaucrat  d = b;
 
             std::cout << a << std::endl;
             std::cout << b << std::endl;
-            std::cout << e << std::endl;
-            std::cout << f << std::endl;
+            std::cout << c << std::endl;
+            std::cout << d << std::endl;
             std::cout << "---" << std::endl;
 
             a.incrementGrade(42);
             b.decrementGrade(42);
-            e.incrementGrade(1);
-            f.decrementGrade(1);
+            c.incrementGrade(1);
+            d.decrementGrade(1);
             std::cout << "---" << std::endl;
 
             std::cout << a.getName() << ", bureaucrat grade " << a.getGrade() << std::endl;
             std::cout << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
-            std::cout << e.getName() << ", bureaucrat grade " << e.getGrade() << std::endl;
-            std::cout << f.getName() << ", bureaucrat grade " << f.getGrade() << std::endl;
+            std::cout << c.getName() << ", bureaucrat grade " << c.getGrade() << std::endl;
+            std::cout << d.getName() << ", bureaucrat grade " << d.getGrade() << std::endl;
             std::cout << "---" << std::endl;
         }
         catch(std::exception &e)
@@ -39,7 +39,7 @@ int main(void)
         std::cout << "Main 1: grade should be too high at construction\n****" << std::endl; 
         try
         {
-            Bureaucrat  c("Bridget", 0);
+            Bureaucrat  b("Bridget", 0);
         }
         catch(std::exception &e)
         {
@@ -51,7 +51,7 @@ int main(void)
         std::cout << "Main 2: grade should be too low at construction\n****" << std::endl; 
         try
         {
-            Bureaucrat  d("Ben", 151);
+            Bureaucrat  b("Ben", 151);
         }
         catch(std::exception &e)
         {
@@ -63,14 +63,14 @@ int main(void)
         std::cout << "Main 3: grade should be too high after incrementation\n****" << std::endl; 
         try
         {
-            Bureaucrat  a("Bettany", 42);
+            Bureaucrat  b("Bettany", 42);
 
-            std::cout << a.getName() << ", bureaucrat grade " << a.getGrade() << std::endl;
+            std::cout << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
             std::cout << "---" << std::endl;
 
-            a.incrementGrade(42);
+            b.incrementGrade(42);
 
-            std::cout << a.getName() << ", bureaucrat grade " << a.getGrade() << std::endl;
+            std::cout << b.getName() << ", bureaucrat grade " << b.getGrade() << std::endl;
             std::cout << "---" << std::endl;
         }
         catch(std::exception &e)

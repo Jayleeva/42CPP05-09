@@ -27,9 +27,9 @@ AForm const &AForm::operator=(AForm const &original)
 {
     if (this != &original)
 	{
-        const_cast<std::string&>(this->name) = original.name;  //MAUVAISE PRATIQUE! mais exigé par les consignes?
-        const_cast<int&>(this->grade_to_sign) = original.grade_to_sign;
-        const_cast<int&>(this->grade_to_execute) = original.grade_to_execute;
+        //const_cast<std::string&>(this->name) = original.name;  //MAUVAISE PRATIQUE! mais exigé par les consignes?
+        //const_cast<int&>(this->grade_to_sign) = original.grade_to_sign;
+        //const_cast<int&>(this->grade_to_execute) = original.grade_to_execute;
         this->is_signed = false;
     }
     std::cout << YELLOW << "[FORM]: Assignment operator overload called" << DEFAULT << std::endl;

@@ -5,9 +5,9 @@ void convert_and_display_from_char(char c)
     bool    tolerance = std::fabs(c - static_cast<char>(c)) < 0.0000000000001;
 
     display_char(c);
-    display_int(char_to_int(c));
-    display_float(char_to_float(c), tolerance);
-    display_double(char_to_double(c), tolerance);
+    display_int(static_cast<int>(c));
+    display_float(static_cast<float>(c), tolerance);
+    display_double(static_cast<double>(c), tolerance);
 }
 
 void convert_and_display_from_int(int i)
@@ -17,10 +17,10 @@ void convert_and_display_from_int(int i)
     if (i < 0 || i > 127)
         std::cout << "char : impossible" << std::endl;
     else
-        display_char(int_to_char(i));
+        display_char(static_cast<char>(i));
     display_int(i);
-    display_float(int_to_float(i), tolerance);
-    display_double(int_to_double(i), tolerance);
+    display_float(static_cast<float>(i), tolerance);
+    display_double(static_cast<double>(i), tolerance);
 }
 
 void convert_and_display_from_float(float f)
@@ -30,16 +30,16 @@ void convert_and_display_from_float(float f)
     if (f < 0.0f || f > 127.0f)
         std::cout << "char : impossible" << std::endl;
     else
-        display_char(float_to_char(f));
-    if (f < MIN_INT || f > MAX_INT || float_to_int(f) == -2147483648)
+        display_char(static_cast<char>(f));
+    if (f < MIN_INT || f > MAX_INT || static_cast<int>(f) == -2147483648)
         std::cout << "int : impossible" << std::endl;
     else
-        display_int(float_to_int(f));
+        display_int(static_cast<int>(f));
     display_float(f, tolerance);
     if (f < MIN_DOUBLE || f > MAX_DOUBLE)
         std::cout << "double : impossible" << std::endl;
     else
-        display_double(float_to_double(f), tolerance);
+        display_double(static_cast<double>(f), tolerance);
 }
 
 void convert_and_display_from_double(double d)
@@ -49,14 +49,14 @@ void convert_and_display_from_double(double d)
     if (d < 0.0 || d > 127.0)
         std::cout << "char : impossible" << std::endl;
     else
-        display_char(double_to_char(d));
+        display_char(static_cast<char>(d));
     if (d < MIN_INT || d > MAX_INT)
         std::cout << "int : impossible" << std::endl;
     else
-        display_int(double_to_int(d));
+        display_int(static_cast<int>(d));
     if (d < MIN_FLOAT || d > MAX_FLOAT)
         std::cout << "float : impossible" << std::endl;
     else
-        display_float(double_to_float(d), tolerance);
+        display_float(static_cast<float>(d), tolerance);
     display_double(d, tolerance);
 }

@@ -28,10 +28,10 @@ class AForm
         AForm();
         AForm(const std::string name, const int grade_to_sign, const int grade_to_execute);
         AForm(const AForm &original);
-        const std::string   &name;
+        const std::string   name;
         bool                is_signed;
-        const int           &grade_to_sign;
-        const int           &grade_to_execute;
+        const int           grade_to_sign;
+        const int           grade_to_execute;
 
         class GradeIsTooHighException : public std::exception
         {

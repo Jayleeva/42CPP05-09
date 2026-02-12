@@ -63,7 +63,7 @@ AForm *Intern::makeForm(std::string title, std::string target) const
     else
     {
         form = FormConstruct[i](target);
-        std::cout << "Intern creates " << form->getTitle() << std::endl;
+        std::cout << "Intern creates " << form->getName() << std::endl;
     }
     //std::cout << YELLOW << "[INTERN]: makeForm function called" << DEFAULT << std::endl;
     return (form);

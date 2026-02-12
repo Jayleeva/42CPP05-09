@@ -2,24 +2,32 @@
 
 void    display_pseudo(std::string litteral)
 {
+    float   pseudof;
+    double  pseudo;
+
     std::cout << "char : impossible" << std::endl;
     std::cout << "int : impossible" << std::endl;
-    if (litteral == "nan" || litteral == "-inf" || litteral == "+inf")
+
+    if (litteral == "+inf" || litteral == "+inff")
     {
-        std::cout << "float : " << litteral << 'f' << std::endl;
-        std::cout << "double : " << litteral << std::endl;
+        pseudof = std::numeric_limits<float>::infinity();
+        pseudo = std::numeric_limits<double>::infinity();
+        std::cout << "float : " << "+" << pseudof << "f" << std::endl;
+        std::cout << "double : " << "+" << pseudo << std::endl;
+        return ;
     }
-    else
+    if (litteral == "nan" || litteral == "nanf")
     {
-        std::cout << "float : " << litteral << std::endl;
-        std::cout << "double : ";
-        if (litteral == "nanf")
-            std::cout << "nan" << std::endl;
-        else if (litteral == "-inff")
-            std::cout << "-inf" << std::endl;
-        else if (litteral == "+inff")
-            std::cout << "+inf" << std::endl;
+        pseudof = nanf(litteral.c_str());
+        pseudo = nan(litteral.c_str());
     }
+    else if (litteral == "-inf" || litteral == "-inff")
+    {
+        pseudof = -std::numeric_limits<float>::infinity();
+        pseudo = -std::numeric_limits<double>::infinity();
+    }
+    std::cout << "float : " << pseudof << "f" << std::endl;
+    std::cout << "double : " << pseudo << std::endl;
 }
 
 void    display_error(std::string litteral)
