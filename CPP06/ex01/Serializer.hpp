@@ -11,13 +11,13 @@
 class Serializer
 {
     public:
-        Serializer();
         ~Serializer();
 
         static uintptr_t serialize(Data* ptr);
         static Data* deserialize(uintptr_t raw);
 
     private:
+        Serializer();
         Serializer(const Serializer &original);
         Serializer &operator=(const Serializer &original);
 };

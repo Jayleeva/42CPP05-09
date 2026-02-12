@@ -5,7 +5,7 @@
 
 typedef struct Data
 {
-    std::string check;
+    std::string str;
 }   Data;
 
 #endif

@@ -3,18 +3,17 @@
 
 int main(void)
 {
-    Serializer  siri;
-    Data        obj;
+    Data        data;
     uintptr_t   uiptr;
     Data        *compare;
 
-    obj.check = "Am I the same?";
-    uiptr = siri.serialize(&obj);
-    compare = siri.deserialize(uiptr);
+    data.str = "Am I the same?";
+    uiptr = Serializer::serialize(&data);
+    compare = Serializer::deserialize(uiptr);
 
-    std::cout << "obj = " << obj.check << std::endl;
-    std::cout << "compare = "  << compare->check << std::endl;
-    if (compare == &obj)
+    std::cout << "data = " << data.str << std::endl;
+    std::cout << "compare = "  << compare->str << std::endl;
+    if (compare == &data)
         std::cout << "GG!! it's the same!" << std::endl;
     else
         std::cout << "Booooo!! it's not the same! You suck!!" << std::endl;
