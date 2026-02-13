@@ -37,47 +37,46 @@ int main(void)
 {
     {
         std::cout << "Main 0:\n***\nShould print the array with each int incremented.\n------" << std::endl;
-        int len = 5;
-        int array[len] = {12, 23, 34, 45, 56};
+        size_t len = 5;
+        int array[] = {12, 23, 34, 45, 56};
 
-        iter(array, len, int_increment);
-        //iter(array, len, ::printElement);
+        ::iter(array, len, &int_increment);
+        ::iter(array, len, &::printArray<int>);
         std::cout << "=============" << std::endl;
     }
     {
         std::cout << "Main 1:\n***\nShould print the array with each float incremented.\n------" << std::endl;
-        int len = 5;
-        float array[len] = {1.2, 2.3, 3.4, 4.5, 5.6};
+        size_t len = 5;
+        float array[] = {1.2, 2.3, 3.4, 4.5, 5.6};
 
-        iter(array, len, float_increment);
-        //iter(array, len, ::printElement);
+        ::iter(array, len, &float_increment);
+        ::iter(array, len, &::printArray<float>);
         std::cout << "=============" << std::endl;
     }
     {
         std::cout << "Main 2:\n***\nShould print the array with each char passed in uppercase.\n------" << std::endl;
-        int len = 3;
-        char array[len] = {'a', 'b', 'c'};
+        size_t len = 3;
+        char array[] = {'a', 'b', 'c'};
 
-        iter(array, len, char_toupper);
-        //iter(array, len, ::printElement);
+        ::iter(array, len, &char_toupper);
+        ::iter(array, len, &::printArray<char>);
         std::cout << "=============" << std::endl;
     }
     {
         std::cout << "Main 3:\n***\nShould print the array with each string passed in uppercase.\n------" << std::endl;
-        int len = 3;
-        std::string array[len] = {"hello", "my", "friend"};
+        size_t len = 3;
+        std::string array[] = {"hello", "my", "friend"};
 
-        iter(array, len, string_toupper);
-        //iter(array, len, ::printElement);
+        ::iter(array, len, &string_toupper);
+        ::iter(array, len, &::printArray<std::string>);
         std::cout << "=============" << std::endl;
     }
     {
-        std::cout << "Main 4:\n***\nShould print if each const int of the array is above zero or not.\n------" << std::endl;
-        int len = 4;
-        int array[len] = {-12, 23, -34, 45};
+        std::cout << "Main 4:\n***\nShould print if each int of the array is above zero or not.\n------" << std::endl;
+        size_t len = 4;
+        const int array[] = {-12, 23, -34, 45};
 
-        iter(array, len, isabovezero);
-        //iter(array, len, ::printElement);
+        ::iter(array, len, &isabovezero);
         std::cout << "=============" << std::endl;
     }
     return (0);

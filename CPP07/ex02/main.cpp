@@ -15,7 +15,7 @@ int main(void)
         {
             std::cout << "size of a = " << a.size() << std::endl;
             std::cout << "content of a = " << a << std::endl;
-    
+
             std::cout << "size of b = " << b.size() << std::endl;
             std::cout << "size of c = " << c.size() << std::endl;
             std::cout << "b, BEFORE : " << b << std::endl;
@@ -59,16 +59,19 @@ int main(void)
         std::cout << "==============" << std::endl;
     }
     {
-        std::cout << "Main 2:\n***Should construct an array of 3 floats and print it. When trying to access an out of bounds element, should throw exception.\n-----" << std::endl;
+        std::cout << "Main 2:\n***Should construct an array of 3 floats. When trying to access an out of bounds element, should throw exception.\n-----" << std::endl;
         Array<float>  arr(3);
 
         try
         {
             std::cout << "size = " << arr.size() << std::endl;
-            std::cout << "content = " << arr << std::endl;
+            std::cout << "content, BEFORE = " << arr << std::endl;
+
             arr[0] = 1.2;
-            std::cout << "content = " << arr << std::endl;
-            arr[3] = 4.2;
+            arr[1] = 2.3;
+            arr[2] = 3.4;
+            std::cout << "content, AFTER = " << arr << std::endl;
+            arr[3] = 4.5;
         }
         catch (std::exception &e)
         {

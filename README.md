@@ -99,6 +99,7 @@ Cependant, si obligé, on peut utiliser const cast pour modifier une constante.
 ## Reinterpret cast
 Permet de redonner le type d'un élément qui avait du le laisser derrière pour passer une fonction. Concrètement, c'est quelque chose qui peut arriver avec les chaussettes d'internet (les sockets).
 
+# Templates
 
 # Containers
 

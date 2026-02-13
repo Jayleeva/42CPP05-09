@@ -66,8 +66,8 @@ int main(void)
         std::cout << "Main 3:\n***\nSame than before, but with strings.\n-------" << std::endl;
 
         std::string array[2];
-        std::string a = "chaine1";
-        std::string b = "chaine2";
+        std::string a = "string 1";
+        std::string b = "string 2";
 
         array[0] = a;
         array[1] = b;

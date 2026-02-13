@@ -7,17 +7,15 @@
 
 
 template<typename T>
-void    printElement(T const &element)
+void    printArray(T &array)
 {
-    std::cout << element << std::endl;
+    std::cout << array << std::endl;
 }
 
-//const_cast<int&>(ref) = 3; 
-//void (*f)(T &) // F f
 template<typename T, typename F>
-void    iter(T *array, const int len, F f)
+void    iter(T *array, const size_t len, void (*f)(F&))
 {
-    for (int i = 0; i < len; i ++)
+    for (size_t i = 0; i < len; i ++)
     {
         f(array[i]);
     }
