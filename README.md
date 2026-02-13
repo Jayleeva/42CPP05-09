@@ -100,11 +100,62 @@ Cependant, si obligé, on peut utiliser const cast pour modifier une constante.
 Permet de redonner le type d'un élément qui avait du le laisser derrière pour passer une fonction. Concrètement, c'est quelque chose qui peut arriver avec les chaussettes d'internet (les sockets).
 
 # Templates
+Permet de creer des fonctions capables de fonctionner avec n'importe quel type.
+
+Ex:
+```
+template<typedef T>
+void	yourFunction(T)
+{
+	if (T > 0)
+		std::cout << T << "is above 0!" << std::endl;
+	else
+		std::cout << T << "is not above 0..." << std::endl;
+}
+```
 
 # Containers
+Type de variable qui permet de contenir plusieurs valeurs.
 
+- array
+- list
+- vector
+- map
+- set
+- stack
+- queue
+- dequeue
+
+Certains sont dit "associatifs" car ils associent des valeurs ensemble (typiquement, la map associe une cle avec une valeur, par ex: un nom associe a un numero de telephone).
+
+Les particularites de chacun les rendent plus ou moins adaptes a ce qu'on veut faire.
+
+## array
+
+## list
+
+## vector
+
+## map
+
+## set
+
+## queue
+
+## dequeue
 
 # Itérateurs
+Permettent d'acceder aux elements contenus dans les differents containers.
+
+On les declare de la facon suivante:
+```
+containerType<valueType>::iterator it;
+```
+Ce sont des adresses. On leur attribue une valeur avec des fonctions specifiques au container:
+```
+it = container.begin(); // permet d'acceder au premier element du container
+it = container.end(); 	// permet d'acceder au dernier element du container
+```
 
 # L'algorithme Ford-Johnson
 Il s'agit d'un algorithme de tri qui vise à faire le moins de comparaisons possibles pour limiter le temps de calcul.
