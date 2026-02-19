@@ -3,7 +3,9 @@
 
 int	main(void)
 {
-	/*{
+	{
+		std::cout << "Main 0\n***Creates a MutantStack and tests its functions and iterators.\n-------" << std::endl;
+
 		MutantStack<int>	logan;
 
 		logan.push(12);
@@ -33,7 +35,9 @@ int	main(void)
 
 		logan.rbegin(); // const
 		logan.rend(); // const
-	}*/
+
+		std::cout << "=============" << std::endl;
+	}
 	{
 		std::cout << "Main 1\n***Subject given main\n-------" << std::endl;
 		MutantStack<int> mstack;
@@ -64,17 +68,18 @@ int	main(void)
 		++it;
 		}
 		std::stack<int> s(mstack);
+		std::cout << "=============" << std::endl;
 	}
 	{
-		std::cout << "Main 1\n***Subject given main, MutantStack replaced with list, should have same output.\n-------" << std::endl;
+		std::cout << "Main 2\n***Subject given main, MutantStack replaced with list, should have same output.\n-------" << std::endl;
 		std::list<int> mstack;
 
 		mstack.push_back(5);
 		mstack.push_back(17);
 
-		std::cout << mstack.front() << std::endl;
+		std::cout << mstack.back() << std::endl;
 	
-		mstack.pop_front();
+		mstack.pop_back();
 
 		std::cout << mstack.size() << std::endl;
 
@@ -94,7 +99,8 @@ int	main(void)
 		std::cout << *it << std::endl;
 		++it;
 		}
-		//std::list<int> s(mstack);
+		std::list<int> s(mstack);
+		std::cout << "=============" << std::endl;
 	}
 	return (0);
 }

@@ -1,20 +1,24 @@
 #ifndef MUTANTSTACK_HPP
 # define MUTANTSTACK_HPP
 
-# include <iostream>
-# include <stack>
-
-# define DEFAULT "\001\033[0;39m\002"
-# define YELLOW "\001\033[1;93m\002"
+#include <stack>
+#include <iostream>
 
 template<typename T>
-class MutantStack: public std::stack<T>
-{
+class MutantStack : public std::stack<T> {
 	public:
-		MutantStack();
-		MutantStack(MutantStack const &original);
-		MutantStack &operator=(MutantStack const &original);
-		~MutantStack();
+		MutantStack() {};
+		MutantStack(const MutantStack &original) 
+		{
+			*this = original;
+		};
+		MutantStack &operator=(const MutantStack &original)
+		{
+			if (this != &original)
+				this->c = original.c;
+			return (*this);
+		};
+		~MutantStack() {};
 
 		// Create aliases for the iterator types
 		typedef typename std::stack<T>::container_type::iterator iterator;
@@ -22,17 +26,45 @@ class MutantStack: public std::stack<T>
 		typedef typename std::stack<T>::container_type::reverse_iterator reverse_iterator;
 		typedef typename std::stack<T>::container_type::const_reverse_iterator const_reverse_iterator;
 
-		iterator begin();
-		iterator end();
+		iterator begin()
+		{
+			return this->c.begin();
+		}
 
-		const_iterator begin() const;
-		const_iterator end() const;
+		iterator end()
+		{
+			return this->c.end();
+		}
 
-		reverse_iterator rbegin();
-		reverse_iterator rend();
+		const_iterator begin() const
+		{
+			return this->c.begin();
+		}
 
-		const_reverse_iterator rbegin() const;
-		const_reverse_iterator rend() const;
+		const_iterator end() const
+		{
+			return this->c.end();
+		}
+
+		reverse_iterator rbegin()
+		{
+			return this->c.rbegin();
+		}
+
+		reverse_iterator rend()
+		{
+			return this->c.rend();
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+			return this->c.rbegin();
+		}
+
+		const_reverse_iterator rend() const
+		{
+			return this->c.rend();
+		}
 };
 
 #endif
