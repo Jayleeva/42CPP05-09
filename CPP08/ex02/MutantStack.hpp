@@ -35,20 +35,4 @@ class MutantStack: public std::stack<T>
 		const_reverse_iterator rend() const;
 };
 
-//std::stack = type d'adaptateur de container, fonctionnant dans un contexte LIFO (ce qui est ajoute l'est a la fin, ce qui est retire l'est au debut du container).
-// - utilise un objet encapsule d'une classe de container specifique comme container sous-jacent:
-//    amene un set specifique de fonctions membres pour acceder a ses elements.
-// - les elements sont push et pop depuis "le back" / le "top".
-// - par defaut, le sous-jacent est un dequeue, mais peut aussi etre un vecteur ou une liste.
-
-
-		/*bool empty() const;
-		size_t size() const;
-		value_type &top();
-		const value_type &top() const;
-		void push(const value_type &val);
-		template <class...Args> void emplace(Args&&...args);
-		void pop();
-		void swap(MutantStack &x);*/
-
 #endif
