@@ -19,20 +19,22 @@ int	main(void)
 		std::cout << "=============" << std::endl;
 	}
 	{
-		std::cout << "Main 1:\n***Testing addRange: should work.\n------" << std::endl;
+		std::cout << "Main 1:\n***Testing addRange with random vector of random size (between 2 and 10): should work.\n------" << std::endl;
 		std::vector<int>			v;
 		std::vector<int>::iterator	it;
-		int							n = 5;
+		
+		std::srand((unsigned) time(0));
+		int							range = 10 - 2 + 1;
+		int							n = rand() % range + 2;
 		Span						sp = Span(n);
 	
 		v.reserve(n);
 		
-		std::srand((unsigned) time(0));
 		for (int i = 0; i < n; i++)
 		{
-			int tmp = rand() % n;
+			int tmp = rand() % (n * 10);
 			while (find(v.begin(), v.end(), tmp) != v.end())
-				tmp = rand() % n;
+				tmp = rand() % (n * 10);
 			v.push_back(tmp);
 		}
 
@@ -80,13 +82,9 @@ int	main(void)
 	
 		v.reserve(n);
 		
-		std::srand((unsigned) time(0));
 		for (int i = 0; i < n; i++)
 		{
-			int tmp = rand() % n;
-			while (find(v.begin(), v.end(), tmp) != v.end())
-				tmp = rand() % n;
-			v.push_back(tmp);
+			v.push_back(i);
 		}
 
 		std::cout << "v = ";
@@ -148,11 +146,11 @@ int	main(void)
 			else if (i >= 6 && i < 9)
 				sp3.addNumber(i);
 		}
-		std::cout << sp1 << std::endl;
-		std::cout << sp2 << std::endl;
-		std::cout << sp3 << std::endl;
+		std::cout << "span 1 = " << sp1 << std::endl;
+		std::cout << "span 2 = " << sp2 << std::endl;
+		std::cout << "span 3 = " << sp3 << std::endl;
 	}
-	/*{
+	{
 		std::cout << "Main 6:\n***Testing addRange with enormous range: should work.\n------" << std::endl;
 		std::vector<int>			v;
 		std::vector<int>::iterator	it;
@@ -178,6 +176,6 @@ int	main(void)
 			std::cout << e.what() << '\n';
 		}
 		std::cout << "=============" << std::endl;
-	}*/
+	}
 	return (0);
 }

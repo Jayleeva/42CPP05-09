@@ -45,7 +45,6 @@ int		Span::shortestSpan()
 {
 	int							N = this->container.size();
 	std::vector<int> 			tmp(this->container);
-	std::vector<int>::iterator	it;
 
 	if (N <= 1)
 		throw NoNumberStoredException();
@@ -53,15 +52,10 @@ int		Span::shortestSpan()
 	std::sort(tmp.begin(), tmp.end());
 	int shortest = tmp[1] - tmp[0]; // base de comparaison
 
-	int	i = 2;
-	for (it = tmp.begin() + 2; it != tmp.end(); it++)
+	for (int i = 2; i < N; i ++)
 	{
-		if (std::distance(it, it +1) < shortest)
-		{
-			std::cout << "tmp[i] = " << tmp[i] << "tmp[i -1] = " << tmp[i -1] << "distance = " << std::distance(it, it +1) << std::endl;
+		if (tmp[i] - tmp[i - 1] < shortest)
 			shortest = tmp[i] - tmp[i - 1];
-		}
-		i++;
 	}
 	return (shortest);
 }
@@ -74,8 +68,7 @@ int		Span::longestSpan()
 	if (N <= 1)
 		throw NoNumberStoredException();
 	std::sort(tmp.begin(), tmp.end());
-	return (std::distance(tmp.begin(), tmp.end()) - 1);
-	//return (tmp[N -1] - tmp[0]);
+	return (tmp[N -1] - tmp[0]);
 }
 
 void	Span::addRange(std::vector<int> range)
