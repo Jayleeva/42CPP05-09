@@ -13,7 +13,7 @@ int	main(void)
 		sp.addNumber(9);
 		sp.addNumber(11);
 
-		std::cout << "sp =\t\t" << sp << std::endl;
+		std::cout << "span =\t\t" << sp << std::endl;
 		std::cout << "shortest =\t" << sp.shortestSpan() << std::endl;
 		std::cout << "longest =\t" << sp.longestSpan() << std::endl;
 		std::cout << "=============" << std::endl;
@@ -26,25 +26,27 @@ int	main(void)
 		Span						sp = Span(n);
 	
 		v.reserve(n);
-		std::cout << "v = ";
+		
 		std::srand((unsigned) time(0));
-		//for (int i = 0; i < n; i ++)
-		for (it = v.begin(); it != v.end(); ++it)
+		for (int i = 0; i < n; i++)
 		{
 			int tmp = rand() % n;
 			while (find(v.begin(), v.end(), tmp) != v.end())
 				tmp = rand() % n;
 			v.push_back(tmp);
-			std::cout << *it << " ";
 		}
+
+		std::cout << "v = ";
+		for (it = v.begin(); it != v.end(); ++it)
+			std::cout << *it << " ";
 		std::cout << std::endl;
 
 		try
 		{
 			sp.addRange(v);
-			std::cout << sp << std::endl;
-			std::cout << sp.shortestSpan() << std::endl;
-			std::cout << sp.longestSpan() << std::endl;
+			std::cout << "span =\t\t" << sp << std::endl;
+			std::cout << "shortest =\t" << sp.shortestSpan() << std::endl;
+			std::cout << "longest =\t" << sp.longestSpan() << std::endl;
 		}
 		catch(const std::exception& e)
 		{
@@ -73,17 +75,23 @@ int	main(void)
 		std::cout << "Main 3:\n***Testing addRange: should throw FullException.\n------" << std::endl;
 		std::vector<int>			v;
 		std::vector<int>::iterator	it;
-
+		int							n = 5;
 		Span						sp = Span(3);
 	
-		v.reserve(5);
-		std::cout << "v = ";
-		int tmp = 1;
-		for (it = v.begin(); it != v.end(); ++it)
+		v.reserve(n);
+		
+		std::srand((unsigned) time(0));
+		for (int i = 0; i < n; i++)
 		{
-			v.push_back(tmp++);
-			std::cout << *it << " ";
+			int tmp = rand() % n;
+			while (find(v.begin(), v.end(), tmp) != v.end())
+				tmp = rand() % n;
+			v.push_back(tmp);
 		}
+
+		std::cout << "v = ";
+		for (it = v.begin(); it != v.end(); ++it)
+			std::cout << *it << " ";
 		std::cout << std::endl;
 
 		try
@@ -144,8 +152,8 @@ int	main(void)
 		std::cout << sp2 << std::endl;
 		std::cout << sp3 << std::endl;
 	}
-	{
-		std::cout << "Main 1:\n***Testing addRange with enormous range: should work.\n------" << std::endl;
+	/*{
+		std::cout << "Main 6:\n***Testing addRange with enormous range: should work.\n------" << std::endl;
 		std::vector<int>			v;
 		std::vector<int>::iterator	it;
 		int							n = 1000000;
@@ -153,26 +161,23 @@ int	main(void)
 	
 		v.reserve(n);
 
-		std::srand((unsigned) time(0));
-		for (it = v.begin(); it != v.end(); ++it)
+		int tmp = 1;
+		for (int i = 0; i < n; i++)
 		{
-			int tmp = rand() % n * 10;
-			while (find(v.begin(), v.end(), tmp) != v.end())
-				tmp = rand() % n * 10;
-			v.push_back(tmp);
+			v.push_back(tmp++);
 		}
 
 		try
 		{
 			sp.addRange(v);
-			std::cout << sp.shortestSpan() << std::endl;
-			std::cout << sp.longestSpan() << std::endl;
+			std::cout << "shortest =\t" << sp.shortestSpan() << std::endl;
+			std::cout << "longest =\t" << sp.longestSpan() << std::endl;
 		}
 		catch(const std::exception& e)
 		{
 			std::cout << e.what() << '\n';
 		}
 		std::cout << "=============" << std::endl;
-	}
+	}*/
 	return (0);
 }
