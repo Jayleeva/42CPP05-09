@@ -24,8 +24,10 @@ int	main(void)
 		}
 		std::cout << std::endl;
 
-		logan.begin(); // const
-		logan.end(); // const
+		MutantStack<int>::const_iterator	it = logan.begin();
+		MutantStack<int>::const_iterator	ite = logan.end() -1;
+		std::cout << "const it = " << *it << std::endl;
+		std::cout << "const ite = " << *ite << std::endl;
 
 		for (MutantStack<int>::reverse_iterator	it = logan.rbegin(); it != logan.rend(); ++it)
 		{
@@ -33,8 +35,10 @@ int	main(void)
 		}
 		std::cout << std::endl;
 
-		logan.rbegin(); // const
-		logan.rend(); // const
+		MutantStack<int>::const_reverse_iterator	r = logan.rbegin();
+		MutantStack<int>::const_reverse_iterator	re = logan.rend() - 1;
+		std::cout << "const r = " << *r << std::endl;
+		std::cout << "const re = " << *re << std::endl;
 
 		std::cout << "=============" << std::endl;
 	}

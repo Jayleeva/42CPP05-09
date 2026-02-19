@@ -1,7 +1,6 @@
 NAME = mutant
 
 SRC = 	main.cpp \
-		#MutantStack.tpp \
 
 OBJ = $(SRC:.cpp=.o)
 
