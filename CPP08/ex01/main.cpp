@@ -1,4 +1,5 @@
 #include "Span.hpp"
+# include <ctime>
 
 int	main(void)
 {
@@ -12,27 +13,32 @@ int	main(void)
 		sp.addNumber(9);
 		sp.addNumber(11);
 
-		std::cout << sp << std::endl;
-		std::cout << sp.shortestSpan() << std::endl;
-		std::cout << sp.longestSpan() << std::endl;
+		std::cout << "sp =\t\t" << sp << std::endl;
+		std::cout << "shortest =\t" << sp.shortestSpan() << std::endl;
+		std::cout << "longest =\t" << sp.longestSpan() << std::endl;
 		std::cout << "=============" << std::endl;
 	}
 	{
 		std::cout << "Main 1:\n***Testing addRange: should work.\n------" << std::endl;
-		std::vector<int>	v;
-		int					n = 5;
-		Span				sp = Span(n);
+		std::vector<int>			v;
+		std::vector<int>::iterator	it;
+		int							n = 5;
+		Span						sp = Span(n);
 	
 		v.reserve(n);
 		std::cout << "v = ";
-		for (int i = 0; i < n; i++) 
+		std::srand((unsigned) time(0));
+		//for (int i = 0; i < n; i ++)
+		for (it = v.begin(); it != v.end(); ++it)
 		{
-			v.push_back(i);
-			if (i == n -1)
-				std::cout << i << std::endl;
-			else
-				std::cout << i << ", ";
+			int tmp = rand() % n;
+			while (find(v.begin(), v.end(), tmp) != v.end())
+				tmp = rand() % n;
+			v.push_back(tmp);
+			std::cout << *it << " ";
 		}
+		std::cout << std::endl;
+
 		try
 		{
 			sp.addRange(v);
@@ -65,14 +71,21 @@ int	main(void)
 	}
 	{
 		std::cout << "Main 3:\n***Testing addRange: should throw FullException.\n------" << std::endl;
-		std::vector<int>	v;
-		Span				sp = Span(3);
+		std::vector<int>			v;
+		std::vector<int>::iterator	it;
+
+		Span						sp = Span(3);
 	
 		v.reserve(5);
-		for (int i = 0; i < 5; i++)
+		std::cout << "v = ";
+		int tmp = 1;
+		for (it = v.begin(); it != v.end(); ++it)
 		{
-			v.push_back(i);
+			v.push_back(tmp++);
+			std::cout << *it << " ";
 		}
+		std::cout << std::endl;
+
 		try
 		{
 			sp.addRange(v);
@@ -133,13 +146,22 @@ int	main(void)
 	}
 	{
 		std::cout << "Main 1:\n***Testing addRange with enormous range: should work.\n------" << std::endl;
-		std::vector<int>	v;
-		int					n = 1000000;
-		Span				sp = Span(n);
+		std::vector<int>			v;
+		std::vector<int>::iterator	it;
+		int							n = 1000000;
+		Span						sp = Span(n);
 	
 		v.reserve(n);
-		for (int i = 0; i < n; i++) 
-			v.push_back(i);
+
+		std::srand((unsigned) time(0));
+		for (it = v.begin(); it != v.end(); ++it)
+		{
+			int tmp = rand() % n * 10;
+			while (find(v.begin(), v.end(), tmp) != v.end())
+				tmp = rand() % n * 10;
+			v.push_back(tmp);
+		}
+
 		try
 		{
 			sp.addRange(v);
