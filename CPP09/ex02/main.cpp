@@ -34,10 +34,10 @@
 
 
 // former une paire = merge ?
-std::array<int, 2>	update_jacobsthal(std::array<int, 2> jacobsthal)
+std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 {
-	int tmp1 = jacobsthal[0];
-	int tmp2 = jacobsthal[1];
+	size_t tmp1 = jacobsthal[0];
+	size_t tmp2 = jacobsthal[1];
 	jacobsthal[0] = tmp2;
 	jacobsthal[1] = tmp1 * 2 + tmp2;
 	return (jacobsthal);
@@ -52,9 +52,9 @@ int main(void)
 	std::srand((unsigned) time(0));
 	for (size_t i = 0; i < size; i++)
 	{
-		int tmp = rand() / 21474836;
+		int tmp = rand() % 100;
 		while (find(vec.begin(), vec.end(), tmp) != vec.end())
-			tmp = rand() / 21474836;
+			tmp = rand() % 100;
 		vec.push_back(tmp);
 	}
 

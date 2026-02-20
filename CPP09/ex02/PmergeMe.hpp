@@ -6,7 +6,7 @@
 # include <algorithm>
 # include <cmath>
 # include <vector>
-# include <array>
+# include <deque>
 
 # define DEFAULT "\001\033[0;39m\002"
 # define YELLOW "\001\033[1;93m\002"
@@ -24,13 +24,11 @@ class	PmergeMe
 		std::vector<unsigned int>	getContainer() const;
 		void						setContainer(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 
-		//void	merge_small(std::vector<unsigned int> container, size_t first, size_t last);
-		//void	merge_big(std::vector<unsigned int> container, size_t first, size_t last);
-		//void	insert_big_in_small();
-
 		void	splitBigSmall(std::vector<unsigned int>&current);
 		void	binaryInsertSmall(unsigned int ui);
 		void	mergePairs(size_t size, std::vector<unsigned int>&current);
+		void	standardBinaryInsert(size_t i, size_t size, unsigned int ui);
+		void	jacobsthalBinaryInsert(size_t i, size_t size, int jacbosthal);
 		void	binaryInsertBig();
 
 		void	sortContainer();
@@ -38,12 +36,11 @@ class	PmergeMe
 
 	private:
 		std::vector<unsigned int>	container;
-		//std::vector<unsigned int>	current;
 		std::vector<unsigned int>	small;
 		std::vector<unsigned int>	big;
 		std::vector<unsigned int>	leftover;
 };
 
-std::array<int, 2>	update_jacobsthal(std::array<int, 2> jacobsthal);
+std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 
 #endif
