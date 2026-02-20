@@ -64,17 +64,12 @@ void	PmergeMe::binaryInsertSmall(unsigned int ui)
 		it++;
 		i++;
 	}
-	if (ui > this->small[this->small.size() -1] && ui < this->small[this->small.size()])
+	if (ui > this->small[this->small.size() -1])
 	{
-		this->small.insert(it + 1, ui);
-		return ;
-	}
-	if (ui > this->small[this->small.size()])
-	{
+		//std::cout << "dernier " << ui << std::endl;
 		this->small.push_back(ui);
 		return ;
 	}
-	std::cout << "not inserted in small : " << ui << std::endl;
 }
 
 void	print_small(std::vector<unsigned int>small)
@@ -99,13 +94,13 @@ void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
 		if (current[i] < current[i + 1])
 		{
 			binaryInsertSmall(current[i]);
-			print_small(this->small);
+			//print_small(this->small);
 			this->big.push_back(current[i + 1]);
 		}
 		else
 		{
 			binaryInsertSmall(current[i + 1]);
-			print_small(this->small);
+			//print_small(this->small);
 			this->big.push_back(current[i]);
 		}
 		i += 2;
@@ -117,13 +112,13 @@ void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
 	}
 	current.clear();
 	current = this->big;
-	size_t	size2 = this->big.size();
+	/*size_t	size2 = this->big.size();
 
 	for (size_t i = 0; i < size2 -1 ; i++)
 	{
 		std::cout << this->big[i] << ' ';
 	}
-	std::cout << this->big[size2 -1] << std::endl;
+	std::cout << this->big[size2 -1] << std::endl;*/
 }
 
 void	PmergeMe::mergePairs(size_t size, std::vector<unsigned int>&current)
