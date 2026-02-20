@@ -68,6 +68,8 @@ int main(void)
 	size_t				size = 21;
 	std::vector<int>	vec;
 
+	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
+
 	std::srand((unsigned) time(0));
 	for (size_t i = 0; i < size; i++)
 	{
