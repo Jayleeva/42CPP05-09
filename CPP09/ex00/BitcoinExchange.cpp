@@ -31,7 +31,7 @@ std::map<std::string, float>	BitcoinExchange::getMap() const
 	return(this->dataLines);
 }
 
-void	BitcoinExchange::setMap(std::string dataFile)
+int	BitcoinExchange::setMap(std::string dataFile)
 {
 	std::ifstream				data;
 
@@ -54,28 +54,20 @@ void	BitcoinExchange::setMap(std::string dataFile)
 		try
 		{
 			key = (line.substr(0,10));
-		}
-		catch (std::exception &e)
-		{
-			std::cout << e.what() << std::endl;
-			return ;
-		}
-		try
-		{
 			valuestr = line.substr(11, line.size());
+			value = std::atof(valuestr.c_str());
+			std::pair<std::string, float> p = std::make_pair(key, value);
+			this->dataLines.insert(p);
 		}
 		catch (std::exception &e)
 		{
 			std::cout << e.what() << std::endl;
-			return ;
+			return (0);
 		}
-		value = std::atof(valuestr.c_str());
-		std::pair<std::string, float> p = std::make_pair(key, value);
-		this->dataLines.insert(p);
 	}
 	data.close();
+	return (1);
 }
-
 
 void	BitcoinExchange::printRes(char *inputFile)
 {
@@ -101,16 +93,16 @@ void	BitcoinExchange::printRes(char *inputFile)
 	{
 		if (line.empty())
 			continue;
+		if (!line[11] || line[11] != '|' || !line[13])
+		{
+			std::cout << "Error: wrong format." << std::endl;
+			continue;
+		}
 		key = getKey(line);
 		if (!is_key_valid(key))
 		{
 			std::cout << "Error: bad input => " << key << std::endl;
 			continue ;
-		}
-		if (!line[10] || !line[11] || line[11] != '|')
-		{
-			std::cout << "Error: wrong format." << std::endl;
-			continue;
 		}
 		value = getValue(line);
 		if (!is_value_valid(value))

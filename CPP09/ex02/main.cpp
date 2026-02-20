@@ -34,7 +34,14 @@
 
 
 // former une paire = merge ?
-
+std::array<int, 2>	update_jacobsthal(std::array<int, 2> jacobsthal)
+{
+	int tmp1 = jacobsthal[0];
+	int tmp2 = jacobsthal[1];
+	jacobsthal[0] = tmp2;
+	jacobsthal[1] = tmp1 * 2 + tmp2;
+	return (jacobsthal);
+}
 
 int main(void)
 {

@@ -25,12 +25,13 @@ class	BitcoinExchange
 		~BitcoinExchange();
 
 		std::map<std::string, float>	getMap() const;
-		void							setMap(std::string dataFile);
+		int								setMap(std::string dataFile);
 		void							printRes(char *inputFile);
  
 	private:
 		std::map<std::string, float>	dataLines;
 };
+
 
 float		getRate(std::string key, std::map<std::string, float> data);
 std::string	getKey(std::string line);

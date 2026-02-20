@@ -6,6 +6,7 @@
 # include <algorithm>
 # include <cmath>
 # include <vector>
+# include <array>
 
 # define DEFAULT "\001\033[0;39m\002"
 # define YELLOW "\001\033[1;93m\002"
@@ -42,5 +43,7 @@ class	PmergeMe
 		std::vector<unsigned int>	big;
 		std::vector<unsigned int>	leftover;
 };
+
+std::array<int, 2>	update_jacobsthal(std::array<int, 2> jacobsthal);
 
 #endif

@@ -1,5 +1,7 @@
 #include "BitcoinExchange.hpp"
 
+
+
 int	is_valid(int date, int min, int max)
 {
 	if (date < min || date > max)
@@ -212,6 +214,7 @@ std::string	getKey(std::string line)
 	catch (std::exception &e)
 	{
 		std::cout << e.what() << std::endl;
+		return (NULL);
 	}
 	return (key);
 }
@@ -256,7 +259,7 @@ int	main(int argc, char **argv)
 		std::cout << "Error: no file submitted." << std::endl;
 		return (1);
 	}
-	btc.setMap("data.csv");
-	btc.printRes(argv[1]);
+	if (btc.setMap("data.csv"))
+		btc.printRes(argv[1]);
 	return (0);
 }

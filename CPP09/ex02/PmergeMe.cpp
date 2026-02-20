@@ -109,6 +109,7 @@ void	PmergeMe::mergePairs(size_t size, std::vector<unsigned int>&current)
 
 void	PmergeMe::binaryInsertBig()
 {
+	std::array<int, 2>	jacobsthal = {1, 3};
 	size_t			size = this->big.size();
 	size_t			i = 0;
 	unsigned int	ui;
@@ -122,7 +123,20 @@ void	PmergeMe::binaryInsertBig()
 		return ;
 	}
 
-	std::vector<unsigned int>::iterator it = this->container.begin();
+	while (i < size)
+	{
+		if (jacobsthal[1] - jacobsthal[0] > size - i)
+		{
+			standardBinaryInsert(i, size, this->container, jacobsthal);
+		}
+		jacobsthalBinaryInsert();
+		jacobsthal = update_jacobsthal(jacobsthal);
+		i ++;
+	}
+}
+	
+{
+	std::vector<unsigned int>::iterator it = this->container.begin() + jacobsthal[1];
 	while (i + 1 < size)
 	{
 		if (i == 0 && ui < this->big[i])
