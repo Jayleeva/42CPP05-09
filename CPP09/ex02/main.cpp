@@ -32,8 +32,27 @@
 // une fois cette etape atteinte, on effectue le merge?
 
 
-
 // former une paire = merge ?
+
+
+void	is_sorted(size_t size, std::vector<unsigned int> container)
+{
+	if (size != container.size())
+	{
+		std::cout << RED << "check: KO." << DEFAULT << std::endl;
+		return ;
+	}
+	for (size_t i = 0; i + 1 < container.size(); i++)
+	{
+		if (container[i] > container[i + 1])
+		{
+			std::cout << RED << "check: KO." << DEFAULT << std::endl;
+			return ;
+		}	
+	}
+	std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
+}
+
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 {
 	size_t tmp1 = jacobsthal[0];
@@ -63,5 +82,6 @@ int main(void)
 
 	p.sortContainer();	
 	p.printContainer();
+	is_sorted(size, p.getContainer());
 	return (0);
 }
