@@ -74,6 +74,18 @@ void	PmergeMe::binaryInsertSmall(unsigned int ui)
 		this->small.push_back(ui);
 		return ;
 	}
+	std::cout << "not inserted in small : " << ui << std::endl;
+}
+
+void	print_small(std::vector<unsigned int>small)
+{
+	size_t	size2 = small.size();
+	std::cout << "small (size: " << size2 << ") = ";
+	for (size_t i = 0; i < size2 -1 ; i++)
+	{
+		std::cout << small[i] << ' ';
+	}
+	std::cout << small[size2 -1] << std::endl;
 }
 
 void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
@@ -87,11 +99,13 @@ void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
 		if (current[i] < current[i + 1])
 		{
 			binaryInsertSmall(current[i]);
+			print_small(this->small);
 			this->big.push_back(current[i + 1]);
 		}
 		else
 		{
 			binaryInsertSmall(current[i + 1]);
+			print_small(this->small);
 			this->big.push_back(current[i]);
 		}
 		i += 2;
@@ -103,13 +117,13 @@ void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
 	}
 	current.clear();
 	current = this->big;
-	/*size_t	size2 = this->big.size();
+	size_t	size2 = this->big.size();
 
 	for (size_t i = 0; i < size2 -1 ; i++)
 	{
 		std::cout << this->big[i] << ' ';
 	}
-	std::cout << this->big[size2 -1] << std::endl;*/
+	std::cout << this->big[size2 -1] << std::endl;
 }
 
 void	PmergeMe::mergePairs(size_t size, std::vector<unsigned int>&current)
@@ -149,6 +163,7 @@ void	PmergeMe::standardBinaryInsert(unsigned int ui)
 		this->small.push_back(ui);
 		return ;
 	}
+	std::cout << "not inserted" << std::endl;
 }
 
 
@@ -162,14 +177,6 @@ void	PmergeMe::binaryInsertBig()
 	jacobsthal.push_front(3);
 	jacobsthal.push_front(1);
 
-	
-	size_t	size2 = this->small.size();
-	std::cout << "small (size: " << size2 << ") = ";
-	for (size_t i = 0; i < size2 -1 ; i++)
-	{
-		std::cout << this->small[i] << ' ';
-	}
-	std::cout << this->small[size2 -1] << std::endl;
 
 	if (size == 0)
 	{
@@ -178,17 +185,17 @@ void	PmergeMe::binaryInsertBig()
 	}
 	while (i < size)
 	{
-		std::cout << "i = " << i << std::endl;
+		//std::cout << "i = " << i << std::endl;
 		remaining = size - i;
-		std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
+		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
-			std::cout << "standard" << std::endl;
+			//std::cout << "standard" << std::endl;
 			this->standardBinaryInsert(this->big[i]);
 		}
 		else
 		{
-			std::cout << "jacobsthal" << std::endl;
+			//std::cout << "jacobsthal" << std::endl;
 			this->standardBinaryInsert(this->big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
