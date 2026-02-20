@@ -27,8 +27,8 @@ class	PmergeMe
 		void	splitBigSmall(std::vector<unsigned int>&current);
 		void	binaryInsertSmall(unsigned int ui);
 		void	mergePairs(size_t size, std::vector<unsigned int>&current);
-		void	standardBinaryInsert(size_t i, size_t size, unsigned int ui);
-		void	jacobsthalBinaryInsert(size_t i, size_t size, int jacbosthal);
+		void	standardBinaryInsert(size_t size, unsigned int ui);
+		void	jacobsthalBinaryInsert(size_t size, unsigned int ui);
 		void	binaryInsertBig();
 
 		void	sortContainer();
