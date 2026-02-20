@@ -40,12 +40,10 @@ void	PmergeMe::setContainer(std::vector<int>::iterator begin, std::vector<int>::
 
 void	PmergeMe::binaryInsertSmall(unsigned int ui)
 {
-	size_t	size = this->small.size();
 	size_t	i = 0;
 
-	if (size == 0)
+	if (this->small.size() == 0)
 	{
-		//std::cout << "first iteration, small is empty" << std::endl;
 		this->small.push_back(ui);
 		return ;
 	}
@@ -53,16 +51,14 @@ void	PmergeMe::binaryInsertSmall(unsigned int ui)
 	if (ui < this->small[0])
 	{
 		this->small.insert(this->small.begin(), ui);
-		//std::cout << " size small = " << this->small.size() << std::endl;
 		return ;
 	}
 	std::vector<unsigned int>::iterator it = this->small.begin();
-	while (i + 1 < size)
+	while (i + 1 < this->small.size())
 	{
 		if (ui > this->small[i] && ui < this->small[i + 1])
 		{
 			this->small.insert(it + 1, ui);
-			//std::cout << " size small = " << this->small.size() << std::endl;
 			return ;
 		}
 		it++;
@@ -71,7 +67,6 @@ void	PmergeMe::binaryInsertSmall(unsigned int ui)
 	if (ui > this->small[this->small.size()])
 	{
 		this->small.push_back(ui);
-		//std::cout << " size small = " << this->small.size() << std::endl;
 		return ;
 	}
 }
@@ -96,10 +91,21 @@ void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
 		}
 		i += 2;
 	}
-	if (i < size)
-		binaryInsertSmall(current[size]);
+	while (i < size)
+	{
+		binaryInsertSmall(current[i]);
+		i++;
+	}
 	current.clear();
 	current = this->big;
+	//for (std::vector<unsigned int>::iterator it = this->big.begin(); it )
+	size_t	size2 = this->big.size();
+
+	for (size_t i = 0; i < size2 -1 ; i++)
+	{
+		std::cout << this->big[i] << ' ';
+	}
+	std::cout << this->big[size2 -1] << std::endl;
 }
 
 void	PmergeMe::mergePairs(size_t size, std::vector<unsigned int>&current)
@@ -109,104 +115,85 @@ void	PmergeMe::mergePairs(size_t size, std::vector<unsigned int>&current)
 	this->splitBigSmall(current);
 }
 
-void	PmergeMe::standardBinaryInsert(size_t size, unsigned int ui)
+void	PmergeMe::standardBinaryInsert(unsigned int ui)
 {
 	size_t			i = 0;
 
-	if (i == 0 && ui < this->container[0])
+	std::cout << "ui = " << ui << " size = " << this->small.size() << std::endl;
+	if (ui < this->small[0])
 	{
-		this->container.insert(this->container.begin(), ui);
+		this->small.insert(this->small.begin(), ui);
 		return ;
 	}
-	std::vector<unsigned int>::iterator it = this->container.begin() + i;
-	while (i + 1 < size)
+	std::vector<unsigned int>::iterator it = this->small.begin() + i;
+	while (i + 1 < this->small.size())
 	{
-		if (ui > this->container[i] && ui < this->container[i + 1])
+		if (ui > this->small[i] && ui < this->small[i + 1])
 		{
-			this->container.insert(it + 1, ui);
+			this->small.insert(it + 1, ui);
 			return ;
 		}
 		it++;
 		i++;
 	}
-	if (i + 1 == size && ui < this->big[size])
+	if (ui > this->small[this->small.size() -1] && ui < this->small[this->small.size()])
 	{
-		std::cout << "else" << std::endl;
-		this->container.insert(it + 1, ui);
+		this->small.insert(it + 1, ui);
 		return ;
 	}
-	if (i + 1 == size && ui > this->big[size])
+	if (ui > this->small[this->small.size()])
 	{
 		std::cout << "hi" << std::endl;
-		this->container.push_back(ui);
+		this->small.push_back(ui);
 		return ;
 	}
-	
-
 }
 
-void	PmergeMe::jacobsthalBinaryInsert(size_t size, unsigned int ui)
-{
-	size_t			i = 0;
-
-	if (i == 0 && ui < this->container[0])
-	{
-		this->container.insert(this->container.begin(), ui);
-		return ;
-	}
-	std::vector<unsigned int>::iterator it = this->container.begin() + i;
-	while (i + 1 < size)
-	{
-		if (ui > this->container[i] && ui < this->container[i + 1])
-		{
-			this->container.insert(it + 1, ui);
-			return ;
-		}
-		it++;
-		i++;
-	}
-	if (i + 1 == size && ui > this->big[size])
-	{
-		std::cout << "hello" << std::endl;
-		this->container.push_back(ui);
-		return ;
-	}
-	/*else
-		std::cout << "jacobsthal - not greater than last" << std::endl;*/
-}
 
 void	PmergeMe::binaryInsertBig()
 {
 	std::deque<size_t>	jacobsthal(2);
 	size_t				size = this->big.size();
 	size_t				i = 0;
+	size_t				remaining;
 
 	jacobsthal.push_front(3);
 	jacobsthal.push_front(1);
 
-	this->container.clear();
-	this->container = this->small;
+	
+	size_t	size2 = this->small.size();
+	std::cout << "small (size: " << size2 << ") = ";
+	for (size_t i = 0; i < size2 -1 ; i++)
+	{
+		std::cout << this->small[i] << ' ';
+	}
+	std::cout << this->small[size2 -1] << std::endl;
 
 	if (size == 0)
 	{
 		this->container.push_back(this->big[i]);
 		return ;
 	}
-
-	//std::cout << "i = " << i << " size = " << size << std::endl;
-	while (this->big[i])
+	while (i < size)
 	{
-		//std::cout << "jacobsthal = " << jacobsthal[0] << ", " << jacobsthal[1] << std::endl;
-		if (jacobsthal[1] - jacobsthal[0] > size - i)
+		std::cout << "i = " << i << std::endl;
+		remaining = size - i;
+		std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
+		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
-			//std::cout << "standard" << std::endl;
-			this->standardBinaryInsert(size, this->big[i]);
+			std::cout << "standard" << std::endl;
+			this->standardBinaryInsert(this->big[i]);
 		}
-		//std::cout << "jacobsthal" << std::endl;
-		this->jacobsthalBinaryInsert(size, this->big[jacobsthal[1]]);
+		else
+		{
+			std::cout << "jacobsthal" << std::endl;
+			this->standardBinaryInsert(this->big[jacobsthal[1]]);
+		}
 		jacobsthal = update_jacobsthal(jacobsthal);
 		i ++;
 	}
+	this->container.clear();
+	this->container = this->small;
 }
 
 void	PmergeMe::sortContainer()
