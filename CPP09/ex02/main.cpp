@@ -71,7 +71,7 @@ int main(void)
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
 
 	
-	size_t				range = 36 - 21 + 1;
+	size_t				range = 42 - 21 + 1;
 	std::srand((unsigned) time(0));
 	size = rand() % range + 21;
 
