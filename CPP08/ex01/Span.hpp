@@ -21,7 +21,7 @@ class Span
 		int		shortestSpan();
 		int		longestSpan();
 
-		void	addRange(std::vector<int> container);
+		void	addRange(std::vector<int>::iterator it, std::vector<int>::iterator ite);
 
 		std::vector<int>	getContainer() const;
 

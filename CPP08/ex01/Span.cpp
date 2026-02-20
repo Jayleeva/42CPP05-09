@@ -71,14 +71,11 @@ int		Span::longestSpan()
 	return (tmp[N -1] - tmp[0]);
 }
 
-void	Span::addRange(std::vector<int> range)
+void	Span::addRange(std::vector<int>::iterator it, std::vector<int>::iterator ite)
 {
-	std::vector<int>::iterator begin = range.begin();
-	std::vector<int>::iterator end = range.end();
-
-	if (range.size() > this->container.capacity())
+	if ((long unsigned int)std::distance(it, ite) > this->container.capacity())
 		throw FullException();
-	this->container.insert(this->container.end(), begin, end);
+	this->container.insert(this->container.end(), it, ite);
 }
 
 std::vector<int>	Span::getContainer() const

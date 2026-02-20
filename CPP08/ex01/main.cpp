@@ -45,7 +45,9 @@ int	main(void)
 
 		try
 		{
-			sp.addRange(v);
+			std::vector<int>::iterator begin = v.begin();
+			std::vector<int>::iterator end = v.end();
+			sp.addRange(begin, end);
 			std::cout << "span =\t\t" << sp << std::endl;
 			std::cout << "shortest =\t" << sp.shortestSpan() << std::endl;
 			std::cout << "longest =\t" << sp.longestSpan() << std::endl;
@@ -94,7 +96,9 @@ int	main(void)
 
 		try
 		{
-			sp.addRange(v);
+			std::vector<int>::iterator begin = v.begin();
+			std::vector<int>::iterator end = v.end();
+			sp.addRange(begin, end);
 		}
 		catch(const std::exception& e)
 		{
@@ -167,7 +171,9 @@ int	main(void)
 
 		try
 		{
-			sp.addRange(v);
+			std::vector<int>::iterator begin = v.begin();
+			std::vector<int>::iterator end = v.end();
+			sp.addRange(begin, end);
 			std::cout << "shortest =\t" << sp.shortestSpan() << std::endl;
 			std::cout << "longest =\t" << sp.longestSpan() << std::endl;
 		}
