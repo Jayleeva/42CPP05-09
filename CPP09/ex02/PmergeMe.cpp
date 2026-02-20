@@ -180,17 +180,17 @@ void	PmergeMe::binaryInsertBig()
 	}
 	while (i < size)
 	{
-		//std::cout << "i = " << i << std::endl;
+		std::cout << "i = " << i << std::endl;
 		remaining = size - i;
 		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
-			//std::cout << "standard" << std::endl;
+			std::cout << "standard" << std::endl;
 			this->standardBinaryInsert(this->big[i]);
 		}
 		else
 		{
-			//std::cout << "jacobsthal" << std::endl;
+			std::cout << "jacobsthal" << std::endl;
 			this->standardBinaryInsert(this->big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);

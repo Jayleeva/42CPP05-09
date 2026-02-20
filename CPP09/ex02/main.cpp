@@ -65,12 +65,16 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 int main(void)
 {
 	PmergeMe			p;
-	size_t				size = 21;
+	size_t				size;
 	std::vector<int>	vec;
 
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
 
+	
+	size_t				range = 36 - 21 + 1;
 	std::srand((unsigned) time(0));
+	size = rand() % range + 21;
+
 	for (size_t i = 0; i < size; i++)
 	{
 		int tmp = rand() % 100;
