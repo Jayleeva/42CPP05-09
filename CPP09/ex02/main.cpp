@@ -75,7 +75,7 @@ void	printContainer(T &container)
 
 
 
-int main(void)
+int main(int argc, char **argv)
 {
 	std::vector<unsigned int>	vec;
 	std::deque<unsigned int>	deq;
@@ -87,17 +87,21 @@ int main(void)
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
 	//JACOBSTHAL NOT WORKING:  23 30 60 22 43 27 58 25 38 29 41 37 26 50 53 56 47 44 55 45 39 62 48 46 59 33 28 57
 	
-	ssize_t range_max = 42;
-	ssize_t range_min = 21;
+	/*ssize_t range_max = 4200;
+	ssize_t range_min = 1;
 	size_t	range = range_max - range_min + 1;
 	std::srand((unsigned) time(0));
-	size = rand() % range + range_min;
-
-	for (size_t i = 0; i < size; i++)
+	size = rand() % range + range_min;*/
+ 
+	size = argc;
+	for (size_t i = 1; i < size; i++)
 	{
-		int tmp = rand() % range_max + range_min;
+		/*unsigned int tmp = rand() % range_max + range_min;
 		while (find(vec.begin(), vec.end(), tmp) != vec.end())
-			tmp = rand() % range_max + range_min;
+			tmp = rand() % range_max + range_min;*/
+		unsigned int tmp = atoi(argv[i]);
+		if (find(vec.begin(), vec.end(), tmp) != vec.end())
+			return (0); 
 		vec.push_back(tmp);
 		deq.push_back(tmp);
 	}
@@ -115,7 +119,7 @@ int main(void)
 
 	std::cout << "[VEC] After : ";
 	printContainer(dataVec.container);
-	std::cout << "[VEC] Time to process a range of " << size << " elements with std::" << "vector : " << double(10.0 * (endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
+	std::cout << "[VEC] Time to process a range of " << size << " elements with std::" << "vector : " <<  double(endVec - startVec) / CLOCKS_PER_SEC << " us" << std::endl;
 	std::cout << std::endl;
 
     startDeq = clock();
@@ -126,7 +130,7 @@ int main(void)
 
 	std::cout << "[DEQ] After : ";
 	printContainer(dataDeq.container);
-	std::cout << "[DEQ] Time to process a range of " << size << " elements with std::" << "deque : " << double(10.0 * (endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
+	std::cout << "[DEQ] Time to process a range of " << size << " elements with std::" << "deque : " << double(endDeq - startDeq) / CLOCKS_PER_SEC << " us" << std::endl;
 	std::cout << std::endl;
 
 	is_sorted(size, &dataVec, &dataDeq);

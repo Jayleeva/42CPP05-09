@@ -123,12 +123,12 @@ void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 		it++;
 		i++;
 	}
-	if (ui > container[container.size() -1] && ui < container[container.size()])
+	if (container.size() > 1 && (ui > container[container.size() -1] && ui < container[container.size()]))
 	{
 		container.insert(it + 1, ui);
 		return ;
 	}
-	if (ui > container[container.size()])
+	if (container.size() == 1 || ui > container[container.size()])
 	{
 		container.push_back(ui);
 		return ;
