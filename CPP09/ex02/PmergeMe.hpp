@@ -21,10 +21,10 @@ class	PmergeMe
 		PmergeMe &operator=(PmergeMe const &original);
 		~PmergeMe();
 
-		typedef typename std::vector<int>::iterator iterator;
+		typedef typename std::vector<unsigned int>::iterator iterator;
 
 		std::vector<unsigned int>	getContainer() const;
-		void						setContainer(std::vector<int>::iterator begin, std::vector<int>::iterator end);
+		void						setContainer(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end);
 
 		void	splitBigSmall(std::vector<unsigned int>&current);
 		void	binaryInsertSmall(unsigned int ui);
@@ -39,7 +39,8 @@ class	PmergeMe
 		std::vector<unsigned int>	container;
 		std::vector<unsigned int>	small;
 		std::vector<unsigned int>	big;
-		std::vector<unsigned int>	leftover;
+
+		//std::vector<unsigned int>	leftover;
 };
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);

@@ -32,7 +32,7 @@ std::vector<unsigned int>	PmergeMe::getContainer() const
 	return (this->container);
 }
 
-void	PmergeMe::setContainer(std::vector<int>::iterator begin, std::vector<int>::iterator end)
+void	PmergeMe::setContainer(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
 {
 	this->container.insert(this->container.end(), begin, end);
 }

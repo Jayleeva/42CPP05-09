@@ -64,12 +64,14 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 
 int main(void)
 {
-	PmergeMe			p;
-	size_t				size;
-	std::vector<int>	vec;
+    clock_t startVec, endVec;
+    //clock_t startDeq, endDeq;
+	PmergeMe					p;
+	size_t						size;
+	std::vector<unsigned int>	vec;
+	//std::deque<unsigned int>	deq;
 
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
-
 	
 	size_t				range = 42 - 21 + 1;
 	std::srand((unsigned) time(0));
@@ -83,11 +85,17 @@ int main(void)
 		vec.push_back(tmp);
 	}
 
+    startVec = clock();
 	p.setContainer(vec.begin(), vec.end());
+	std::cout << "Before : ";
 	p.printContainer();
 
-	p.sortContainer();	
+	p.sortContainer();
+	std::cout << "After : ";
 	p.printContainer();
+    endVec = clock();
+	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << (double(endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
+
 	is_sorted(size, p.getContainer());
 	return (0);
 }
