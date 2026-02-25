@@ -56,14 +56,14 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 	return (jacobsthal);
 }
 
-void		PmergeMe::sortVector(t_dataVec *data, char type)
+void		PmergeMe::sortVector(t_dataVec *data)
 {
-	mergePairs(data->container.size(), data->container, data, type);
-	jacobsthalBinaryInsert(data->container, data->big, data->small);
+	mergePairs(data->container.size(), &(data->container), &(data->big), &(data->small));
+	jacobsthalBinaryInsert(&(data->container), &(data->big), &(data->small));
 }
 
-void		PmergeMe::sortDequeue(t_dataDeq *data, char type)
+void		PmergeMe::sortDequeue(t_dataDeq *data)
 {
-	mergePairs(data->container.size(), data->container, data, type);
-	jacobsthalBinaryInsert(data->container, data->big, data->small);
+	mergePairs(data->container.size(), &(data->container), &(data->big), &(data->small));
+	jacobsthalBinaryInsert(&(data->container), &(data->big), &(data->small));
 }

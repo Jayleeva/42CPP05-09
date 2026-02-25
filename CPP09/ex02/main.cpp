@@ -108,7 +108,7 @@ int main(void)
 	startVec = clock();
 	p.setDataVec(vec.begin(), vec.end());
 	t_dataVec	dataVec = p.getDataVec();
-	p.sortVector(&dataVec, 'v');
+	p.sortVector(&dataVec);
 	endVec = clock();
 
 	std::cout << "After : ";
@@ -118,7 +118,7 @@ int main(void)
     startDeq = clock();
 	p.setDataDeq(deq.begin(), deq.end());
 	t_dataDeq	dataDeq = p.getDataDeq();
-	p.sortDequeue(&dataDeq, 'd');
+	p.sortDequeue(&dataDeq);
     endDeq = clock();
 	std::cout << "Time to process a range of " << size << " elements with std::" << "deque : " << double(1000000.0 * (endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
 

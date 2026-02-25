@@ -79,7 +79,7 @@ void	jacobsthalBinaryInsert(T *container, T *big, T *small)
 };
 
 template<typename T>
-void	splitBigSmall(T *current, T *big, T *small, char type)
+void	splitBigSmall(T *current, T *big, T *small)
 {
 	size_t	size = current.size();
 
@@ -109,10 +109,10 @@ void	splitBigSmall(T *current, T *big, T *small, char type)
 };
 
 template<typename T>
-void	mergePairs(size_t size, T *current, T *big, T *small, char type)
+void	mergePairs(size_t size, T *current, T *big, T *small)
 {
 	if (size / 2 > 1)
-		mergePairs(size / 2, current, big, small, type);
+		mergePairs(size / 2, current, big, small);
 	splitBigSmall(current, big, small, type);
 };
 
