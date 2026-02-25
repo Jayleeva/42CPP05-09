@@ -44,7 +44,7 @@ void	PmergeMe::setDataVec(std::vector<unsigned int>::iterator begin, std::vector
 
 void	PmergeMe::setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
 {
-	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
+	this->dataDeq.container.insert(this->dataDeq.container.end(), begin, end);
 }
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
@@ -103,7 +103,7 @@ void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 
 	if (container.size() == 0)
 	{
-		container.push_front(ui);
+		container.push_back(ui);
 		return ;
 	}
 
@@ -130,7 +130,7 @@ void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 	}
 	if (ui > container[container.size()])
 	{
-		container.push_front(ui);
+		container.push_back(ui);
 		return ;
 	}
 	std::cout << "not inserted" << std::endl;
@@ -146,6 +146,7 @@ void	jacobsthalBinaryInsert(t_dataVec *data)
 
 	jacobsthal.push_front(3);
 	jacobsthal.push_front(1);
+	//std::cout << "[VEC] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
 
 	if (size == 0)
 	{
@@ -154,17 +155,17 @@ void	jacobsthalBinaryInsert(t_dataVec *data)
 	}
 	while (i < size)
 	{
-		std::cout << "i = " << i << std::endl;
+		std::cout << "[VEC] i = " << i << std::endl;
 		remaining = size - i;
 		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
-			std::cout << "standard" << std::endl;
+			std::cout << "[VEC] standard" << std::endl;
 			standardBinaryInsert(data->small, data->big[i]);
 		}
 		else
 		{
-			std::cout << "jacobsthal" << std::endl;
+			std::cout << "[VEC] jacobsthal" << std::endl;
 			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
@@ -183,26 +184,26 @@ void	jacobsthalBinaryInsert(t_dataDeq *data)
 
 	jacobsthal.push_front(3);
 	jacobsthal.push_front(1);
-	std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << std::endl;
+	//std::cout << "[DEQ] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
 
 	if (size == 0)
 	{
-		data->container.push_front(data->big[i]);
+		data->container.push_back(data->big[i]);
 		return ;
 	}
 	while (i < size)
 	{
-		std::cout << "i = " << i << std::endl;
+		std::cout << "[DEQ] i = " << i << std::endl;
 		remaining = size - i;
 		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
-			std::cout << "standard" << std::endl;
+			std::cout << "[DEQ] standard" << std::endl;
 			standardBinaryInsert(data->small, data->big[i]);
 		}
 		else
 		{
-			std::cout << "jacobsthal" << std::endl;
+			std::cout << "[DEQ] jacobsthal" << std::endl;
 			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
