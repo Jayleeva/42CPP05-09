@@ -26,18 +26,17 @@ PmergeMe::~PmergeMe()
 	std::cout << YELLOW << "[PMERGEME] : Default destructor called" << DEFAULT << std::endl;
 }
 
-
 std::vector<unsigned int>	PmergeMe::getContainer() const
 {
-	return (this->container);
+	return (this->dataVec.container);
 }
 
 void	PmergeMe::setContainer(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
 {
-	this->container.insert(this->container.end(), begin, end);
+	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
 }
 
-
+template<typename T>
 void	PmergeMe::binaryInsertSmall(unsigned int ui)
 {
 	size_t	i = 0;
@@ -72,7 +71,8 @@ void	PmergeMe::binaryInsertSmall(unsigned int ui)
 	}
 }
 
-void	print_small(std::vector<unsigned int>small)
+template<typename T>
+void	print_small(T small)
 {
 	size_t	size2 = small.size();
 	std::cout << "small (size: " << size2 << ") = ";
@@ -83,7 +83,8 @@ void	print_small(std::vector<unsigned int>small)
 	std::cout << small[size2 -1] << std::endl;
 }
 
-void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
+template<typename T>
+void	PmergeMe::splitBigSmall(T &current)
 {
 	size_t	size = current.size();
 
@@ -121,13 +122,15 @@ void	PmergeMe::splitBigSmall(std::vector<unsigned int>&current)
 	std::cout << this->big[size2 -1] << std::endl;*/
 }
 
-void	PmergeMe::mergePairs(size_t size, std::vector<unsigned int>&current)
+template<typename T>
+void	PmergeMe::mergePairs(size_t size, T &current)
 {
 	if (size / 2 > 1)
 		this->mergePairs(size / 2, current);
 	this->splitBigSmall(current);
 }
 
+template<typename T>
 void	PmergeMe::standardBinaryInsert(unsigned int ui)
 {
 	size_t			i = 0;
@@ -161,7 +164,7 @@ void	PmergeMe::standardBinaryInsert(unsigned int ui)
 	std::cout << "not inserted" << std::endl;
 }
 
-
+template<typename T>
 void	PmergeMe::binaryInsertBig()
 {
 	std::deque<size_t>	jacobsthal(2);
