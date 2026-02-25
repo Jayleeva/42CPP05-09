@@ -1,60 +1,8 @@
-#ifndef PMERGEME_HPP
-# define PMERGEME_HPP
-
-# include <iostream>
-# include <ctime>
-# include <algorithm>
-# include <cmath>
-# include <vector>
-# include <deque>
-
-# define DEFAULT "\001\033[0;39m\002"
-# define YELLOW "\001\033[1;93m\002"
-# define RED "\001\033[0;31m\002"
-# define GREEN "\001\033[1;32m\002"
-
-
-typedef struct s_dataVec
-{
-	std::vector<unsigned int>	container;
-	std::vector<unsigned int>	small;
-	std::vector<unsigned int>	big;
-}								t_dataVec;
-
-typedef struct s_dataDeq
-{
-	std::deque<unsigned int>	container;
-	std::deque<unsigned int>	small;
-	std::deque<unsigned int>	big;
-}								t_dataDeq;
-
-
-class	PmergeMe
-{
-	public:
-		PmergeMe();
-		PmergeMe(PmergeMe const &original);
-		PmergeMe &operator=(PmergeMe const &original);
-		~PmergeMe();
-
-		t_dataVec	getDataVec() const;
-		void		setDataVec(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end);
-		t_dataDeq	getDataDeq() const;
-		void		setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
-
-		template<typename Tdata>
-		void		sortContainer(Tdata *data, char type);
-
-	private:
-		t_dataVec	dataVec;
-		t_dataDeq	dataDeq;
-};
-
-std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
+#include "PmergeMe.hpp"
 
 template<typename T, typename Titerator>
-void	standardBinaryInsert(T &container, unsigned int ui);
-/*{
+void	standardBinaryInsert(T &container, unsigned int ui)
+{
 	size_t			i = 0;
 
 	if (container.size() == 0)
@@ -90,11 +38,11 @@ void	standardBinaryInsert(T &container, unsigned int ui);
 		return ;
 	}
 	std::cout << "not inserted" << std::endl;
-};*/
+};
 
 template<typename Tdata>
-void	jacobsthalBinaryInsert(Tdata *data);
-/*{
+void	jacobsthalBinaryInsert(Tdata *data)
+{
 	std::deque<size_t>	jacobsthal(2);
 	size_t				size = data->big.size();
 	size_t				i = 0;
@@ -128,11 +76,11 @@ void	jacobsthalBinaryInsert(Tdata *data);
 	}
 	data->container.clear();
 	data->container = data->small;
-};*/
+};
 
 template<typename T, typename Tdata>
-void	splitBigSmall(T *current, Tdata *data, char type);
-/*{
+void	splitBigSmall(T *current, Tdata *data, char type)
+{
 	size_t	size = current.size();
 
 	data->big.clear();
@@ -158,21 +106,19 @@ void	splitBigSmall(T *current, Tdata *data, char type);
 	}
 	current.clear();
 	current = data->big;
-};*/
+};
 
 template<typename T, typename Tdata>
-void	mergePairs(size_t size, T *current, Tdata *data, char type);
-/*{
+void	mergePairs(size_t size, T *current, Tdata *data, char type)
+{
 	if (size / 2 > 1)
 		mergePairs(size / 2, current, data, type);
 	splitBigSmall(current, data, type);
-};*/
+};
 
-/*template<typename Tdata>
-void		sortContainer(Tdata *data, char type);
+template<typename Tdata>
+void		sortContainer(Tdata *data, char type)
 {
 	mergePairs(data->container.size(), data->container, data, type);
 	jacobsthalBinaryInsert(data);
-};*/
-
-#endif
+};

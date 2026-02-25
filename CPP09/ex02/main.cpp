@@ -35,7 +35,7 @@
 // former une paire = merge ?
 
 
-void	is_sorted(size_t size, t_dataVec *dataVec, t_dataDeq *dataDeq) // std::vector<unsigned int> vec, std::deque<unsigned int> deq)
+void	is_sorted(size_t size, t_dataVec *dataVec, t_dataDeq *dataDeq)
 {
 
 	if (size != dataVec->container.size() || size != dataDeq->container.size())
@@ -74,15 +74,6 @@ void	printContainer(T &container)
 	std::cout << container[size -1] << std::endl;
 }
 
-std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
-{
-	size_t tmp1 = jacobsthal[0];
-	size_t tmp2 = jacobsthal[1];
-	jacobsthal[0] = tmp2;
-	jacobsthal[1] = tmp1 * 2 + tmp2;
-	return (jacobsthal);
-}
-
 int main(void)
 {
 	std::vector<unsigned int>	vec;
@@ -94,22 +85,23 @@ int main(void)
 
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
 	
-	size_t	range = 42 - 21 + 1;
+	ssize_t range_max = 42;
+	ssize_t range_min = 21;
+	size_t	range = range_max - range_min + 1;
 	std::srand((unsigned) time(0));
-	size = rand() % range + 21;
+	size = rand() % range + range_min;
 
 	for (size_t i = 0; i < size; i++)
 	{
-		int tmp = rand() % 100;
+		int tmp = rand() % range_max + range_min;
 		while (find(vec.begin(), vec.end(), tmp) != vec.end())
-			tmp = rand() % 100;
+			tmp = rand() % range_max + range_min;
 		vec.push_back(tmp);
 		deq.push_back(tmp);
 	}
 
 	std::cout << "Before : ";
 	printContainer(vec);
-	//printContainer(deq);
 
 	startVec = clock();
 	p.setDataVec(vec.begin(), vec.end());
@@ -119,7 +111,6 @@ int main(void)
 
 	std::cout << "After : ";
 	printContainer(dataVec.container);
-	//p.printContainer(&dataVec);
 	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << (double(endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 
     startDeq = clock();
