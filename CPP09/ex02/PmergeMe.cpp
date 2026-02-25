@@ -57,8 +57,7 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 }
 
 
-template<typename T, typename Titerator>
-void	standardBinaryInsert(T &container, unsigned int ui)
+void	standardBinaryInsert(std::vector<unsigned int> &container, unsigned int ui)
 {
 	size_t			i = 0;
 
@@ -73,7 +72,7 @@ void	standardBinaryInsert(T &container, unsigned int ui)
 		container.insert(container.begin(), ui);
 		return ;
 	}
-	Titerator it = container.begin() + i;
+	std::vector<unsigned int>::iterator it = container.begin() + i;
 	while (i + 1 < container.size())
 	{
 		if (ui > container[i] && ui < container[i + 1])
@@ -97,22 +96,60 @@ void	standardBinaryInsert(T &container, unsigned int ui)
 	std::cout << "not inserted" << std::endl;
 };
 
-template<typename T>
-void	jacobsthalBinaryInsert(T *container, T *big, T *small)
+
+void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui)
+{
+	size_t			i = 0;
+
+	if (container.size() == 0)
+	{
+		container.push_front(ui);
+		return ;
+	}
+
+	if (ui < container[0])
+	{
+		container.insert(container.begin(), ui);
+		return ;
+	}
+	std::deque<unsigned int>::iterator it = container.begin() + i;
+	while (i + 1 < container.size())
+	{
+		if (ui > container[i] && ui < container[i + 1])
+		{
+			container.insert(it + 1, ui);
+			return ;
+		}
+		it++;
+		i++;
+	}
+	if (ui > container[container.size() -1] && ui < container[container.size()])
+	{
+		container.insert(it + 1, ui);
+		return ;
+	}
+	if (ui > container[container.size()])
+	{
+		container.push_front(ui);
+		return ;
+	}
+	std::cout << "not inserted" << std::endl;
+};
+
+
+void	jacobsthalBinaryInsert(t_dataVec *data)
 {
 	std::deque<size_t>	jacobsthal(2);
-	size_t				size = big->size();
+	size_t				size = data->big.size();
 	size_t				i = 0;
 	size_t				remaining;
-	unsigned int		ui;
 
-	jacobsthal.push_back(1);
-	jacobsthal.push_back(3);
+	jacobsthal.push_front(3);
+	jacobsthal.push_front(1);
 
 	if (size == 0)
 	{
-		ui = big[i];
-		container->push_back(ui);
+		data->container.push_back(data->big[i]);
 		return ;
 	}
 	while (i < size)
@@ -123,70 +160,139 @@ void	jacobsthalBinaryInsert(T *container, T *big, T *small)
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
 			std::cout << "standard" << std::endl;
-			ui = big[i];
-			standardBinaryInsert(small, ui);
+			standardBinaryInsert(data->small, data->big[i]);
 		}
 		else
 		{
 			std::cout << "jacobsthal" << std::endl;
-			ui = big[jacobsthal[1]];
-			standardBinaryInsert(small, ui);
+			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
 		i ++;
 	}
-	container->clear();
-	container = small;
+	data->container.clear();
+	data->container = data->small;
 };
 
-template<typename T>
-void	splitBigSmall(T *current, T *big, T *small)
+void	jacobsthalBinaryInsert(t_dataDeq *data)
+{
+	std::deque<size_t>	jacobsthal(2);
+	size_t				size = data->big.size();
+	size_t				i = 0;
+	size_t				remaining;
+
+	jacobsthal.push_front(3);
+	jacobsthal.push_front(1);
+	std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << std::endl;
+
+	if (size == 0)
+	{
+		data->container.push_front(data->big[i]);
+		return ;
+	}
+	while (i < size)
+	{
+		std::cout << "i = " << i << std::endl;
+		remaining = size - i;
+		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
+		if (jacobsthal[1] - jacobsthal[0] > remaining)
+		{
+			std::cout << "standard" << std::endl;
+			standardBinaryInsert(data->small, data->big[i]);
+		}
+		else
+		{
+			std::cout << "jacobsthal" << std::endl;
+			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
+		}
+		jacobsthal = update_jacobsthal(jacobsthal);
+		i ++;
+	}
+	data->container.clear();
+	data->container = data->small;
+};
+
+void	splitBigSmall(std::vector<unsigned int> &current, t_dataVec *data)
 {
 	size_t	size = current.size();
 
-	big.clear();
+	data->big.clear();
 	size_t	i = 0;
 	while (i + 1 < size)
 	{
 		if (current[i] < current[i + 1])
 		{
-			standardBinaryInsert(small, current[i]);
-			big.push_back(current[i + 1]);
+			standardBinaryInsert(data->small, current[i]);
+			data->big.push_back(current[i + 1]);
 		}
 		else
 		{
-			standardBinaryInsert(small, current[i + 1]);
-			big.push_back(current[i]);
+			standardBinaryInsert(data->small, current[i + 1]);
+			data->big.push_back(current[i]);
 		}
 		i += 2;
 	}
 	while (i < size)
 	{
-		standardBinaryInsert(small, current[i]);
+		standardBinaryInsert(data->small, current[i]);
 		i++;
 	}
 	current.clear();
-	current = big;
+	current = data->big;
 };
 
-template<typename T>
-void	mergePairs(size_t size, T *current, T *big, T *small)
+void	splitBigSmall(std::deque<unsigned int> &current, t_dataDeq *data)
+{
+	size_t	size = current.size();
+
+	data->big.clear();
+	size_t	i = 0;
+	while (i + 1 < size)
+	{
+		if (current[i] < current[i + 1])
+		{
+			standardBinaryInsert(data->small, current[i]);
+			data->big.push_back(current[i + 1]);
+		}
+		else
+		{
+			standardBinaryInsert(data->small, current[i + 1]);
+			data->big.push_back(current[i]);
+		}
+		i += 2;
+	}
+	while (i < size)
+	{
+		standardBinaryInsert(data->small, current[i]);
+		i++;
+	}
+	current.clear();
+	current = data->big;
+};
+
+void	mergePairs(size_t size, std::vector<unsigned int> &current, t_dataVec *data)
 {
 	if (size / 2 > 1)
-		mergePairs(size / 2, current, big, small);
-	splitBigSmall(current, big, small);
-};
+		mergePairs(size / 2, current, data);
+	splitBigSmall(current, data);
+}
 
+void	mergePairs(size_t size, std::deque<unsigned int> &current, t_dataDeq *data)
+{
+	if (size / 2 > 1)
+		mergePairs(size / 2, current, data);
+	splitBigSmall(current, data);
+}
 
 
 void		PmergeMe::sortVector(t_dataVec *data)
 {
-	mergePairs(data->container.size(), &(data->container), &(data->big), &(data->small));
-	jacobsthalBinaryInsert(&(data->container), &(data->big), &(data->small));
+	mergePairs(data->container.size(), data->container, data);
+	jacobsthalBinaryInsert(data);
 }
 
 void		PmergeMe::sortDequeue(t_dataDeq *data)
 {
-	mergePairs(data->container.size(), &(data->container), &(data->big), &(data->small));
-	jacobsthalBinaryInsert(&(data->container), &(data->big), &(data->small));
+	mergePairs(data->container.size(), data->container, data);
+	jacobsthalBinaryInsert(data);
 }

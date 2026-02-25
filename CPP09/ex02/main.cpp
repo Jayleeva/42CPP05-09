@@ -37,17 +37,17 @@
 
 void	is_sorted(size_t size, t_dataVec *dataVec, t_dataDeq *dataDeq)
 {
-
+	std::cout << "dequeue size = " << dataDeq->container.size();
 	if (size != dataVec->container.size() || size != dataDeq->container.size())
 	{
-		std::cout << RED << "check: KO." << DEFAULT << std::endl;
+		std::cout << RED << "check: size KO." << DEFAULT << std::endl;
 		return ;
 	}
 	for (size_t i = 0; i + 1 < dataVec->container.size(); i++)
 	{
 		if (dataVec->container[i] > dataVec->container[i + 1])
 		{
-			std::cout << RED << "check: KO." << DEFAULT << std::endl;
+			std::cout << RED << "check: vector KO." << DEFAULT << std::endl;
 			return ;
 		}	
 	}
@@ -55,7 +55,7 @@ void	is_sorted(size_t size, t_dataVec *dataVec, t_dataDeq *dataDeq)
 	{
 		if (dataDeq->container[i] > dataDeq->container[i + 1])
 		{
-			std::cout << RED << "check: KO." << DEFAULT << std::endl;
+			std::cout << RED << "check: dequeue KO." << DEFAULT << std::endl;
 			return ;
 		}	
 	}
@@ -86,6 +86,7 @@ int main(void)
 	size_t						size;
 
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
+	//JACOBSTHAL NOT WORKING:  23 30 60 22 43 27 58 25 38 29 41 37 26 50 53 56 47 44 55 45 39 62 48 46 59 33 28 57
 	
 	ssize_t range_max = 42;
 	ssize_t range_min = 21;
@@ -101,9 +102,11 @@ int main(void)
 		vec.push_back(tmp);
 		deq.push_back(tmp);
 	}
-
-	std::cout << "Before : ";
+	//std::reverse(deq.begin(), deq.end());
+	std::cout << "[VEC] Before : ";
 	printContainer(vec);
+	std::cout << "[DEQ] Before : ";
+	printContainer(deq);
 
 	startVec = clock();
 	p.setDataVec(vec.begin(), vec.end());
@@ -111,15 +114,20 @@ int main(void)
 	p.sortVector(&dataVec);
 	endVec = clock();
 
-	std::cout << "After : ";
+	std::cout << "[VEC] After : ";
 	printContainer(dataVec.container);
 	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << double(1000000.0 * (endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 
     startDeq = clock();
 	p.setDataDeq(deq.begin(), deq.end());
 	t_dataDeq	dataDeq = p.getDataDeq();
+	std::cout << "[DEQ] Middle : ";
+	printContainer(dataDeq.container);
 	p.sortDequeue(&dataDeq);
     endDeq = clock();
+
+	std::cout << "[DEQ] After : ";
+	printContainer(dataDeq.container);
 	std::cout << "Time to process a range of " << size << " elements with std::" << "deque : " << double(1000000.0 * (endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
 
 	is_sorted(size, &dataVec, &dataDeq);
