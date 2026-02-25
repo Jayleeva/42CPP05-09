@@ -15,7 +15,8 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &original)
 {
 	if (this != &original)
 	{
-		this->container = original.container;
+		this->dataVec.container = original.dataVec.container;
+		this->dataDeq.container = original.dataDeq.container;
 	}
 	std::cout << YELLOW << "[PMERGEME] : Assignment operator overload called" << DEFAULT << std::endl;
 	return (*this);
@@ -26,12 +27,22 @@ PmergeMe::~PmergeMe()
 	std::cout << YELLOW << "[PMERGEME] : Default destructor called" << DEFAULT << std::endl;
 }
 
-std::vector<unsigned int>	PmergeMe::getContainer() const
+std::vector<unsigned int>	PmergeMe::getVector() const
 {
 	return (this->dataVec.container);
 }
 
-void	PmergeMe::setContainer(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
+void	PmergeMe::setVector(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
+{
+	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
+}
+
+std::deque<unsigned int>	PmergeMe::getDeque() const
+{
+	return (this->dataDeq.container);
+}
+
+void	PmergeMe::setDeque(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
 {
 	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
 }
@@ -203,19 +214,21 @@ void	PmergeMe::binaryInsertBig()
 	this->container = this->small;
 }
 
-void	PmergeMe::sortContainer()
+template<typename T>
+void	PmergeMe::sortContainer(T &container)
 {
-	this->mergePairs(this->container.size(), this->container);
+	this->mergePairs(container.size(), container);
 	this->binaryInsertBig();
 }
 
-void	PmergeMe::printContainer()
+template<typename T>
+void	printContainer(T &container)
 {
-	size_t	size = this->container.size();
+	size_t	size = container.size();
 
 	for (size_t i = 0; i < size -1 ; i++)
 	{
-		std::cout << this->container[i] << ' ';
+		std::cout << container[i] << ' ';
 	}
-	std::cout << this->container[size -1] << std::endl;
+	std::cout << container[size -1] << std::endl;
 }

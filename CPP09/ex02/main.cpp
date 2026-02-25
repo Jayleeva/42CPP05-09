@@ -86,13 +86,13 @@ int main(void)
 	}
 
     startVec = clock();
-	p.setContainer(vec.begin(), vec.end());
+	p.setVector(vec.begin(), vec.end());
 	std::cout << "Before : ";
-	p.printContainer();
+	printContainer(vec);
 
 	p.sortContainer();
 	std::cout << "After : ";
-	p.printContainer();
+	printContainer(vec);
     endVec = clock();
 	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << (double(endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 

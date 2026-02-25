@@ -23,7 +23,7 @@ typedef struct s_dataVec
 
 typedef struct s_dataDeq
 {
-	std::deque<unsigned int>	dataDeq;
+	std::deque<unsigned int>	container;
 	std::deque<unsigned int>	small;
 	std::deque<unsigned int>	big;
 }								t_dataDeq;
@@ -35,8 +35,6 @@ class	PmergeMe
 		PmergeMe(PmergeMe const &original);
 		PmergeMe &operator=(PmergeMe const &original);
 		~PmergeMe();
-
-		//typedef typename T::iterator iterator;
 
 		std::vector<unsigned int>	getVector() const;
 		void						setVector(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end);
@@ -52,13 +50,17 @@ class	PmergeMe
 		void	standardBinaryInsert(unsigned int ui);
 		void	binaryInsertBig();
 
-		void	sortContainer();
-		void	printContainer();
+		template<typename T>
+		void	sortContainer(T &container);
+
 
 	private:
 		t_dataVec	dataVec;
 		t_dataDeq	dataDeq;
 };
+
+template<typename T>
+void	printContainer(T &container);
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 
