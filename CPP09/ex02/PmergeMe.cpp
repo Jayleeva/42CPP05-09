@@ -55,3 +55,15 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 	jacobsthal[1] = tmp1 * 2 + tmp2;
 	return (jacobsthal);
 }
+
+void		PmergeMe::sortVector(t_dataVec *data, char type)
+{
+	mergePairs(data->container.size(), data->container, data, type);
+	jacobsthalBinaryInsert(data->container, data->big, data->small);
+}
+
+void		PmergeMe::sortDequeue(t_dataDeq *data, char type)
+{
+	mergePairs(data->container.size(), data->container, data, type);
+	jacobsthalBinaryInsert(data->container, data->big, data->small);
+}

@@ -42,8 +42,12 @@ class	PmergeMe
 		t_dataDeq	getDataDeq() const;
 		void		setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
 
-		template<typename Tdata>
-		void		sortContainer(Tdata *data, char type);
+		//template<typename Tdata>
+		//void		sortContainer(Tdata *data, char type);
+		//template class sortContainer<s_dataVec>;
+
+		void		sortVector(t_dataVec *data, char type);
+		void		sortDequeue(t_dataDeq *data, char type);
 
 	private:
 		t_dataVec	dataVec;
@@ -54,125 +58,17 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 
 template<typename T, typename Titerator>
 void	standardBinaryInsert(T &container, unsigned int ui);
-/*{
-	size_t			i = 0;
 
-	if (container.size() == 0)
-	{
-		container.push_back(ui);
-		return ;
-	}
+template<typename T>
+void	jacobsthalBinaryInsert(T *container, T *big, T *small);
 
-	if (ui < container[0])
-	{
-		container.insert(container.begin(), ui);
-		return ;
-	}
-	Titerator it = container.begin() + i;
-	while (i + 1 < container.size())
-	{
-		if (ui > container[i] && ui < container[i + 1])
-		{
-			container.insert(it + 1, ui);
-			return ;
-		}
-		it++;
-		i++;
-	}
-	if (ui > container[container.size() -1] && ui < container[container.size()])
-	{
-		container.insert(it + 1, ui);
-		return ;
-	}
-	if (ui > container[container.size()])
-	{
-		container.push_back(ui);
-		return ;
-	}
-	std::cout << "not inserted" << std::endl;
-};*/
+template<typename T>
+void	splitBigSmall(T *current, T *big, T *small, char type);
 
-template<typename Tdata>
-void	jacobsthalBinaryInsert(Tdata *data);
-/*{
-	std::deque<size_t>	jacobsthal(2);
-	size_t				size = data->big.size();
-	size_t				i = 0;
-	size_t				remaining;
+template<typename T>
+void	mergePairs(size_t size, T *current, T *big, T *small, char type);
 
-	jacobsthal.push_back(1);
-	jacobsthal.push_back(3);
-
-	if (size == 0)
-	{
-		data->container.push_back(data->big[i]);
-		return ;
-	}
-	while (i < size)
-	{
-		std::cout << "i = " << i << std::endl;
-		remaining = size - i;
-		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
-		if (jacobsthal[1] - jacobsthal[0] > remaining)
-		{
-			std::cout << "standard" << std::endl;
-			standardBinaryInsert(data->small, data->big[i]);
-		}
-		else
-		{
-			std::cout << "jacobsthal" << std::endl;
-			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
-		}
-		jacobsthal = update_jacobsthal(jacobsthal);
-		i ++;
-	}
-	data->container.clear();
-	data->container = data->small;
-};*/
-
-template<typename T, typename Tdata>
-void	splitBigSmall(T *current, Tdata *data, char type);
-/*{
-	size_t	size = current.size();
-
-	data->big.clear();
-	size_t	i = 0;
-	while (i + 1 < size)
-	{
-		if (current[i] < current[i + 1])
-		{
-			standardBinaryInsert(data->small, current[i]);
-			data->big.push_back(current[i + 1]);
-		}
-		else
-		{
-			standardBinaryInsert(data->small, current[i + 1]);
-			data->big.push_back(current[i]);
-		}
-		i += 2;
-	}
-	while (i < size)
-	{
-		standardBinaryInsert(data->small, current[i]);
-		i++;
-	}
-	current.clear();
-	current = data->big;
-};*/
-
-template<typename T, typename Tdata>
-void	mergePairs(size_t size, T *current, Tdata *data, char type);
-/*{
-	if (size / 2 > 1)
-		mergePairs(size / 2, current, data, type);
-	splitBigSmall(current, data, type);
-};*/
-
-/*template<typename Tdata>
-void		sortContainer(Tdata *data, char type);
-{
-	mergePairs(data->container.size(), data->container, data, type);
-	jacobsthalBinaryInsert(data);
-};*/
+/*template<typename T, typename Tdata>
+void	sortContainer(Tdata *data, char type);*/
 
 #endif

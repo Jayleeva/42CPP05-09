@@ -40,11 +40,11 @@ void	standardBinaryInsert(T &container, unsigned int ui)
 	std::cout << "not inserted" << std::endl;
 };
 
-template<typename Tdata>
-void	jacobsthalBinaryInsert(Tdata *data)
+template<typename T>
+void	jacobsthalBinaryInsert(T *container, T *big, T *small)
 {
 	std::deque<size_t>	jacobsthal(2);
-	size_t				size = data->big.size();
+	size_t				size = big.size();
 	size_t				i = 0;
 	size_t				remaining;
 
@@ -53,7 +53,7 @@ void	jacobsthalBinaryInsert(Tdata *data)
 
 	if (size == 0)
 	{
-		data->container.push_back(data->big[i]);
+		container.push_back(big[i]);
 		return ;
 	}
 	while (i < size)
@@ -64,61 +64,73 @@ void	jacobsthalBinaryInsert(Tdata *data)
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
 			std::cout << "standard" << std::endl;
-			standardBinaryInsert(data->small, data->big[i]);
+			standardBinaryInsert(small, big[i]);
 		}
 		else
 		{
 			std::cout << "jacobsthal" << std::endl;
-			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
+			standardBinaryInsert(small, big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
 		i ++;
 	}
-	data->container.clear();
-	data->container = data->small;
+	container.clear();
+	container = small;
 };
 
-template<typename T, typename Tdata>
-void	splitBigSmall(T *current, Tdata *data, char type)
+template<typename T>
+void	splitBigSmall(T *current, T *big, T *small, char type)
 {
 	size_t	size = current.size();
 
-	data->big.clear();
+	big.clear();
 	size_t	i = 0;
 	while (i + 1 < size)
 	{
 		if (current[i] < current[i + 1])
 		{
-			standardBinaryInsert(data->small, current[i]);
-			data->big.push_back(current[i + 1]);
+			standardBinaryInsert(small, current[i]);
+			big.push_back(current[i + 1]);
 		}
 		else
 		{
-			standardBinaryInsert(data->small, current[i + 1]);
-			data->big.push_back(current[i]);
+			standardBinaryInsert(small, current[i + 1]);
+			big.push_back(current[i]);
 		}
 		i += 2;
 	}
 	while (i < size)
 	{
-		standardBinaryInsert(data->small, current[i]);
+		standardBinaryInsert(small, current[i]);
 		i++;
 	}
 	current.clear();
-	current = data->big;
+	current = big;
 };
 
-template<typename T, typename Tdata>
-void	mergePairs(size_t size, T *current, Tdata *data, char type)
+template<typename T>
+void	mergePairs(size_t size, T *current, T *big, T *small, char type)
 {
 	if (size / 2 > 1)
-		mergePairs(size / 2, current, data, type);
-	splitBigSmall(current, data, type);
+		mergePairs(size / 2, current, big, small, type);
+	splitBigSmall(current, big, small, type);
 };
 
-template<typename Tdata>
+/*template<typename Tdata>
 void		sortContainer(Tdata *data, char type)
 {
 	mergePairs(data->container.size(), data->container, data, type);
 	jacobsthalBinaryInsert(data);
+};*/
+
+/*void		PmergeMe::sortContainer(t_dataVec *data, char type)
+{
+	mergePairs(data->container.size(), data->container, data, type);
+	jacobsthalBinaryInsert(data);
 };
+
+void		PmergeMe::sortContainer(t_dataDeq *data, char type)
+{
+	mergePairs(data->container.size(), data->container, data, type);
+	jacobsthalBinaryInsert(data);
+};*/

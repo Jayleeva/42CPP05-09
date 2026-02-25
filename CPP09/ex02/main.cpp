@@ -74,6 +74,8 @@ void	printContainer(T &container)
 	std::cout << container[size -1] << std::endl;
 }
 
+
+
 int main(void)
 {
 	std::vector<unsigned int>	vec;
@@ -106,19 +108,19 @@ int main(void)
 	startVec = clock();
 	p.setDataVec(vec.begin(), vec.end());
 	t_dataVec	dataVec = p.getDataVec();
-	p.sortContainer(&dataVec, 'v');
+	p.sortVector(&dataVec, 'v');
 	endVec = clock();
 
 	std::cout << "After : ";
 	printContainer(dataVec.container);
-	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << (double(endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
+	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << double(1000000.0 * (endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 
     startDeq = clock();
 	p.setDataDeq(deq.begin(), deq.end());
 	t_dataDeq	dataDeq = p.getDataDeq();
-	p.sortContainer(&dataDeq, 'd');
+	p.sortDequeue(&dataDeq, 'd');
     endDeq = clock();
-	std::cout << "Time to process a range of " << size << " elements with std::" << "deque : " << (double(endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
+	std::cout << "Time to process a range of " << size << " elements with std::" << "deque : " << double(1000000.0 * (endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
 
 	is_sorted(size, &dataVec, &dataDeq);
 	return (0);
