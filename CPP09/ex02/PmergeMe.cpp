@@ -27,12 +27,38 @@ PmergeMe::~PmergeMe()
 	std::cout << YELLOW << "[PMERGEME] : Default destructor called" << DEFAULT << std::endl;
 }
 
+t_dataVec	PmergeMe::getDataVec() const
+{
+	return (this->dataVec);
+}
+
+t_dataDeq	PmergeMe::getDataDeq() const
+{
+	return (this->dataDeq);
+}
+
+void	PmergeMe::setDataVec(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
+{
+	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
+}
+
+void	PmergeMe::setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
+{
+	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
+}
+
 std::vector<unsigned int>	PmergeMe::getVector() const
 {
 	return (this->dataVec.container);
 }
 
-void	PmergeMe::setVector(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
+std::deque<unsigned int>	PmergeMe::getDeque() const
+{
+	return (this->dataDeq.container);
+}
+
+
+/*void	PmergeMe::setVector(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
 {
 	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
 }
@@ -45,75 +71,77 @@ std::deque<unsigned int>	PmergeMe::getDeque() const
 void	PmergeMe::setDeque(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
 {
 	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
+}*/
+
+template<typename T>
+void	pushToContainer(T *container, char type, unsigned int ui)
+{
+	if (type == 'v')
+		container.push_back(ui);
+	else if (type == 'd')
+		container.push_front(ui);
 }
 
 template<typename T>
-void	PmergeMe::binaryInsertSmall(unsigned int ui)
+void	binaryInsertSmall(unsigned int ui, T *small, char type)
 {
 	size_t	i = 0;
 
-	if (this->small.size() == 0)
+	if (small.size() == 0)
 	{
-		this->small.push_back(ui);
+		pushToContainer(small, type, ui);
 		return ;
 	}
 
-	if (ui < this->small[0])
+	if (ui < small[0])
 	{
-		this->small.insert(this->small.begin(), ui);
+		small.insert(small.begin(), ui);
 		return ;
 	}
-	std::vector<unsigned int>::iterator it = this->small.begin();
-	while (i + 1 < this->small.size())
+	T::iterator it = small.begin();
+	while (i + 1 < small.size())
 	{
-		if (ui > this->small[i] && ui < this->small[i + 1])
+		if (ui > small[i] && ui < small[i + 1])
 		{
-			this->small.insert(it + 1, ui);
+			small.insert(it + 1, ui);
 			return ;
 		}
 		it++;
 		i++;
 	}
-	if (ui > this->small[this->small.size() -1])
+	if (ui > small[small.size() -1])
 	{
 		//std::cout << "dernier " << ui << std::endl;
-		this->small.push_back(ui);
+		pushToContainer(small, type, ui);
 		return ;
 	}
 }
 
-template<typename T>
-void	print_small(T small)
-{
-	size_t	size2 = small.size();
-	std::cout << "small (size: " << size2 << ") = ";
-	for (size_t i = 0; i < size2 -1 ; i++)
-	{
-		std::cout << small[i] << ' ';
-	}
-	std::cout << small[size2 -1] << std::endl;
-}
 
 template<typename T>
-void	PmergeMe::splitBigSmall(T &current)
+void	splitBigSmall(T *current, T *big, char type)
 {
 	size_t	size = current.size();
 
-	this->big.clear();
+	big.clear();
 	size_t	i = 0;
 	while (i + 1 < size)
 	{
 		if (current[i] < current[i + 1])
 		{
 			binaryInsertSmall(current[i]);
-			//print_small(this->small);
-			this->big.push_back(current[i + 1]);
+			if (type == 'v')
+				big.push_back(current[i + 1]);
+			else if (type == 'd')
+				big.push_front(current[i + 1]);
 		}
 		else
 		{
 			binaryInsertSmall(current[i + 1]);
-			//print_small(this->small);
-			this->big.push_back(current[i]);
+			if (type == 'v')
+				big.push_back(current[i]);
+			else if (type == 'd')
+				big.push_front(current[i]);
 		}
 		i += 2;
 	}
@@ -123,26 +151,19 @@ void	PmergeMe::splitBigSmall(T &current)
 		i++;
 	}
 	current.clear();
-	current = this->big;
-	/*size_t	size2 = this->big.size();
-
-	for (size_t i = 0; i < size2 -1 ; i++)
-	{
-		std::cout << this->big[i] << ' ';
-	}
-	std::cout << this->big[size2 -1] << std::endl;*/
+	current = big;
 }
 
-template<typename T>
-void	PmergeMe::mergePairs(size_t size, T &current)
+template<typename T, typename Tdata>
+void	mergePairs(size_t size, T *current, T *big, char type)
 {
 	if (size / 2 > 1)
-		this->mergePairs(size / 2, current);
-	this->splitBigSmall(current);
+		mergePairs(size / 2, current, big, type);
+	splitBigSmall(current, big, type);
 }
 
 template<typename T>
-void	PmergeMe::standardBinaryInsert(unsigned int ui)
+void	standardBinaryInsert(unsigned int ui)
 {
 	size_t			i = 0;
 
@@ -175,21 +196,20 @@ void	PmergeMe::standardBinaryInsert(unsigned int ui)
 	std::cout << "not inserted" << std::endl;
 }
 
-template<typename T>
-void	PmergeMe::binaryInsertBig()
+template<typename Tdata>
+void	binaryInsertBig(Tdata *data)
 {
 	std::deque<size_t>	jacobsthal(2);
-	size_t				size = this->big.size();
+	size_t				size = data->big.size();
 	size_t				i = 0;
 	size_t				remaining;
 
 	jacobsthal.push_front(3);
 	jacobsthal.push_front(1);
 
-
 	if (size == 0)
 	{
-		this->container.push_back(this->big[i]);
+		data->container.push_back(data->big[i]);
 		return ;
 	}
 	while (i < size)
@@ -200,35 +220,37 @@ void	PmergeMe::binaryInsertBig()
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
 			std::cout << "standard" << std::endl;
-			this->standardBinaryInsert(this->big[i]);
+			standardBinaryInsert(data->big[i]);
 		}
 		else
 		{
 			std::cout << "jacobsthal" << std::endl;
-			this->standardBinaryInsert(this->big[jacobsthal[1]]);
+			standardBinaryInsert(data->big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
 		i ++;
 	}
-	this->container.clear();
-	this->container = this->small;
+	data->container.clear();
+	data->container = data->small;
 }
 
-template<typename T>
-void	PmergeMe::sortContainer(T &container)
+
+template<typename Tdata>
+void	PmergeMe::sortContainer(Tdata *data, char type)
 {
-	this->mergePairs(container.size(), container);
-	this->binaryInsertBig();
+	mergePairs(data->container.size(), data->container, data->big, type) // data->container.size(), data->container);
+	binaryInsertBig(data);
 }
 
-template<typename T>
-void	printContainer(T &container)
+
+template<typename Tdata>
+void	PmergeMe::printContainer(Tdata *data)
 {
-	size_t	size = container.size();
+	size_t	size = data->container.size();
 
 	for (size_t i = 0; i < size -1 ; i++)
 	{
-		std::cout << container[i] << ' ';
+		std::cout << data->container[i] << ' ';
 	}
-	std::cout << container[size -1] << std::endl;
+	std::cout << data->container[size -1] << std::endl;
 }

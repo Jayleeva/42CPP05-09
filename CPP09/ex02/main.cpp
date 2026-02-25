@@ -35,16 +35,24 @@
 // former une paire = merge ?
 
 
-void	is_sorted(size_t size, std::vector<unsigned int> container)
+void	is_sorted(size_t size, std::vector<unsigned int> vec, std::deque<unsigned int> deq)
 {
-	if (size != container.size())
+	if (size != vec.size() || size != deq.size())
 	{
 		std::cout << RED << "check: KO." << DEFAULT << std::endl;
 		return ;
 	}
-	for (size_t i = 0; i + 1 < container.size(); i++)
+	for (size_t i = 0; i + 1 < vec.size(); i++)
 	{
-		if (container[i] > container[i + 1])
+		if (vec[i] > vec[i + 1])
+		{
+			std::cout << RED << "check: KO." << DEFAULT << std::endl;
+			return ;
+		}	
+	}
+	for (size_t i = 0; i + 1 < deq.size(); i++)
+	{
+		if (deq[i] > deq[i + 1])
 		{
 			std::cout << RED << "check: KO." << DEFAULT << std::endl;
 			return ;
@@ -52,6 +60,18 @@ void	is_sorted(size_t size, std::vector<unsigned int> container)
 	}
 	std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
 }
+
+/*template<typename T>
+void	printContainer(T &container)
+{
+	size_t	size = container.size();
+
+	for (size_t i = 0; i < size -1 ; i++)
+	{
+		std::cout << container[i] << ' ';
+	}
+	std::cout << container[size -1] << std::endl;
+}*/
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 {
@@ -64,12 +84,14 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 
 int main(void)
 {
-    clock_t startVec, endVec;
-    //clock_t startDeq, endDeq;
-	PmergeMe					p;
-	size_t						size;
 	std::vector<unsigned int>	vec;
-	//std::deque<unsigned int>	deq;
+	std::deque<unsigned int>	deq;
+	t_dataVec	dataVec;
+	t_dataDeq	dataDeq;
+    clock_t		startVec, endVec;
+    clock_t 	startDeq, endDeq;
+	PmergeMe	p;
+	size_t		size;
 
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
 	
@@ -83,19 +105,35 @@ int main(void)
 		while (find(vec.begin(), vec.end(), tmp) != vec.end())
 			tmp = rand() % 100;
 		vec.push_back(tmp);
+		deq.push_front(tmp);
 	}
 
-    startVec = clock();
-	p.setVector(vec.begin(), vec.end());
+	startVec = clock();
+	p.setDataVec(vec.begin(), vec.end());
 	std::cout << "Before : ";
-	printContainer(vec);
+	p.printContainer(&(p.getDataVec()));
+	//std::vector<unsigned int> vec = p.getVector();
+	//printContainer(vec);
 
-	p.sortContainer();
+	p.sortContainer(&(p.getDataVec()), 'v');
 	std::cout << "After : ";
-	printContainer(vec);
+	p.printContainer(&(p.getDataVec()));
+	//std::vector<unsigned int> vec = p.getVector();
+	//printContainer(vec);
     endVec = clock();
 	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << (double(endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 
-	is_sorted(size, p.getContainer());
+    startDeq = clock();
+	p.setDataDeq(deq.begin(), deq.end());
+	std::cout << "Before : ";
+	p.printContainer(&(p.getDataDeq()));
+
+	p.sortContainer(&(p.getDataDeq()), 'd');
+	std::cout << "After : ";
+	p.printContainer(&(p.getDataDeq()));
+    endDeq = clock();
+	std::cout << "Time to process a range of " << size << " elements with std::" << "deque : " << (double(endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
+
+	is_sorted(size, p.getVector(), p.getDeque());
 	return (0);
 }
