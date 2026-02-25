@@ -115,7 +115,7 @@ int main(void)
 
 	std::cout << "[VEC] After : ";
 	printContainer(dataVec.container);
-	std::cout << "[VEC] Time to process a range of " << size << " elements with std::" << "vector : " << double(1000000.0 * (endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
+	std::cout << "[VEC] Time to process a range of " << size << " elements with std::" << "vector : " << double(10.0 * (endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 	std::cout << std::endl;
 
     startDeq = clock();
@@ -126,9 +126,9 @@ int main(void)
 
 	std::cout << "[DEQ] After : ";
 	printContainer(dataDeq.container);
-	std::cout << "[DEQ] Time to process a range of " << size << " elements with std::" << "deque : " << double(1000000.0 * (endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
+	std::cout << "[DEQ] Time to process a range of " << size << " elements with std::" << "deque : " << double(10.0 * (endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
 	std::cout << std::endl;
-	
+
 	is_sorted(size, &dataVec, &dataDeq);
 	return (0);
 }
