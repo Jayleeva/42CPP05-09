@@ -63,7 +63,7 @@ void	PmergeMe::setDeque(std::deque<unsigned int>::iterator begin, std::deque<uns
 }*/
 
 
-template<typename T>
+template<typename T, typename Titerator>
 void	standardBinaryInsert(T *container, unsigned int ui)
 {
 	size_t			i = 0;
@@ -79,12 +79,12 @@ void	standardBinaryInsert(T *container, unsigned int ui)
 		container.insert(container.begin(), ui);
 		return ;
 	}
-	T::iterator it = container.begin() + i;
+	Titerator it = container.begin() + i;
 	while (i + 1 < container.size())
 	{
 		if (ui > container[i] && ui < container[i + 1])
 		{
-			small.insert(it + 1, ui);
+			container.insert(it + 1, ui);
 			return ;
 		}
 		it++;
@@ -190,7 +190,7 @@ void	PmergeMe::sortContainer(Tdata *data, char type)
 }
 
 
-template<typename Tdata>
+/*template<typename Tdata>
 void	PmergeMe::printContainer(Tdata *data)
 {
 	size_t	size = data->container.size();
@@ -200,4 +200,4 @@ void	PmergeMe::printContainer(Tdata *data)
 		std::cout << data->container[i] << ' ';
 	}
 	std::cout << data->container[size -1] << std::endl;
-}
+}*/

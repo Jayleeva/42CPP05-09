@@ -6,7 +6,7 @@ SRC = 	main.cpp \
 OBJ = $(SRC:.cpp=.o)
 
 CC = c++
-CPPFLAGS = -Wall -Wextra -Werror -std=c++98
+CPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 #-Wshadow -Wno-shadow
 
 MKDIR = mkdir -p

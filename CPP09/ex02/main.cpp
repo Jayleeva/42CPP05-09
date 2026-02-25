@@ -62,7 +62,7 @@ void	is_sorted(size_t size, t_dataVec *dataVec, t_dataDeq *dataDeq) // std::vect
 	std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
 }
 
-/*template<typename T>
+template<typename T>
 void	printContainer(T &container)
 {
 	size_t	size = container.size();
@@ -72,7 +72,7 @@ void	printContainer(T &container)
 		std::cout << container[i] << ' ';
 	}
 	std::cout << container[size -1] << std::endl;
-}*/
+}
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 {
@@ -107,16 +107,19 @@ int main(void)
 		deq.push_back(tmp);
 	}
 
+	std::cout << "Before : ";
+	printContainer(vec);
+	//printContainer(deq);
+
 	startVec = clock();
 	p.setDataVec(vec.begin(), vec.end());
-	std::cout << "Before : ";
 	t_dataVec	dataVec = p.getDataVec();
-	p.printContainer(&dataVec);
 	p.sortContainer(&dataVec, 'v');
-	std::cout << "After : ";
 	endVec = clock();
 
-	p.printContainer(&dataVec);    
+	std::cout << "After : ";
+	printContainer(dataVec.container);
+	//p.printContainer(&dataVec);
 	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << (double(endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 
     startDeq = clock();

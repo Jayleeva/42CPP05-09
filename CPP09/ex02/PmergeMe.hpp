@@ -43,8 +43,8 @@ class	PmergeMe
 
 		template<typename Tdata>
 		void		sortContainer(Tdata *data, char type);
-		template<typename Tdata>
-		void		printContainer(Tdata *data);
+		//template<typename Tdata>
+		//void		printContainer(Tdata *data);
 
 	private:
 		t_dataVec	dataVec;
@@ -56,7 +56,7 @@ template<typename T, typename Tdata>
 void	splitBigSmall(T *current, Tdata *data, char type);
 template<typename T, typename Tdata>
 void	mergePairs(size_t size, T &current, Tdata *data, char type);
-template<typename T>
+template<typename T, typename Titerator>
 void	standardBinaryInsert(T &container, unsigned int ui);
 template<typename Tdata>
 void	jacobsthalBinaryInsert(Tdata *data);
