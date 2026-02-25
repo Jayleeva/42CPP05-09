@@ -36,22 +36,15 @@ class	PmergeMe
 		PmergeMe &operator=(PmergeMe const &original);
 		~PmergeMe();
 
-		std::vector<unsigned int>	getVector() const;
-		//void						setVector(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end);
-
-		std::deque<unsigned int>	getDeque() const;
-		//void						setDeque(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
-
-
-		t_dataVec					getDataVec() const;
-		void						setDataVec(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end);
-		t_dataDeq					getDataDeq() const;
-		void						setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
+		t_dataVec	getDataVec() const;
+		void		setDataVec(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end);
+		t_dataDeq	getDataDeq() const;
+		void		setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
 
 		template<typename Tdata>
-		void	sortContainer(Tdata *data , char type);
+		void		sortContainer(Tdata *data, char type);
 		template<typename Tdata>
-		void	printContainer(Tdata *data);
+		void		printContainer(Tdata *data);
 
 	private:
 		t_dataVec	dataVec;
@@ -59,18 +52,14 @@ class	PmergeMe
 };
 
 
-template<typename T>
-void	splitBigSmall(T &current);
-void	binaryInsertSmall(unsigned int ui);
-template<typename T>
-void	mergePairs(size_t size, T &current);
+template<typename T, typename Tdata>
+void	splitBigSmall(T *current, Tdata *data, char type);
+template<typename T, typename Tdata>
+void	mergePairs(size_t size, T &current, Tdata *data, char type);
 template<typename T>
 void	standardBinaryInsert(T &container, unsigned int ui);
 template<typename Tdata>
-void	binaryInsertBig(Tdata *data);
-
-template<typename T>
-void	printContainer(T &container);
+void	jacobsthalBinaryInsert(Tdata *data);
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 

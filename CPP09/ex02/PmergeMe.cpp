@@ -47,17 +47,6 @@ void	PmergeMe::setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<u
 	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
 }
 
-std::vector<unsigned int>	PmergeMe::getVector() const
-{
-	return (this->dataVec.container);
-}
-
-std::deque<unsigned int>	PmergeMe::getDeque() const
-{
-	return (this->dataDeq.container);
-}
-
-
 /*void	PmergeMe::setVector(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
 {
 	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
@@ -114,85 +103,48 @@ void	standardBinaryInsert(T *container, unsigned int ui)
 	std::cout << "not inserted" << std::endl;
 }
 
-template<typename T>
-void	binaryInsertSmall(unsigned int ui, T *small, char type)
-{
-	size_t	i = 0;
 
-	if (small.size() == 0)
-	{
-		small.push_back(ui);
-		return ;
-	}
-
-	if (ui < small[0])
-	{
-		small.insert(small.begin(), ui);
-		return ;
-	}
-	T::iterator it = small.begin();
-	while (i + 1 < small.size())
-	{
-		if (ui > small[i] && ui < small[i + 1])
-		{
-			small.insert(it + 1, ui);
-			return ;
-		}
-		it++;
-		i++;
-	}
-	if (ui > small[small.size() -1])
-	{
-		//std::cout << "dernier " << ui << std::endl;
-		small.push_back(ui);
-		return ;
-	}
-}
-
-
-template<typename T>
-void	splitBigSmall(T *current, T *big, char type)
+template<typename T, typename Tdata>
+void	splitBigSmall(T *current, Tdata *data, char type)
 {
 	size_t	size = current.size();
 
-	big.clear();
+	data->big.clear();
 	size_t	i = 0;
 	while (i + 1 < size)
 	{
 		if (current[i] < current[i + 1])
 		{
-			binaryInsertSmall(current[i]);
-			big.push_back(current[i + 1]);
-
+			standardBinaryInsert(data->small, current[i]);
+			data->big.push_back(current[i + 1]);
 		}
 		else
 		{
-			binaryInsertSmall(current[i + 1]);
-			big.push_back(current[i]);
+			standardBinaryInsert(data->small, current[i + 1]);
+			data->big.push_back(current[i]);
 		}
 		i += 2;
 	}
 	while (i < size)
 	{
-		binaryInsertSmall(current[i]);
+		standardBinaryInsert(data->small, current[i]);
 		i++;
 	}
 	current.clear();
-	current = big;
+	current = data->big;
 }
 
 template<typename T, typename Tdata>
-void	mergePairs(size_t size, T *current, T *big, char type)
+void	mergePairs(size_t size, T *current, Tdata *data, char type)
 {
 	if (size / 2 > 1)
-		mergePairs(size / 2, current, big, type);
-	splitBigSmall(current, big, type);
+		mergePairs(size / 2, current, data, type);
+	splitBigSmall(current, data, type);
 }
 
 
-
 template<typename Tdata>
-void	binaryInsertBig(Tdata *data)
+void	jacobsthalBinaryInsert(Tdata *data)
 {
 	std::deque<size_t>	jacobsthal(2);
 	size_t				size = data->big.size();
@@ -233,8 +185,8 @@ void	binaryInsertBig(Tdata *data)
 template<typename Tdata>
 void	PmergeMe::sortContainer(Tdata *data, char type)
 {
-	mergePairs(data->container.size(), data->container, data->big, type) // data->container.size(), data->container);
-	binaryInsertBig(data);
+	mergePairs(data->container.size(), data->container, data, type)
+	jacobsthalBinaryInsert(data);
 }
 
 

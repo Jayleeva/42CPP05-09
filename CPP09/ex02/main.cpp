@@ -35,24 +35,25 @@
 // former une paire = merge ?
 
 
-void	is_sorted(size_t size, std::vector<unsigned int> vec, std::deque<unsigned int> deq)
+void	is_sorted(size_t size, t_dataVec *dataVec, t_dataDeq *dataDeq) // std::vector<unsigned int> vec, std::deque<unsigned int> deq)
 {
-	if (size != vec.size() || size != deq.size())
+
+	if (size != dataVec->container.size() || size != dataDeq->container.size())
 	{
 		std::cout << RED << "check: KO." << DEFAULT << std::endl;
 		return ;
 	}
-	for (size_t i = 0; i + 1 < vec.size(); i++)
+	for (size_t i = 0; i + 1 < dataVec->container.size(); i++)
 	{
-		if (vec[i] > vec[i + 1])
+		if (dataVec->container[i] > dataVec->container[i + 1])
 		{
 			std::cout << RED << "check: KO." << DEFAULT << std::endl;
 			return ;
 		}	
 	}
-	for (size_t i = 0; i + 1 < deq.size(); i++)
+	for (size_t i = 0; i + 1 < dataDeq->container.size(); i++)
 	{
-		if (deq[i] > deq[i + 1])
+		if (dataDeq->container[i] > dataDeq->container[i + 1])
 		{
 			std::cout << RED << "check: KO." << DEFAULT << std::endl;
 			return ;
@@ -112,14 +113,10 @@ int main(void)
 	p.setDataVec(vec.begin(), vec.end());
 	std::cout << "Before : ";
 	p.printContainer(&(p.getDataVec()));
-	//std::vector<unsigned int> vec = p.getVector();
-	//printContainer(vec);
 
 	p.sortContainer(&(p.getDataVec()), 'v');
 	std::cout << "After : ";
 	p.printContainer(&(p.getDataVec()));
-	//std::vector<unsigned int> vec = p.getVector();
-	//printContainer(vec);
     endVec = clock();
 	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << (double(endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 
@@ -134,6 +131,6 @@ int main(void)
     endDeq = clock();
 	std::cout << "Time to process a range of " << size << " elements with std::" << "deque : " << (double(endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
 
-	is_sorted(size, p.getVector(), p.getDeque());
+	is_sorted(size, &(p.getDataVec()), &(p.getDataDeq()));
 	return (0);
 }
