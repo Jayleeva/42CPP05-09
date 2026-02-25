@@ -1,7 +1,7 @@
 #include "PmergeMe.hpp"
 
-template<typename T, typename Titerator>
-void	standardBinaryInsert(T &container, unsigned int ui)
+/*template<typename T, typename Titerator>
+void	PmergeMe::standardBinaryInsert(T &container, unsigned int ui)
 {
 	size_t			i = 0;
 
@@ -41,7 +41,7 @@ void	standardBinaryInsert(T &container, unsigned int ui)
 };
 
 template<typename T>
-void	jacobsthalBinaryInsert(T *container, T *big, T *small)
+void	PmergeMe::jacobsthalBinaryInsert(T *container, T *big, T *small)
 {
 	std::deque<size_t>	jacobsthal(2);
 	size_t				size = big.size();
@@ -79,7 +79,7 @@ void	jacobsthalBinaryInsert(T *container, T *big, T *small)
 };
 
 template<typename T>
-void	splitBigSmall(T *current, T *big, T *small)
+void	PmergeMe::splitBigSmall(T *current, T *big, T *small)
 {
 	size_t	size = current.size();
 
@@ -109,12 +109,12 @@ void	splitBigSmall(T *current, T *big, T *small)
 };
 
 template<typename T>
-void	mergePairs(size_t size, T *current, T *big, T *small)
+void	PmergeMe::mergePairs(size_t size, T *current, T *big, T *small)
 {
 	if (size / 2 > 1)
 		mergePairs(size / 2, current, big, small);
-	splitBigSmall(current, big, small, type);
-};
+	splitBigSmall(current, big, small);
+};*/
 
 /*template<typename Tdata>
 void		sortContainer(Tdata *data, char type)

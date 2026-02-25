@@ -42,6 +42,27 @@ class	PmergeMe
 		t_dataDeq	getDataDeq() const;
 		void		setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
 
+		/*template<typename T, typename Titerator>
+		void	standardBinaryInsert(T &container, unsigned int ui);
+
+		template<typename T>
+		void	jacobsthalBinaryInsert(T *container, T *big, T *small);
+
+		template<typename T>
+		void	splitBigSmall(T *current, T *big, T *small);
+
+		template<typename T>
+		void	mergePairs(size_t size, T *current, T *big, T *small);*/
+
+		void		sortVector(t_dataVec *data);
+		void		sortDequeue(t_dataDeq *data);
+
+	private:
+		t_dataVec	dataVec;
+		t_dataDeq	dataDeq;
+};
+
+
 		template<typename T, typename Titerator>
 		void	standardBinaryInsert(T &container, unsigned int ui);
 
@@ -53,14 +74,6 @@ class	PmergeMe
 
 		template<typename T>
 		void	mergePairs(size_t size, T *current, T *big, T *small);
-
-		void		sortVector(t_dataVec *data);
-		void		sortDequeue(t_dataDeq *data);
-
-	private:
-		t_dataVec	dataVec;
-		t_dataDeq	dataDeq;
-};
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 
