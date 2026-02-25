@@ -105,7 +105,7 @@ int main(void)
 		while (find(vec.begin(), vec.end(), tmp) != vec.end())
 			tmp = rand() % 100;
 		vec.push_back(tmp);
-		deq.push_front(tmp);
+		deq.push_back(tmp);
 	}
 
 	startVec = clock();

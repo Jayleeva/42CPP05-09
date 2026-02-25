@@ -64,7 +64,8 @@ void	splitBigSmall(T &current);
 void	binaryInsertSmall(unsigned int ui);
 template<typename T>
 void	mergePairs(size_t size, T &current);
-void	standardBinaryInsert(unsigned int ui);
+template<typename T>
+void	standardBinaryInsert(T &container, unsigned int ui);
 template<typename Tdata>
 void	binaryInsertBig(Tdata *data);
 

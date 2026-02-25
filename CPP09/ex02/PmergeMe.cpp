@@ -73,13 +73,45 @@ void	PmergeMe::setDeque(std::deque<unsigned int>::iterator begin, std::deque<uns
 	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
 }*/
 
+
 template<typename T>
-void	pushToContainer(T *container, char type, unsigned int ui)
+void	standardBinaryInsert(T *container, unsigned int ui)
 {
-	if (type == 'v')
+	size_t			i = 0;
+
+	if (container.size() == 0)
+	{
 		container.push_back(ui);
-	else if (type == 'd')
-		container.push_front(ui);
+		return ;
+	}
+
+	if (ui < container[0])
+	{
+		container.insert(container.begin(), ui);
+		return ;
+	}
+	T::iterator it = container.begin() + i;
+	while (i + 1 < container.size())
+	{
+		if (ui > container[i] && ui < container[i + 1])
+		{
+			small.insert(it + 1, ui);
+			return ;
+		}
+		it++;
+		i++;
+	}
+	if (ui > container[container.size() -1] && ui < container[container.size()])
+	{
+		container.insert(it + 1, ui);
+		return ;
+	}
+	if (ui > container[container.size()])
+	{
+		container.push_back(ui);
+		return ;
+	}
+	std::cout << "not inserted" << std::endl;
 }
 
 template<typename T>
@@ -89,7 +121,7 @@ void	binaryInsertSmall(unsigned int ui, T *small, char type)
 
 	if (small.size() == 0)
 	{
-		pushToContainer(small, type, ui);
+		small.push_back(ui);
 		return ;
 	}
 
@@ -112,7 +144,7 @@ void	binaryInsertSmall(unsigned int ui, T *small, char type)
 	if (ui > small[small.size() -1])
 	{
 		//std::cout << "dernier " << ui << std::endl;
-		pushToContainer(small, type, ui);
+		small.push_back(ui);
 		return ;
 	}
 }
@@ -130,18 +162,13 @@ void	splitBigSmall(T *current, T *big, char type)
 		if (current[i] < current[i + 1])
 		{
 			binaryInsertSmall(current[i]);
-			if (type == 'v')
-				big.push_back(current[i + 1]);
-			else if (type == 'd')
-				big.push_front(current[i + 1]);
+			big.push_back(current[i + 1]);
+
 		}
 		else
 		{
 			binaryInsertSmall(current[i + 1]);
-			if (type == 'v')
-				big.push_back(current[i]);
-			else if (type == 'd')
-				big.push_front(current[i]);
+			big.push_back(current[i]);
 		}
 		i += 2;
 	}
@@ -162,39 +189,7 @@ void	mergePairs(size_t size, T *current, T *big, char type)
 	splitBigSmall(current, big, type);
 }
 
-template<typename T>
-void	standardBinaryInsert(unsigned int ui)
-{
-	size_t			i = 0;
 
-	if (ui < this->small[0])
-	{
-		this->small.insert(this->small.begin(), ui);
-		return ;
-	}
-	std::vector<unsigned int>::iterator it = this->small.begin() + i;
-	while (i + 1 < this->small.size())
-	{
-		if (ui > this->small[i] && ui < this->small[i + 1])
-		{
-			this->small.insert(it + 1, ui);
-			return ;
-		}
-		it++;
-		i++;
-	}
-	if (ui > this->small[this->small.size() -1] && ui < this->small[this->small.size()])
-	{
-		this->small.insert(it + 1, ui);
-		return ;
-	}
-	if (ui > this->small[this->small.size()])
-	{
-		this->small.push_back(ui);
-		return ;
-	}
-	std::cout << "not inserted" << std::endl;
-}
 
 template<typename Tdata>
 void	binaryInsertBig(Tdata *data)
@@ -204,8 +199,8 @@ void	binaryInsertBig(Tdata *data)
 	size_t				i = 0;
 	size_t				remaining;
 
-	jacobsthal.push_front(3);
-	jacobsthal.push_front(1);
+	jacobsthal.push_back(1);
+	jacobsthal.push_back(3);
 
 	if (size == 0)
 	{
@@ -220,12 +215,12 @@ void	binaryInsertBig(Tdata *data)
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
 			std::cout << "standard" << std::endl;
-			standardBinaryInsert(data->big[i]);
+			standardBinaryInsert(data->small, data->big[i]);
 		}
 		else
 		{
 			std::cout << "jacobsthal" << std::endl;
-			standardBinaryInsert(data->big[jacobsthal[1]]);
+			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
 		i ++;
