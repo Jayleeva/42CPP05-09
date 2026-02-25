@@ -185,7 +185,7 @@ void	jacobsthalBinaryInsert(Tdata *data)
 template<typename Tdata>
 void	PmergeMe::sortContainer(Tdata *data, char type)
 {
-	mergePairs(data->container.size(), data->container, data, type)
+	mergePairs(data->container.size(), data->container, data, type);
 	jacobsthalBinaryInsert(data);
 }
 

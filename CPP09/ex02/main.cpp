@@ -87,16 +87,14 @@ int main(void)
 {
 	std::vector<unsigned int>	vec;
 	std::deque<unsigned int>	deq;
-	t_dataVec	dataVec;
-	t_dataDeq	dataDeq;
-    clock_t		startVec, endVec;
-    clock_t 	startDeq, endDeq;
-	PmergeMe	p;
-	size_t		size;
+    clock_t						startVec, endVec;
+    clock_t 					startDeq, endDeq;
+	PmergeMe					p;
+	size_t						size;
 
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
 	
-	size_t				range = 42 - 21 + 1;
+	size_t	range = 42 - 21 + 1;
 	std::srand((unsigned) time(0));
 	size = rand() % range + 21;
 
@@ -112,25 +110,22 @@ int main(void)
 	startVec = clock();
 	p.setDataVec(vec.begin(), vec.end());
 	std::cout << "Before : ";
-	p.printContainer(&(p.getDataVec()));
-
-	p.sortContainer(&(p.getDataVec()), 'v');
+	t_dataVec	dataVec = p.getDataVec();
+	p.printContainer(&dataVec);
+	p.sortContainer(&dataVec, 'v');
 	std::cout << "After : ";
-	p.printContainer(&(p.getDataVec()));
-    endVec = clock();
+	endVec = clock();
+
+	p.printContainer(&dataVec);    
 	std::cout << "Time to process a range of " << size << " elements with std::" << "vector : " << (double(endVec - startVec) / CLOCKS_PER_SEC) << " us" << std::endl;
 
     startDeq = clock();
 	p.setDataDeq(deq.begin(), deq.end());
-	std::cout << "Before : ";
-	p.printContainer(&(p.getDataDeq()));
-
-	p.sortContainer(&(p.getDataDeq()), 'd');
-	std::cout << "After : ";
-	p.printContainer(&(p.getDataDeq()));
+	t_dataDeq	dataDeq = p.getDataDeq();
+	p.sortContainer(&dataDeq, 'd');
     endDeq = clock();
 	std::cout << "Time to process a range of " << size << " elements with std::" << "deque : " << (double(endDeq - startDeq) / CLOCKS_PER_SEC) << " us" << std::endl;
 
-	is_sorted(size, &(p.getDataVec()), &(p.getDataDeq()));
+	is_sorted(size, &dataVec, &dataDeq);
 	return (0);
 }
