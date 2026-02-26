@@ -143,9 +143,9 @@ int main(int argc, char **argv)
 
 	if (!is_sorted(size, dataVec.container))
 		std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
-	else if (!is_sorted(size, dataDeq.container))
+	if (!is_sorted(size, dataDeq.container))
 		std::cout << RED << "check: [DEQ] KO." << DEFAULT << std::endl;
-	else
+	if (is_sorted(size, dataVec.container) && is_sorted(size, dataDeq.container))
 		std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
 	return (0);
 }
