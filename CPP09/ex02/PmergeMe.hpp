@@ -7,6 +7,9 @@
 # include <cmath>
 # include <vector>
 # include <deque>
+# include <limits>
+
+# define MAX_INT std::numeric_limits<int>::max() 
 
 # define DEFAULT "\001\033[0;39m\002"
 # define YELLOW "\001\033[1;93m\002"

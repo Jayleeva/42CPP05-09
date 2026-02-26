@@ -34,31 +34,22 @@
 
 // former une paire = merge ?
 
-
-void	is_sorted(size_t size, std::vector<unsigned int> vec, std::deque<unsigned int> deq)
+// microsecondes = secondes / 1000000 
+template<typename T>
+int	is_sorted(size_t size, T container)
 {
-	if (size != vec.size() || size != deq.size())
+	if (size != container.size())
 	{
-		std::cout << RED << "check: size KO." << DEFAULT << std::endl;
-		return ;
+		return (0);
 	}
-	for (size_t i = 0; i + 1 < vec.size(); i++)
+	for (size_t i = 0; i + 1 < container.size(); i++)
 	{
-		if (vec[i] > vec[i + 1])
+		if (container[i] > container[i + 1])
 		{
-			std::cout << RED << "check: vector KO." << DEFAULT << std::endl;
-			return ;
+			return (0);
 		}	
 	}
-	for (size_t i = 0; i + 1 < deq.size(); i++)
-	{
-		if (deq[i] > deq[i + 1])
-		{
-			std::cout << RED << "check: dequeue KO." << DEFAULT << std::endl;
-			return ;
-		}	
-	}
-	std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
+	return (1);
 }
 
 template<typename T>
@@ -66,7 +57,6 @@ void	printContainer(T &container)
 {
 	size_t	size = container.size();
 
-	std::cout << "size in print = " << size << std::endl;
 	for (size_t i = 0; i < size -1 ; i++)
 	{
 		std::cout << container[i] << ' ';
@@ -98,7 +88,6 @@ int main(int argc, char **argv)
 		std::cerr << "Error: not enough arguments." << std::endl;
 		return (0);
 	}
-		
 
 	size = argc -1;
 	for (size_t i = 1; i < size + 1; i++)
@@ -106,8 +95,13 @@ int main(int argc, char **argv)
 		/*unsigned int tmp = rand() % range_max + range_min;
 		while (find(vec.begin(), vec.end(), tmp) != vec.end())
 			tmp = rand() % range_max + range_min;*/
-		
-		unsigned int tmp = atoi(argv[i]);
+		long int	tmpl = atoi(argv[i]);
+		if (tmpl > MAX_INT || tmpl < 0)
+		{
+			std::cerr << "Error: not an unsigned int." << std::endl;
+			return (0);
+		}
+		unsigned int tmp = static_cast<unsigned int>(tmpl);
 		if (find(vec.begin(), vec.end(), tmp) != vec.end())
 		{
 			std::cerr << "Error: duplicate." << std::endl;
@@ -130,7 +124,7 @@ int main(int argc, char **argv)
 
 	std::cout << "[VEC] After : ";
 	printContainer(dataVec.container);
-	std::cout << "[VEC] Time to process a range of " << size << " elements with std::" << "vector : " <<  double(endVec - startVec) / CLOCKS_PER_SEC << " us" << std::endl;
+	std::cout << "[VEC] Time to process a range of " << size << " elements with std::" << "vector : " << 1000000.0 * static_cast<double>(endVec - startVec) / CLOCKS_PER_SEC << " us" << std::endl;
 	std::cout << std::endl;
 
     startDeq = clock();
@@ -141,9 +135,12 @@ int main(int argc, char **argv)
 
 	std::cout << "[DEQ] After : ";
 	printContainer(dataDeq.container);
-	std::cout << "[DEQ] Time to process a range of " << size << " elements with std::" << "deque : " << double(endDeq - startDeq) / CLOCKS_PER_SEC << " us" << std::endl;
+	std::cout << "[DEQ] Time to process a range of " << size << " elements with std::" << "deque : " << 1000000.0 * static_cast<double>(endDeq - startDeq) / CLOCKS_PER_SEC << " us" << std::endl;
 	std::cout << std::endl;
 
-	is_sorted(size, dataVec.container, dataDeq.container);
+	if (!is_sorted(size, dataVec.container) || !is_sorted(size, dataDeq.container))
+		std::cout << RED << "check: KO." << DEFAULT << std::endl;
+	else
+		std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
 	return (0);
 }
