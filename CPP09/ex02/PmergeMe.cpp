@@ -124,19 +124,26 @@ void	formAndSortPairs(std::deque<unsigned int> &container, t_dataDeq *data)
 	}
 }
 
-void	swapSort(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
+/*void	inplaceMerge(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
 {
 
 }
 
-bool custom_cmp(std::pair<int, int> a, std::pair<int, int> b)
+void	mergeSort(size_t size, std::deque<unsigned int> &current, t_dataDeq *data)
+{
+	if (size / 2 > 1)
+		mergeSort(size / 2, current, data);
+	inplaceMerge(current, data);
+}*/
+
+bool must_swap(std::pair<unsigned int, unsigned int> a, std::pair<unsigned int, unsigned int> b)
 {
 	if (a.second < b.second)
 		return (1);
 	return (0);
 }
 
-void mergeSort2(std::deque<std::pair<int, int> >::iterator start, std::deque<std::pair<int, int> >::iterator end, size_t size)
+void mergeSort2(std::deque<std::pair<unsigned int, unsigned int> >::iterator start, std::deque<std::pair<unsigned int, unsigned int> >::iterator end, size_t size)
 {
 	if (size == 0 && start != end)
 		size = std::distance(start, end);
@@ -145,21 +152,13 @@ void mergeSort2(std::deque<std::pair<int, int> >::iterator start, std::deque<std
 
 	size_t firstHalf = size / 2;
 	size_t secondHalf = size - firstHalf;
-	std::deque<std::pair<int, int> >::iterator center = start + firstHalf;
+	std::deque<std::pair<unsigned int, unsigned int> >::iterator center = start + firstHalf;
 
 	mergeSort2(start, center, firstHalf);
 	mergeSort2(center, end, secondHalf);
-	std::inplace_merge(start, center, end, &custom_cmp);
+	std::inplace_merge(start, center, end, &must_swap);
 }
 
-void	mergeSort(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
-{
-	if (n > 1)
-		mergeSort(--n, current, data);
-	//if (size / 2 > 1)
-	//	mergePairs(size / 2, current, data);
-	swapSort(n, current, data);
-}
 
 void	formMainAndPending(t_dataDeq *data)
 {
@@ -171,6 +170,7 @@ void	formMainAndPending(t_dataDeq *data)
 		i += 2;
 	}
 }
+
 
 /*void	binaryInsert(std::deque<int> &container, std::deque<int>::iterator end, int val)
 {
@@ -224,8 +224,8 @@ void		PmergeMe::sortDequeue(t_dataDeq *data)
 	}
 	std::cout << "[DEQ] n = " << data->nlvl << std::endl;
 	formAndSortPairs(data->container, data);
-	mergeSort(data->nlvl, data->container, data);
-	//mergeSort2(data->container.begin(), data->container.end(), 0);
+	//mergeSort(data->nlvl, data->container, data);
+	mergeSort2(data->dequey.begin(), data->dequey.end(), 0);
 	formMainAndPending(data);
 	jacobsthalInsert(data);
 }
