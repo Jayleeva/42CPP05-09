@@ -28,8 +28,9 @@ typedef struct s_dataVec
 typedef struct s_dataDeq
 {
 	std::deque<unsigned int>	container;
-	std::deque<unsigned int>	small;
-	std::deque<unsigned int>	big;
+	std::deque<unsigned int>	main;
+	std::deque<unsigned int>	pending;
+	std::deque<unsigned int>	remaining;
 	size_t						nlvl;
 }								t_dataDeq;
 
@@ -76,8 +77,8 @@ class	PmergeMe
 		void	swapSort(std::vector<unsigned int> &current, t_dataVec *data);
 		void	swapSort(std::deque<unsigned int> &current, t_dataDeq *data);
 
-		void	mergePairs(size_t size, std::vector<unsigned int> &current, t_dataVec *data);
-		void	mergePairs(size_t size, std::deque<unsigned int> &current, t_dataDeq *data);
+		void	mergeSort(size_t size, std::vector<unsigned int> &current, t_dataVec *data);
+		void	mergeSort(size_t size, std::deque<unsigned int> &current, t_dataDeq *data);
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 

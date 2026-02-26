@@ -57,7 +57,6 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 }
 
 
-
 void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 {
 	size_t			i = 0;
@@ -97,49 +96,6 @@ void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 	//std::cout << "not inserted" << std::endl;
 };
 
-
-
-void	jacobsthalInsert(t_dataDeq *data)
-{
-	std::deque<size_t>	jacobsthal(2);
-	size_t				size = data->big.size();
-	size_t				i = 0;
-	size_t				remaining;
-
-	jacobsthal.push_front(3);
-	jacobsthal.push_front(1);
-	//std::cout << "[DEQ] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
-
-	std::cout << "[DEQ] big.size during jac= " << data->big.size() << std::endl;
-	//printContainer(data->big);
-
-	if (size == 0)
-	{
-		data->container.push_back(data->big[i]);
-		return ;
-	}
-	while (i < size)
-	{
-		std::cout << "[DEQ] i = " << i << std::endl;
-		remaining = size - i;
-		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
-		if (jacobsthal[1] - jacobsthal[0] > remaining)
-		{
-			std::cout << "[DEQ] standard; big[i] = " << data->big[i] << std::endl;
-			binaryInsert(data->small, data->big[i]);
-		}
-		else
-		{
-			std::cout << "[DEQ] jacobsthal; big[i] = " << data->big[i] << std::endl;
-			binaryInsert(data->small, data->big[jacobsthal[1]]);
-		}
-		jacobsthal = update_jacobsthal(jacobsthal);
-		i ++;
-	}
-	data->container.clear();
-	data->container = data->small;
-};
-
 template <typename T>
 void	swap_elements(T &a, T &b)
 {
@@ -150,84 +106,126 @@ void	swap_elements(T &a, T &b)
 	b = tmp;
 }
 
-void	swapSort(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
+
+void	formAndSortPairs(std::deque<unsigned int> &container, t_dataDeq *data)
 {
-	size_t	size;
-	std::deque<unsigned int> tmp;
-	size_t	elsize = 1;
-
-	size_t	power = n;
-	while (power > 0)
+	if (container.size() % 2 != 0)
 	{
-		elsize *= 2; 
-		power --;
+		data->remaining.push_back(container[container.size()]);
+		container.erase(container.end());
 	}
 
-	if (n == 1)
+	size_t	i = 0;
+	while (i + 1 < container.size())
 	{
-		size = current.size();
-		size_t	i = 0;
-		while (i + 1 < size)
-		{
-			std::deque<unsigned int> pair;
-			if (n == 1)
-			{
-				pair.push_back(current[i]);
-				pair.push_back(current[i + 1]);
-			}
-			if (pair[0] > pair[1])
-				swap_elements(pair[0], pair[1]);
-			tmp.insert(pair.begin(), elsize);
-			std::cout << "noot noot" << std::endl;
-			i += elsize;
-		}
-		// ignorer les derniers si sequence "impaire"
+		if (container[i] > container[i + 1])
+			swap_elements(container[i], container[i + 1]);
+		i ++;
 	}
-	else if (n > 1 && n < data->nlvl)
-	{
-		size = current.size();
-		size_t	i = 0;
-		while (i + 1 < size)
-		{
-			if (current[elsize / 2 + i] > current[elsize + i + 1])
-				swap_elements(, );
-			std::cout << "ELSE noot noot" << std::endl;
-			i += elsize;
-		}
-		// ignorer les derniers si sequence "impaire"
-	}
-	current.clear();
-	current = tmp;
 }
 
+void	swapSort(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
+{
 
-void	mergePairs(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
+}
+
+bool custom_cmp(std::pair<int, int> a, std::pair<int, int> b)
+{
+	if (a.second < b.second)
+		return (1);
+	return (0);
+}
+
+void mergeSort2(std::deque<std::pair<int, int> >::iterator start, std::deque<std::pair<int, int> >::iterator end, size_t size)
+{
+	if (size == 0 && start != end)
+		size = std::distance(start, end);
+	if (size <= 1)
+		return;
+
+	size_t firstHalf = size / 2;
+	size_t secondHalf = size - firstHalf;
+	std::deque<std::pair<int, int> >::iterator center = start + firstHalf;
+
+	mergeSort2(start, center, firstHalf);
+	mergeSort2(center, end, secondHalf);
+	std::inplace_merge(start, center, end, &custom_cmp);
+}
+
+void	mergeSort(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
 {
 	if (n > 1)
-		mergePairs(--n, current, data);
+		mergeSort(--n, current, data);
 	//if (size / 2 > 1)
 	//	mergePairs(size / 2, current, data);
 	swapSort(n, current, data);
 }
 
+void	formMainAndPending(t_dataDeq *data)
+{
+	size_t	i = 0;
+	while (i + 1 < data->container.size())
+	{
+		data->pending.push_back(data->container[i]);
+		data->main.push_back(data->container[i + 1]);
+		i += 2;
+	}
+}
+
+/*void	binaryInsert(std::deque<int> &container, std::deque<int>::iterator end, int val)
+{
+	std::deque<int>::iterator it = std::lower_bound(container.begin(), end, val);
+	container.insert(it, val);
+}*/
+
+void	jacobsthalInsert(t_dataDeq *data)
+{
+	std::deque<size_t>	jacobsthal(2);
+	size_t				size = data->pending.size();
+	size_t				i = 0;
+	size_t				remaining;
+
+	jacobsthal.push_front(3);
+	jacobsthal.push_front(1);
+	//std::cout << "[DEQ] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
+
+	if (size == 0)
+	{
+		data->container.push_back(data->pending[i]);
+		return ;
+	}
+	while (i < size)
+	{
+		remaining = size - i;
+		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
+		if (jacobsthal[1] - jacobsthal[0] > remaining)
+		{
+			std::cout << "[DEQ] standard; big[i] = " << data->pending[i] << std::endl;
+			binaryInsert(data->main, data->pending[i]);
+		}
+		else
+		{
+			std::cout << "[DEQ] jacobsthal; big[i] = " << data->pending[i] << std::endl;
+			binaryInsert(data->main, data->pending[jacobsthal[1]]);
+		}
+		jacobsthal = update_jacobsthal(jacobsthal);
+		i ++;
+	}
+};
 
 void		PmergeMe::sortDequeue(t_dataDeq *data)
 {
 	size_t	size = data->container.size();
-	size_t	tmp = size;
 	data->nlvl = 1; // si 1, ne rentre jamais dans jacobsthal, marche la plupart du temps mais pas toujours.
-	while (tmp / 2 > 1)
+	while (size / 2 > 1)
 	{
-		tmp /= 2;
+		size /= 2;
 		data->nlvl ++;
 	}
-	size_t	i = 1;
-	while (i < data->nlvl)
-	{
-		tmp *= 2;
-		i ++;
-	}
-	std::cout << "[DEQ] n = " << data->nlvl << " tmp = " << tmp << std::endl;
-	mergePairs(data->nlvl, data->container, data);
-	//jacobsthalInsert(data);
+	std::cout << "[DEQ] n = " << data->nlvl << std::endl;
+	formAndSortPairs(data->container, data);
+	mergeSort(data->nlvl, data->container, data);
+	//mergeSort2(data->container.begin(), data->container.end(), 0);
+	formMainAndPending(data);
+	jacobsthalInsert(data);
 }
