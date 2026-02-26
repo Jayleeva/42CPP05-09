@@ -308,7 +308,7 @@ void		PmergeMe::sortVector(t_dataVec *data)
 		size /= 2;
 		n ++;
 	}
-	std::cout << "[DEQ] n = " << n << std::endl;
+	std::cout << "[VEC] n = " << n << std::endl;
 	mergePairs(n, data->container, data);
 	jacobsthalBinaryInsert(data);
 }
@@ -316,13 +316,26 @@ void		PmergeMe::sortVector(t_dataVec *data)
 void		PmergeMe::sortDequeue(t_dataDeq *data)
 {
 	size_t	size = data->container.size();
-	size_t	n = 0; // si 1, ne rentre jamais dans jacobsthal, marche la plupart du temps mais pas toujours.
-	while (size / 2 > 1)
+	size_t	tmp = size;
+	size_t	n = 1; // si 1, ne rentre jamais dans jacobsthal, marche la plupart du temps mais pas toujours.
+	while (tmp / 2 > 1)
 	{
-		size /= 2;
+		tmp /= 2;
 		n ++;
 	}
-	std::cout << "[VEC] n = " << n << std::endl;
+	size_t	i = 1;
+	while (i < n)
+	{
+		tmp *= 2;
+		i ++;
+	}
+	std::cout << "[DEQ] n = " << n << " tmp = " << tmp << std::endl;
 	mergePairs(n, data->container, data);
+	size_t	remain = size - tmp;
+	while (remain > 0)
+	{
+		data->big.push_back(data->container[remain]);
+		remain --;
+	}
 	jacobsthalBinaryInsert(data);
 }
