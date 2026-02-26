@@ -56,7 +56,7 @@ int	is_sorted(size_t size, T container)
 	return (1);
 }
 
-template<typename T>
+/*template<typename T>
 void	printContainer(T &container)
 {
 	size_t	max_ = 10;
@@ -72,7 +72,7 @@ void	printContainer(T &container)
 		std::cout << container[i] << ' ';
 	}
 	std::cout << container[size -1] << std::endl;
-}
+}*/
 
 
 
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     startDeq = clock();
 	p.setDataDeq(deq.begin(), deq.end());
 	t_dataDeq	dataDeq = p.getDataDeq();
-	std::cout << "[DEQ] size = " << dataDeq.container.size() << std::endl;
+	//std::cout << "[DEQ] size = " << dataDeq.container.size() << std::endl;
 	p.sortDequeue(&dataDeq);
     endDeq = clock();
 

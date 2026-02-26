@@ -79,5 +79,22 @@ class	PmergeMe
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 
+template<typename T>
+void	printContainer(T &container)
+{
+	size_t	max_ = 10;
+	size_t	size = container.size();
+
+	for (size_t i = 0; i < size -1 ; i++)
+	{
+		if (i == max_)
+		{
+			std:: cout << "[...]" << std::endl;
+			return ;
+		}
+		std::cout << container[i] << ' ';
+	}
+	std::cout << container[size -1] << std::endl;
+};
 
 #endif
