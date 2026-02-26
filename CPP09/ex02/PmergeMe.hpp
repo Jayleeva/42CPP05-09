@@ -22,6 +22,7 @@ typedef struct s_dataVec
 	std::vector<unsigned int>	container;
 	std::vector<unsigned int>	small;
 	std::vector<unsigned int>	big;
+	size_t						nlvl;
 }								t_dataVec;
 
 typedef struct s_dataDeq
@@ -29,6 +30,7 @@ typedef struct s_dataDeq
 	std::deque<unsigned int>	container;
 	std::deque<unsigned int>	small;
 	std::deque<unsigned int>	big;
+	size_t						nlvl;
 }								t_dataDeq;
 
 
@@ -65,14 +67,14 @@ class	PmergeMe
 		t_dataDeq	dataDeq;
 };
 
-		void	standardBinaryInsert(std::vector<unsigned int> &container, unsigned int ui);
-		void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui);
+		void	binaryInsert(std::vector<unsigned int> &container, unsigned int ui);
+		void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui);
 
-		void	jacobsthalBinaryInsert(t_dataVec *data);
-		void	jacobsthalBinaryInsert(t_dataDeq *data);
+		void	jacobsthalInsert(t_dataVec *data);
+		void	jacobsthalInsert(t_dataDeq *data);
 
-		void	splitBigSmall(std::vector<unsigned int> &current, t_dataVec *data);
-		void	splitBigSmall(std::deque<unsigned int> &current, t_dataDeq *data);
+		void	swapSort(std::vector<unsigned int> &current, t_dataVec *data);
+		void	swapSort(std::deque<unsigned int> &current, t_dataDeq *data);
 
 		void	mergePairs(size_t size, std::vector<unsigned int> &current, t_dataVec *data);
 		void	mergePairs(size_t size, std::deque<unsigned int> &current, t_dataDeq *data);

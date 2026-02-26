@@ -57,47 +57,8 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 }
 
 
-void	standardBinaryInsert(std::vector<unsigned int> &container, unsigned int ui)
-{
-	size_t			i = 0;
 
-	if (container.size() == 0)
-	{
-		container.push_back(ui);
-		return ;
-	}
-
-	if (ui < container[0])
-	{
-		container.insert(container.begin(), ui);
-		return ;
-	}
-	std::vector<unsigned int>::iterator it = container.begin() + i;
-	while (i + 1 < container.size())
-	{
-		if (ui > container[i] && ui < container[i + 1])
-		{
-			container.insert(it + 1, ui);
-			return ;
-		}
-		it++;
-		i++;
-	}
-	if (ui > container[container.size() -1] && ui < container[container.size()])
-	{
-		container.insert(it + 1, ui);
-		return ;
-	}
-	if (ui > container[container.size()])
-	{
-		container.push_back(ui);
-		return ;
-	}
-	//std::cout << "not inserted" << std::endl;
-};
-
-
-void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui)
+void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 {
 	size_t			i = 0;
 
@@ -137,46 +98,8 @@ void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 };
 
 
-void	jacobsthalBinaryInsert(t_dataVec *data)
-{
-	std::deque<size_t>	jacobsthal(2);
-	size_t				size = data->big.size();
-	size_t				i = 0;
-	size_t				remaining;
 
-	jacobsthal.push_front(3);
-	jacobsthal.push_front(1);
-	//std::cout << "[VEC] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
-
-	//std::cout << "[VEC] big.size during jac= " << data->big.size() << std::endl;
-	if (size == 0)
-	{
-		data->container.push_back(data->big[i]);
-		return ;
-	}
-	while (i < size)
-	{
-		std::cout << "[VEC] i = " << i << std::endl;
-		remaining = size - i;
-		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
-		if (jacobsthal[1] - jacobsthal[0] > remaining)
-		{
-			std::cout << "[VEC] standard" << std::endl;
-			standardBinaryInsert(data->small, data->big[i]);
-		}
-		else
-		{
-			std::cout << "[VEC] jacobsthal" << std::endl;
-			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
-		}
-		jacobsthal = update_jacobsthal(jacobsthal);
-		i ++;
-	}
-	data->container.clear();
-	data->container = data->small;
-};
-
-void	jacobsthalBinaryInsert(t_dataDeq *data)
+void	jacobsthalInsert(t_dataDeq *data)
 {
 	std::deque<size_t>	jacobsthal(2);
 	size_t				size = data->big.size();
@@ -203,12 +126,12 @@ void	jacobsthalBinaryInsert(t_dataDeq *data)
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
 			std::cout << "[DEQ] standard; big[i] = " << data->big[i] << std::endl;
-			standardBinaryInsert(data->small, data->big[i]);
+			binaryInsert(data->small, data->big[i]);
 		}
 		else
 		{
 			std::cout << "[DEQ] jacobsthal; big[i] = " << data->big[i] << std::endl;
-			standardBinaryInsert(data->small, data->big[jacobsthal[1]]);
+			binaryInsert(data->small, data->big[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
 		i ++;
@@ -217,77 +140,66 @@ void	jacobsthalBinaryInsert(t_dataDeq *data)
 	data->container = data->small;
 };
 
-void	splitBigSmall(size_t n, std::vector<unsigned int> &current, t_dataVec *data)
+template <typename T>
+void	swap_elements(T &a, T &b)
 {
-	std::vector<unsigned int> element;
-	size_t	size = current.size();
+	T tmp;
 
-	data->big.clear();
-	size_t	i = 0;
-	while (i + 1 < size)
-	{
-		if (element.begin() < element.end())
-		{
-			swap_element(element);
-			standardBinaryInsert(data->small, current[i]);
-			data->big.push_back(current[i + 1]);
-		}
-		else
-		{
-			standardBinaryInsert(data->small, current[i + 1]);
-			data->big.push_back(current[i]);
-		}
-		i += 2;
-	}
-	while (i < size)
-	{
-		standardBinaryInsert(data->small, current[i]);
-		i++;
-	}
-	current.clear();
-	current = data->big;
-	//std::cout << "[VEC] big size before jac= " << data->big.size() << std::endl;
-};
-
-void	splitBigSmall(std::deque<unsigned int> &current, t_dataDeq *data)
-{
-	size_t	size = current.size();
-	std::deque<unsigned int> newbig;
-
-	//data->big.clear();
-	size_t	i = 0;
-	while (i + 1 < size)
-	{
-		if (current[i] > current[i + 1])
-		{
-			unsigned int	tmp = current[i];
-			current[i] = current[i + 1];
-			current[i +1] = tmp;
-			//standardBinaryInsert(data->small, current[i + 1]);
-			//newbig.push_back(current[i]);
-		}
-		i += 2;
-	}
-	while (i < size)
-	{
-		standardBinaryInsert(data->small, current[i]);
-		i++;
-	}
-	current.clear();
-	current = newbig;
-	data->big = newbig;
-
-	std::cout << "[DEQ] big size before jac= " << data->big.size() << std::endl;
-};
-
-void	mergePairs(size_t n, std::vector<unsigned int> &current, t_dataVec *data)
-{
-	if (n > 1)
-		mergePairs(--n, current, data);
-	//if (size / 2 > 1)
-	//	mergePairs(size / 2, current, data);
-	splitBigSmall(n, current, data);
+	tmp = a;
+	a = b;
+	b = tmp;
 }
+
+void	swapSort(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
+{
+	size_t	size;
+	std::deque<unsigned int> tmp;
+	size_t	elsize = 1;
+
+	size_t	power = n;
+	while (power > 0)
+	{
+		elsize *= 2; 
+		power --;
+	}
+
+	if (n == 1)
+	{
+		size = current.size();
+		size_t	i = 0;
+		while (i + 1 < size)
+		{
+			std::deque<unsigned int> pair;
+			if (n == 1)
+			{
+				pair.push_back(current[i]);
+				pair.push_back(current[i + 1]);
+			}
+			if (pair[0] > pair[1])
+				swap_elements(pair[0], pair[1]);
+			tmp.insert(pair.begin(), elsize);
+			std::cout << "noot noot" << std::endl;
+			i += elsize;
+		}
+		// ignorer les derniers si sequence "impaire"
+	}
+	else if (n > 1 && n < data->nlvl)
+	{
+		size = current.size();
+		size_t	i = 0;
+		while (i + 1 < size)
+		{
+			if (current[elsize / 2 + i] > current[elsize + i + 1])
+				swap_elements(, );
+			std::cout << "ELSE noot noot" << std::endl;
+			i += elsize;
+		}
+		// ignorer les derniers si sequence "impaire"
+	}
+	current.clear();
+	current = tmp;
+}
+
 
 void	mergePairs(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
 {
@@ -295,47 +207,27 @@ void	mergePairs(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
 		mergePairs(--n, current, data);
 	//if (size / 2 > 1)
 	//	mergePairs(size / 2, current, data);
-	splitBigSmall(current, data);
+	swapSort(n, current, data);
 }
 
-
-void		PmergeMe::sortVector(t_dataVec *data)
-{
-	size_t	size = data->container.size();
-	size_t	n = 0; // si 1, ne rentre jamais dans jacobsthal, marche la plupart du temps mais pas toujours.
-	while (size / 2 > 1)
-	{
-		size /= 2;
-		n ++;
-	}
-	std::cout << "[VEC] n = " << n << std::endl;
-	mergePairs(n, data->container, data);
-	jacobsthalBinaryInsert(data);
-}
 
 void		PmergeMe::sortDequeue(t_dataDeq *data)
 {
 	size_t	size = data->container.size();
 	size_t	tmp = size;
-	size_t	n = 1; // si 1, ne rentre jamais dans jacobsthal, marche la plupart du temps mais pas toujours.
+	data->nlvl = 1; // si 1, ne rentre jamais dans jacobsthal, marche la plupart du temps mais pas toujours.
 	while (tmp / 2 > 1)
 	{
 		tmp /= 2;
-		n ++;
+		data->nlvl ++;
 	}
 	size_t	i = 1;
-	while (i < n)
+	while (i < data->nlvl)
 	{
 		tmp *= 2;
 		i ++;
 	}
-	std::cout << "[DEQ] n = " << n << " tmp = " << tmp << std::endl;
-	mergePairs(n, data->container, data);
-	size_t	remain = size - tmp;
-	while (remain > 0)
-	{
-		data->big.push_back(data->container[remain]);
-		remain --;
-	}
-	jacobsthalBinaryInsert(data);
+	std::cout << "[DEQ] n = " << data->nlvl << " tmp = " << tmp << std::endl;
+	mergePairs(data->nlvl, data->container, data);
+	//jacobsthalInsert(data);
 }
