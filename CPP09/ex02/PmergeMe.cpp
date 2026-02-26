@@ -93,7 +93,7 @@ void	standardBinaryInsert(std::vector<unsigned int> &container, unsigned int ui)
 		container.push_back(ui);
 		return ;
 	}
-	std::cout << "not inserted" << std::endl;
+	//std::cout << "not inserted" << std::endl;
 };
 
 
@@ -133,7 +133,7 @@ void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 		container.push_back(ui);
 		return ;
 	}
-	std::cout << "not inserted" << std::endl;
+	//std::cout << "not inserted" << std::endl;
 };
 
 

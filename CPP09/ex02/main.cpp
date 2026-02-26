@@ -35,24 +35,24 @@
 // former une paire = merge ?
 
 
-void	is_sorted(size_t size, t_dataVec *dataVec, t_dataDeq *dataDeq)
+void	is_sorted(size_t size, std::vector<unsigned int> vec, std::deque<unsigned int> deq)
 {
-	if (size != dataVec->container.size() || size != dataDeq->container.size())
+	if (size != vec.size() || size != deq.size())
 	{
 		std::cout << RED << "check: size KO." << DEFAULT << std::endl;
 		return ;
 	}
-	for (size_t i = 0; i + 1 < dataVec->container.size(); i++)
+	for (size_t i = 0; i + 1 < vec.size(); i++)
 	{
-		if (dataVec->container[i] > dataVec->container[i + 1])
+		if (vec[i] > vec[i + 1])
 		{
 			std::cout << RED << "check: vector KO." << DEFAULT << std::endl;
 			return ;
 		}	
 	}
-	for (size_t i = 0; i + 1 < dataDeq->container.size(); i++)
+	for (size_t i = 0; i + 1 < deq.size(); i++)
 	{
-		if (dataDeq->container[i] > dataDeq->container[i + 1])
+		if (deq[i] > deq[i + 1])
 		{
 			std::cout << RED << "check: dequeue KO." << DEFAULT << std::endl;
 			return ;
@@ -66,6 +66,7 @@ void	printContainer(T &container)
 {
 	size_t	size = container.size();
 
+	std::cout << "size in print = " << size << std::endl;
 	for (size_t i = 0; i < size -1 ; i++)
 	{
 		std::cout << container[i] << ' ';
@@ -92,16 +93,26 @@ int main(int argc, char **argv)
 	size_t	range = range_max - range_min + 1;
 	std::srand((unsigned) time(0));
 	size = rand() % range + range_min;*/
- 
-	size = argc;
-	for (size_t i = 1; i < size; i++)
+	if (argc < 3)
+	{
+		std::cerr << "Error: not enough arguments." << std::endl;
+		return (0);
+	}
+		
+
+	size = argc -1;
+	for (size_t i = 1; i < size + 1; i++)
 	{
 		/*unsigned int tmp = rand() % range_max + range_min;
 		while (find(vec.begin(), vec.end(), tmp) != vec.end())
 			tmp = rand() % range_max + range_min;*/
+		
 		unsigned int tmp = atoi(argv[i]);
 		if (find(vec.begin(), vec.end(), tmp) != vec.end())
-			return (0); 
+		{
+			std::cerr << "Error: duplicate." << std::endl;
+			return (0);
+		}
 		vec.push_back(tmp);
 		deq.push_back(tmp);
 	}
@@ -133,6 +144,6 @@ int main(int argc, char **argv)
 	std::cout << "[DEQ] Time to process a range of " << size << " elements with std::" << "deque : " << double(endDeq - startDeq) / CLOCKS_PER_SEC << " us" << std::endl;
 	std::cout << std::endl;
 
-	is_sorted(size, &dataVec, &dataDeq);
+	is_sorted(size, dataVec.container, dataDeq.container);
 	return (0);
 }
