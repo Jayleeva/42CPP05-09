@@ -1,4 +1,6 @@
 #include "PmergeMe.hpp"
+//DEQ ne marche pas parfois, ne parvient pas a push un des elements. VEc n'a pas ce probleme.
+
 
 // Ford-Johnson: 
 // - organiser le container par paires 
@@ -40,12 +42,14 @@ int	is_sorted(size_t size, T container)
 {
 	if (size != container.size())
 	{
+		std::cout << RED << "size KO : " << container.size() << DEFAULT << std::endl;
 		return (0);
 	}
 	for (size_t i = 0; i + 1 < container.size(); i++)
 	{
 		if (container[i] > container[i + 1])
 		{
+			std::cout << RED << "sort KO : " << i << DEFAULT << std::endl;
 			return (0);
 		}	
 	}
@@ -55,10 +59,16 @@ int	is_sorted(size_t size, T container)
 template<typename T>
 void	printContainer(T &container)
 {
+	size_t	max_ = 10;
 	size_t	size = container.size();
 
 	for (size_t i = 0; i < size -1 ; i++)
 	{
+		if (i == max_)
+		{
+			std:: cout << "[...]" << std::endl;
+			return ;
+		}
 		std::cout << container[i] << ' ';
 	}
 	std::cout << container[size -1] << std::endl;
@@ -78,11 +88,6 @@ int main(int argc, char **argv)
 	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
 	//JACOBSTHAL NOT WORKING:  23 30 60 22 43 27 58 25 38 29 41 37 26 50 53 56 47 44 55 45 39 62 48 46 59 33 28 57
 	
-	/*ssize_t range_max = 4200;
-	ssize_t range_min = 1;
-	size_t	range = range_max - range_min + 1;
-	std::srand((unsigned) time(0));
-	size = rand() % range + range_min;*/
 	if (argc < 3)
 	{
 		std::cerr << "Error: not enough arguments." << std::endl;
@@ -90,12 +95,9 @@ int main(int argc, char **argv)
 	}
 
 	size = argc -1;
-	for (size_t i = 1; i < size + 1; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		/*unsigned int tmp = rand() % range_max + range_min;
-		while (find(vec.begin(), vec.end(), tmp) != vec.end())
-			tmp = rand() % range_max + range_min;*/
-		long int	tmpl = atoi(argv[i]);
+		long int	tmpl = atoi(argv[i +1]);
 		if (tmpl > MAX_INT || tmpl < 0)
 		{
 			std::cerr << "Error: not an unsigned int." << std::endl;
@@ -112,9 +114,6 @@ int main(int argc, char **argv)
 	}
 	std::cout << "[VEC] Before : ";
 	printContainer(vec);
-	std::cout << "[DEQ] Before : ";
-	printContainer(deq);
-	std::cout << std::endl;
 
 	startVec = clock();
 	p.setDataVec(vec.begin(), vec.end());
@@ -124,22 +123,28 @@ int main(int argc, char **argv)
 
 	std::cout << "[VEC] After : ";
 	printContainer(dataVec.container);
-	std::cout << "[VEC] Time to process a range of " << size << " elements with std::" << "vector : " << 1000000.0 * static_cast<double>(endVec - startVec) / CLOCKS_PER_SEC << " us" << std::endl;
+	std::cout << "[VEC] Time to process a range of " << dataVec.container.size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) * 1.0 << " us" << std::endl;
 	std::cout << std::endl;
+
+	//std::cout << "[DEQ] Before : ";
+	//printContainer(deq);
 
     startDeq = clock();
 	p.setDataDeq(deq.begin(), deq.end());
 	t_dataDeq	dataDeq = p.getDataDeq();
+	std::cout << "[DEQ] size = " << dataDeq.container.size() << std::endl;
 	p.sortDequeue(&dataDeq);
     endDeq = clock();
 
-	std::cout << "[DEQ] After : ";
-	printContainer(dataDeq.container);
-	std::cout << "[DEQ] Time to process a range of " << size << " elements with std::" << "deque : " << 1000000.0 * static_cast<double>(endDeq - startDeq) / CLOCKS_PER_SEC << " us" << std::endl;
+	//std::cout << "[DEQ] After : ";
+	//printContainer(dataDeq.container);
+	std::cout << "[DEQ] Time to process a range of " << dataDeq.container.size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << std::endl;
 	std::cout << std::endl;
 
-	if (!is_sorted(size, dataVec.container) || !is_sorted(size, dataDeq.container))
-		std::cout << RED << "check: KO." << DEFAULT << std::endl;
+	if (!is_sorted(size, dataVec.container))
+		std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
+	else if (!is_sorted(size, dataDeq.container))
+		std::cout << RED << "check: [DEQ] KO." << DEFAULT << std::endl;
 	else
 		std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
 	return (0);

@@ -123,12 +123,12 @@ void	standardBinaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 		it++;
 		i++;
 	}
-	if (container.size() > 1 && (ui > container[container.size() -1] && ui < container[container.size()]))
+	if (ui > container[container.size() -1] && ui < container[container.size()])
 	{
 		container.insert(it + 1, ui);
 		return ;
 	}
-	if (container.size() == 1 || ui > container[container.size()])
+	if (ui > container[container.size()])
 	{
 		container.push_back(ui);
 		return ;
@@ -171,6 +171,8 @@ void	jacobsthalBinaryInsert(t_dataVec *data)
 		jacobsthal = update_jacobsthal(jacobsthal);
 		i ++;
 	}
+	if (i == size)
+		std::cout << "[VEC] hello" << std::endl;
 	data->container.clear();
 	data->container = data->small;
 };
@@ -209,6 +211,8 @@ void	jacobsthalBinaryInsert(t_dataDeq *data)
 		jacobsthal = update_jacobsthal(jacobsthal);
 		i ++;
 	}
+	if (i == size)
+		std::cout << "[DEQ] hello" << std::endl;
 	data->container.clear();
 	data->container = data->small;
 };
