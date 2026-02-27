@@ -106,8 +106,7 @@ void	swap_elements(T &a, T &b)
 	b = tmp;
 }
 
-
-void	formAndSortPairs(std::deque<unsigned int> &container, t_dataDeq *data)
+void	formSortedPairs(std::deque<unsigned int> &container, t_dataDeq *data)
 {
 	if (container.size() % 2 != 0)
 	{
@@ -120,8 +119,15 @@ void	formAndSortPairs(std::deque<unsigned int> &container, t_dataDeq *data)
 	{
 		if (container[i] > container[i + 1])
 			swap_elements(container[i], container[i + 1]);
-		i ++;
+		std::pair<unsigned int, unsigned int> tmp(container[i], container[i + 1]);
+		data->pairs.push_back(tmp);
+		i += 2;
 	}
+	/*for (std::deque<std::pair<unsigned int, unsigned int> >::iterator it = data->pairs.begin(); it != data->pairs.end(); ++it)
+	{
+		if (it->first > it->second)
+			swap_elements(it->first, it->second);
+	}*/
 }
 
 /*void	inplaceMerge(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
@@ -163,11 +169,11 @@ void mergeSort2(std::deque<std::pair<unsigned int, unsigned int> >::iterator sta
 void	formMainAndPending(t_dataDeq *data)
 {
 	size_t	i = 0;
-	while (i + 1 < data->container.size())
+	while (i < data->pairs.size())
 	{
-		data->pending.push_back(data->container[i]);
-		data->main.push_back(data->container[i + 1]);
-		i += 2;
+		data->pending.push_back(data->pairs[i].first);
+		data->main.push_back(data->pairs[i].second);
+		i ++;
 	}
 }
 
@@ -191,7 +197,7 @@ void	jacobsthalInsert(t_dataDeq *data)
 
 	if (size == 0)
 	{
-		data->container.push_back(data->pending[i]);
+		data->main.push_back(data->pending[i]);
 		return ;
 	}
 	while (i < size)
@@ -223,9 +229,18 @@ void		PmergeMe::sortDequeue(t_dataDeq *data)
 		data->nlvl ++;
 	}
 	std::cout << "[DEQ] n = " << data->nlvl << std::endl;
-	formAndSortPairs(data->container, data);
+	formSortedPairs(data->container, data);
+	printContainer(data->container);
 	//mergeSort(data->nlvl, data->container, data);
-	mergeSort2(data->dequey.begin(), data->dequey.end(), 0);
+	mergeSort2(data->pairs.begin(), data->pairs.end(), 0);
+
 	formMainAndPending(data);
+	/*std::cout << "pending = ";
+	printContainer(data->pending);
+	std::cout << "main = ";
+	printContainer(data->main);*/
+
 	jacobsthalInsert(data);
+	data->container.clear();
+	data->container = data->main;
 }

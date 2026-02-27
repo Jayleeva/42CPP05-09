@@ -74,7 +74,7 @@ void	printContainer(T &container)
 	std::cout << container[size -1] << std::endl;
 }*/
 
-int	parse_arg(char *arg, std::deque<std::pair<unsigned int, unsigned int>>::iterator begin, std::deque<std::pair<unsigned int, unsigned int>>::iterator end)
+int	parse_arg(char *arg, std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
 {
 	long int	tmpl = atoi(arg);
 	if (tmpl > MAX_INT || tmpl < 0)
@@ -96,8 +96,8 @@ int	parse_arg(char *arg, std::deque<std::pair<unsigned int, unsigned int>>::iter
 int main(int argc, char **argv)
 {
 	//std::vector<unsigned int>	vec;
-	//std::deque<unsigned int>	deq;
-	std::deque<std::pair<unsigned int, unsigned int>>	deq;
+	std::deque<unsigned int>	deq;
+	//std::deque<std::pair<unsigned int, unsigned int>>	deq;
     //clock_t						startVec, endVec;
     clock_t 					startDeq, endDeq;
 	PmergeMe					p;
@@ -113,28 +113,20 @@ int main(int argc, char **argv)
 	}
 
 	size = argc -1;
-	if (size % 2 != 0)
-	{
-		int tmp = parse_arg(argv[size -1], deq.begin(), deq.end());
-		p.getDataDeq().remaining.push_back(tmp);
-		size --;
-	}
-	for (size_t i = 0; i + 1 < size; i+=2)
-	{
-		int tmp0 = parse_arg(argv[i + 1], deq.begin(), deq.end());
-		int tmp1 = parse_arg(argv[i + 2], deq.begin(), deq.end());
-		if (tmp0 == -1 || tmp1 == -1)
-			return (0);
-		static_cast<unsigned int>(tmp0);
-		static_cast<unsigned int>(tmp1);
-		std::pair<unsigned int, unsigned int> pair(tmp0, tmp1);
-		//vec.push_back(tmp);
-		deq.push_back(pair);
-	}
-	/*std::cout << "[VEC] Before : ";
-	printContainer(vec);
 
-	startVec = clock();
+	/*startVec = clock();
+	for (size_t i = 0; i < size; i++)
+	{
+		int tmp = parse_arg(argv[i + 1], vec.begin(), vec.end());
+		if (tmp == -1)
+			return (0);
+		static_cast<unsigned int>(tmp);
+		vec.push_back(tmp);
+	}
+
+	std::cout << "[VEC] Before : ";
+	printContainer(vec);
+	
 	p.setDataVec(vec.begin(), vec.end());
 	t_dataVec	dataVec = p.getDataVec();
 	p.sortVector(&dataVec);
@@ -145,10 +137,19 @@ int main(int argc, char **argv)
 	std::cout << "[VEC] Time to process a range of " << dataVec.container.size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) * 1.0 << " us" << std::endl;
 	std::cout << std::endl;*/
 
+	startDeq = clock();
+	for (size_t i = 0; i < size; i++)
+	{
+		int tmp = parse_arg(argv[i + 1], deq.begin(), deq.end());
+		if (tmp == -1)
+			return (0);
+		unsigned int ui = static_cast<unsigned int>(tmp);
+		deq.push_back(ui);
+	}
+
 	std::cout << "[DEQ] Before : ";
 	printContainer(deq);
-
-    startDeq = clock();
+    
 	p.setDataDeq(deq.begin(), deq.end());
 	t_dataDeq	dataDeq = p.getDataDeq();
 	//std::cout << "[DEQ] size = " << dataDeq.container.size() << std::endl;

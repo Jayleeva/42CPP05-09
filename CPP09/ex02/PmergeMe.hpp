@@ -27,7 +27,7 @@ typedef struct s_dataVec
 
 typedef struct s_dataDeq
 {
-	std::deque< std::pair<unsigned int, unsigned int> > dequey;
+	std::deque<std::pair<unsigned int, unsigned int> > pairs;
 	std::deque<unsigned int>	container;
 	std::deque<unsigned int>	main;
 	std::deque<unsigned int>	pending;
