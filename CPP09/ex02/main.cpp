@@ -74,12 +74,30 @@ void	printContainer(T &container)
 	std::cout << container[size -1] << std::endl;
 }*/
 
+int	parse_arg(char *arg, std::deque<std::pair<unsigned int, unsigned int>>::iterator begin, std::deque<std::pair<unsigned int, unsigned int>>::iterator end)
+{
+	long int	tmpl = atoi(arg);
+	if (tmpl > MAX_INT || tmpl < 0)
+	{
+		std::cerr << "Error: not an unsigned int." << std::endl;
+		return (-1);
+	}
+	unsigned int tmp = static_cast<unsigned int>(tmpl);
+	if (find(begin, end, tmp) != end)
+	{
+		std::cerr << "Error: duplicate." << std::endl;
+		return (-1);
+	}
+	return ((int)tmp);
+}
+
 
 
 int main(int argc, char **argv)
 {
 	//std::vector<unsigned int>	vec;
-	std::deque<unsigned int>	deq;
+	//std::deque<unsigned int>	deq;
+	std::deque<std::pair<unsigned int, unsigned int>>	deq;
     //clock_t						startVec, endVec;
     clock_t 					startDeq, endDeq;
 	PmergeMe					p;
@@ -95,22 +113,23 @@ int main(int argc, char **argv)
 	}
 
 	size = argc -1;
-	for (size_t i = 0; i < size; i++)
+	if (size % 2 != 0)
 	{
-		long int	tmpl = atoi(argv[i +1]);
-		if (tmpl > MAX_INT || tmpl < 0)
-		{
-			std::cerr << "Error: not an unsigned int." << std::endl;
+		int tmp = parse_arg(argv[size -1], deq.begin(), deq.end());
+		p.getDataDeq().remaining.push_back(tmp);
+		size --;
+	}
+	for (size_t i = 0; i + 1 < size; i+=2)
+	{
+		int tmp0 = parse_arg(argv[i + 1], deq.begin(), deq.end());
+		int tmp1 = parse_arg(argv[i + 2], deq.begin(), deq.end());
+		if (tmp0 == -1 || tmp1 == -1)
 			return (0);
-		}
-		unsigned int tmp = static_cast<unsigned int>(tmpl);
-		if (find(deq.begin(), deq.end(), tmp) != deq.end())
-		{
-			std::cerr << "Error: duplicate." << std::endl;
-			return (0);
-		}
+		static_cast<unsigned int>(tmp0);
+		static_cast<unsigned int>(tmp1);
+		std::pair<unsigned int, unsigned int> pair(tmp0, tmp1);
 		//vec.push_back(tmp);
-		deq.push_back(tmp);
+		deq.push_back(pair);
 	}
 	/*std::cout << "[VEC] Before : ";
 	printContainer(vec);
@@ -148,5 +167,5 @@ int main(int argc, char **argv)
 	//if (is_sorted(size, dataVec.container) && is_sorted(size, dataDeq.container))
 	else
 		std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
-	return (0);
+	return (1);
 }
