@@ -133,50 +133,7 @@ void	formSortedPairs(std::deque<unsigned int> &container, t_dataDeq *data)
 /*void	inplaceMerge(size_t n, std::deque<unsigned int> &current, t_dataDeq *data)
 {
 
-}
-
-void	mergeSort(size_t size, std::deque<unsigned int> &current, t_dataDeq *data)
-{
-	if (size / 2 > 1)
-		mergeSort(size / 2, current, data);
-	inplaceMerge(current, data);
 }*/
-
-bool must_swap(std::pair<unsigned int, unsigned int> a, std::pair<unsigned int, unsigned int> b)
-{
-	if (a.second < b.second)
-		return (1);
-	return (0);
-}
-
-void mergeSort2(std::deque<std::pair<unsigned int, unsigned int> >::iterator start, std::deque<std::pair<unsigned int, unsigned int> >::iterator end, size_t size)
-{
-	if (size == 0 && start != end)
-		size = std::distance(start, end);
-	if (size <= 1)
-		return;
-
-	size_t firstHalf = size / 2;
-	size_t secondHalf = size - firstHalf;
-	std::deque<std::pair<unsigned int, unsigned int> >::iterator center = start + firstHalf;
-
-	mergeSort2(start, center, firstHalf);
-	mergeSort2(center, end, secondHalf);
-	std::inplace_merge(start, center, end, &must_swap);
-}
-
-
-void	formMainAndPending(t_dataDeq *data)
-{
-	size_t	i = 0;
-	while (i < data->pairs.size())
-	{
-		data->pending.push_back(data->pairs[i].first);
-		data->main.push_back(data->pairs[i].second);
-		i ++;
-	}
-}
-
 
 /*void	binaryInsert(std::deque<int> &container, std::deque<int>::iterator end, int val)
 {
@@ -219,28 +176,40 @@ void	jacobsthalInsert(t_dataDeq *data)
 	}
 };
 
+void	formMainAndPending(t_dataDeq *data)
+{
+	size_t	i = 0;
+	while (i < data->pairs.size())
+	{
+		data->pending.push_back(data->pairs[i].first);
+		data->main.push_back(data->pairs[i].second);
+		i ++;
+	}
+}
+
+void	mergeSort(size_t size, std::deque<std::pair<unsigned int, unsigned int> > &current, t_dataDeq *data)
+{
+	if (size / 2 > 1)
+	{
+		//modifier current
+		mergeSort(size / 2, current, data);
+	}
+	formMainAndPending(data);
+	jacobsthalInsert(data);
+}
+
+
 void		PmergeMe::sortDequeue(t_dataDeq *data)
 {
 	size_t	size = data->container.size();
-	data->nlvl = 1; // si 1, ne rentre jamais dans jacobsthal, marche la plupart du temps mais pas toujours.
-	while (size / 2 > 1)
-	{
-		size /= 2;
-		data->nlvl ++;
-	}
+
 	std::cout << "[DEQ] n = " << data->nlvl << std::endl;
 	formSortedPairs(data->container, data);
 	printContainer(data->container);
-	//mergeSort(data->nlvl, data->container, data);
-	mergeSort2(data->pairs.begin(), data->pairs.end(), 0);
+	mergeSort(size, data->pairs, data);
+	//mergeSort2(data->pairs.begin(), data->pairs.end(), 0);
 
-	formMainAndPending(data);
-	/*std::cout << "pending = ";
-	printContainer(data->pending);
-	std::cout << "main = ";
-	printContainer(data->main);*/
-
-	jacobsthalInsert(data);
 	data->container.clear();
 	data->container = data->main;
+	binaryInsert(data->container, data->remaining[0]);
 }
