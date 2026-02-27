@@ -125,10 +125,24 @@ void	formSortedPairs(std::deque<unsigned int> &container, t_dataDeq *data)
 	}
 }
 
-void	swap_elements(size_t size, std::deque<unsigned int>::iterator it)
-{
 
+bool must_swap(std::deque<unsigned int> a, std::deque<unsigned int> b)
+{
+	if (a < b)
+		return (1);
+	return (0);
 }*/
+
+
+void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::deque<unsigned int>::iterator ite)
+{
+	std::deque<std::deque<unsigned int>::iterator > tmp;
+	for ()
+	{	
+		tmp.push_back(it);
+	}
+	for
+}
 
 void	sortPairs(size_t size, t_dataDeq *data)
 {
@@ -138,12 +152,11 @@ void	sortPairs(size_t size, t_dataDeq *data)
 
 	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it +=size)
 	{
-		if (*(it + size / 2 - 1) > *(it + size - 1))
+		std::deque<unsigned int>::iterator ite = it + size - 1;
+		if (*(it + size / 2 - 1) > *(ite))
 		{
-			std::deque<unsigned int>::iterator tmp;
-			it + size / 2 - 1
+			swap_elements(size, it, ite);
 		}
-			//swap_elements(size, it);
 	}
 }
 
@@ -201,33 +214,43 @@ void	formMainAndPending(size_t size, t_dataDeq *data)
 		data->pending.insert(it, size / 2);
 		data->main.insert(it + size / 2, size / 2);
 	}
+	for ()
+	{
+		data->remaining.insert(it, );
+	}
 }
 
-void	mergeSort(size_t size, std::deque<unsigned int> &current, t_dataDeq *data)
+void	merging(size_t size, std::deque<unsigned int> &current, t_dataDeq *data)
 {
 	if (size / 2 > 1)
 	{
-		mergeSort(size / 2, current, data);
+		formMainAndPending(size, data);
+		jacobsthalInsert(data);
+		if (!data->remaining.empty())
+		{
+			for ()
+			{
+				data->pending.insert(it, );
+			}
+		}
+		merging(size / 2, data->main, data);
 	}
-	sortPairs(size, data);
-	formMainAndPending(size, data);
-	jacobsthalInsert(data);
-	//modifer pairs
-	//data->pairs =
 }
 
+void	swapping(size_t size, t_dataDeq *data)
+{
+	if (size / 2 > 1)
+	{
+		swapping(size / 2, data);
+	}
+	sortPairs(size, data);
+}
 
 void		PmergeMe::sortDequeue(t_dataDeq *data)
 {
 	size_t	size = data->container.size();
 
-	std::cout << "[DEQ] n = " << data->nlvl << std::endl;
-	//formSortedPairs(data->container, data);
-	//printContainer(data->container);
-	mergeSort(size, data->container, data);
-	//mergeSort2(data->pairs.begin(), data->pairs.end(), 0);
-
-	//data->container.clear();
-	//data->container = data->main;
+	swapping(size, data);
+	merging(size, data->container, data);
 	binaryInsert(data->container, data->remaining[0]);
 }
