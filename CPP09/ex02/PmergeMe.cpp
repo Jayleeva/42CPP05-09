@@ -96,7 +96,7 @@ void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 	//std::cout << "not inserted" << std::endl;
 };
 
-template <typename T>
+/*template <typename T>
 void	swap_elements(T &a, T &b)
 {
 	T tmp;
@@ -106,7 +106,7 @@ void	swap_elements(T &a, T &b)
 	b = tmp;
 }
 
-/*void	formSortedPairs(std::deque<unsigned int> &container, t_dataDeq *data)
+void	formSortedPairs(std::deque<unsigned int> &container, t_dataDeq *data)
 {
 	if (container.size() % 2 != 0)
 	{
@@ -123,20 +123,27 @@ void	swap_elements(T &a, T &b)
 		data->pairs.push_back(tmp);
 		i += 2;
 	}
+}
+
+void	swap_elements(size_t size, std::deque<unsigned int>::iterator it)
+{
+
 }*/
 
 void	sortPairs(size_t size, t_dataDeq *data)
 {
-	std::deque<unsigned int>::iterator begin;
+	/*std::deque<unsigned int>::iterator begin;
 	std::deque<unsigned int>::iterator middle;
-	std::deque<unsigned int>::iterator end;
+	std::deque<unsigned int>::iterator end;*/
 
-	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + 1 < data->container.end(); it +=size)
+	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it +=size)
 	{
-		std::deque<unsigned int> tmp0.insert(begin, middle);
-		std::deque<unsigned int> tmp1.insert(middle, end);
-		if (tmp0[size / 2 -1] > tmp1[size / 2 -1]);
-			swap_elements();
+		if (*(it + size / 2 - 1) > *(it + size - 1))
+		{
+			std::deque<unsigned int>::iterator tmp;
+			it + size / 2 - 1
+		}
+			//swap_elements(size, it);
 	}
 }
 
@@ -189,10 +196,8 @@ void	jacobsthalInsert(t_dataDeq *data)
 
 void	formMainAndPending(size_t size, t_dataDeq *data)
 {
-	for (std::deque<unsigned int>::iterator it = data->container.begin(); it  + 1!= data->container.end(); it +=size)
+	for (std::deque<unsigned int>::iterator it = data->container.begin(); it  + size / 2 != data->container.end(); it +=size)
 	{
-		//data->pending.push_back(*it);
-		//data->main.push_back(*(it + 1));
 		data->pending.insert(it, size / 2);
 		data->main.insert(it + size / 2, size / 2);
 	}
