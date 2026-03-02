@@ -96,39 +96,6 @@ void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 	//std::cout << "not inserted" << std::endl;
 };
 
-void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::deque<unsigned int>::iterator ite)
-{
-	std::cout << "entered swap elements = " << std::endl;
-
-	std::deque<unsigned int>::iterator tmp;
-
-	for (size_t i = 0; i < size; i ++)
-	{	
-		tmp = it;
-		it = ite;
-		ite = tmp;
-
-		it ++;
-		ite ++;
-	}
-}
-
-void	sortPairs(size_t size, t_dataDeq *data)
-{
-	std::cout << "entered sort pairs with size / 2 = " << size / 2 << std::endl;
-	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it += size)
-	{
-		std::deque<unsigned int>::iterator ite = it + size - 1;
-		if (*(it + size / 2 - 1) > *(ite))
-		{
-			std::cout << "must swap it = " << *(it + size / 2 - 1) << " and ite = " << *(ite) << std::endl;
-			swap_elements(size / 2, it, ite);
-		}
-	}
-	//std::cout << "exits sort pairs = ";
-	//printContainer(data->container);
-}
-
 void	jacobsthalInsert(t_dataDeq *data)
 {
 	std::deque<size_t>	jacobsthal(2);
@@ -164,6 +131,46 @@ void	jacobsthalInsert(t_dataDeq *data)
 	}
 };
 
+void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::deque<unsigned int>::iterator ite)
+{
+	unsigned int	tmpui;
+
+	for (size_t i = 0; i < size; i ++)
+	{	
+		tmpui = *it;
+		*it = *ite;
+		*ite = tmpui;
+
+		it ++;
+		ite ++;
+	}
+}
+
+void	sortPairs(size_t size, t_dataDeq *data)
+{
+	std::cout << "entered sort pairs with size / 2 = " << size / 2 << std::endl;
+	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it += size)
+	{
+		std::deque<unsigned int>::iterator ite = it + size - 1;
+		if (*(it + size / 2 - 1) > *(ite))
+		{
+			std::cout << "must swap it = " << *(it + size / 2 - 1) << " and ite = " << *(ite) << std::endl;
+			swap_elements(size / 2, it, ite);
+		}
+	}
+	std::cout << "exits sort pairs = ";
+	printContainer(data->container);
+}
+
+void	swapping(size_t size, t_dataDeq *data)
+{
+	if (size / 2 > 1)
+	{
+		swapping(size / 2, data);
+	}
+	sortPairs(size, data);
+}
+
 void	formMainAndPending(size_t size, t_dataDeq *data)
 {
 	std::deque<unsigned int>::iterator it;
@@ -196,15 +203,6 @@ void	merging(size_t size, t_dataDeq *data)
 		}
 		merging(size / 2, data);
 	}
-}
-
-void	swapping(size_t size, t_dataDeq *data)
-{
-	if (size / 2 > 1)
-	{
-		swapping(size / 2, data);
-	}
-	sortPairs(size, data);
 }
 
 void		PmergeMe::sortDequeue(t_dataDeq *data)
