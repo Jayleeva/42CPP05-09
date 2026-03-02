@@ -171,7 +171,7 @@ void	swapping(size_t size, t_dataDeq *data)
 	{
 		swapping(size / 2, data);
 	}
-	sortPairs(size, data);
+	sortPairs(size, data); // si pas multiple de 2 ne fait pas ce qui est attendu
 }
 
 void	formMainAndPending(size_t size, t_dataDeq *data)
