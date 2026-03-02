@@ -179,9 +179,15 @@ void	formMainAndPending(size_t size, t_dataDeq *data)
 	std::deque<unsigned int>::iterator it;
 	std::deque<unsigned int>::iterator ite = data->container.end();
 
+	/*if (size % (size / 2) != 0)
+		std::cout << "modulo = " << size % (size / 2) << std::endl;*/
+
+	// range = de it à (it + size / 2 - 1), et de (it + size / 2) à (it + size - 1));
+
 	for (it = data->container.begin(); it + size / 2 != ite; it += size)
 	{
-		data->pending.insert(it, size / 2);
+		std::cout << "test " << std::endl;
+		data->pending.insert(it, size / 2); // segfault
 		data->main.insert(it + size / 2, size / 2);
 	}
 	size_t	dis = distance(it + size / 2, ite);
@@ -197,6 +203,10 @@ void	merging(size_t size, t_dataDeq *data)
 {
 	if (size / 2 > 1)
 	{
+		/*size_t	fixedSize = size;
+		if (size % 2 != 0)
+			fixedSize --;*/
+		std::cout << "entered merging with size = " << size << std::endl;
 		formMainAndPending(size, data);
 		jacobsthalInsert(data);
 		size_t	n = data->remaining.size();
