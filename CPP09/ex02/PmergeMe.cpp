@@ -151,14 +151,11 @@ void	sortPairs(size_t size, t_dataDeq *data)
 	std::cout << "entered sort pairs with size = " << size << std::endl;
 	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it += size)
 	{
-		size_t	fixedSize = size;
-		if (size % 2 != 0)
-			fixedSize --;
-		std::deque<unsigned int>::iterator ite = it + fixedSize - 1;
-		if (*(it + fixedSize / 2 - 1) > *(ite))
+		std::deque<unsigned int>::iterator ite = it + size - 1;
+		if (*(it + size / 2 - 1) > *(ite))
 		{
-			std::cout << "must swap it = " << *(it + fixedSize / 2 - 1) << " and ite = " << *(ite) << std::endl;
-			swap_elements(fixedSize / 2, it, it + fixedSize / 2);
+			std::cout << "must swap it = " << *(it + size / 2 - 1) << " and ite = " << *(ite) << std::endl;
+			swap_elements(size / 2, it, it + size / 2);
 		}
 	}
 	std::cout << "exits sort pairs = ";
@@ -171,7 +168,10 @@ void	swapping(size_t size, t_dataDeq *data)
 	{
 		swapping(size / 2, data);
 	}
-	sortPairs(size, data); // si pas multiple de 2 ne fait pas ce qui est attendu
+	size_t	fixedSize = size;
+	if (size % 2 != 0)
+		fixedSize --;
+	sortPairs(fixedSize, data);
 }
 
 void	formMainAndPending(size_t size, t_dataDeq *data)
