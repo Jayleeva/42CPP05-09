@@ -78,6 +78,7 @@ class	PmergeMe
 		void	swapSort(std::vector<unsigned int> &current, t_dataVec *data);
 		void	swapSort(std::deque<unsigned int> &current, t_dataDeq *data);
 
+		void	merging(size_t size, t_dataVec *data);
 		//void	mergeSort(size_t size, std::vector<unsigned int> &current, t_dataVec *data);
 		//void	mergeSort(size_t size, std::deque<unsigned int> &current, t_dataDeq *data);
 		void 	mergeSort2(std::deque<std::pair<unsigned int, unsigned int> >::iterator start, std::deque<std::pair<unsigned int, unsigned int> >::iterator end, size_t size);
