@@ -98,7 +98,7 @@ void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 
 void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::deque<unsigned int>::iterator ite)
 {
-	std::cout << "entered swap elements = ";
+	std::cout << "entered swap elements = " << std::endl;
 
 	std::deque<unsigned int>::iterator tmp;
 
@@ -107,6 +107,7 @@ void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::dequ
 		tmp = it;
 		it = ite;
 		ite = tmp;
+
 		it ++;
 		ite ++;
 	}
@@ -114,16 +115,18 @@ void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::dequ
 
 void	sortPairs(size_t size, t_dataDeq *data)
 {
-	std::cout << "entered sort pairs = ";
-	printContainer(data->container);
-	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it +=size)
+	std::cout << "entered sort pairs with size / 2 = " << size / 2 << std::endl;
+	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it += size)
 	{
 		std::deque<unsigned int>::iterator ite = it + size - 1;
 		if (*(it + size / 2 - 1) > *(ite))
 		{
-			swap_elements(size, it, ite);
+			std::cout << "must swap it = " << *(it + size / 2 - 1) << " and ite = " << *(ite) << std::endl;
+			swap_elements(size / 2, it, ite);
 		}
 	}
+	//std::cout << "exits sort pairs = ";
+	//printContainer(data->container);
 }
 
 void	jacobsthalInsert(t_dataDeq *data)
@@ -176,6 +179,8 @@ void	formMainAndPending(size_t size, t_dataDeq *data)
 	{
 		data->remaining.insert(it + size / 2, dis);
 	}
+	std::cout << "remaining after formmainpending = ";
+	printContainer(data->remaining);
 }
 
 void	merging(size_t size, t_dataDeq *data)
