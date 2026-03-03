@@ -160,7 +160,7 @@ void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::dequ
 
 void	sortPairs(size_t size, std::deque<unsigned int>	&container)
 {
-	//std::cout << "entered sort pairs with size = " << size << std::endl;
+	std::cout << "entered sort pairs with size = " << size << std::endl;
 	for (std::deque<unsigned int>::iterator it = container.begin(); it + size / 2 < container.end(); it += size)
 	{
 		std::deque<unsigned int>::iterator ite = it + size - 1;
@@ -176,13 +176,17 @@ void	sortPairs(size_t size, std::deque<unsigned int>	&container)
 
 void	swapping(size_t size, std::deque<unsigned int> &container)
 {
+	size_t	fixedSize = size;
+
 	if (size / 2 > 1)
 	{
 		swapping(size / 2, container);
 	}
-	size_t	fixedSize = size;
-	if (size % 2 != 0)
-		fixedSize --;
+	size_t	n = 2;
+	while (n * 2 < size)
+		n *= 2;
+	if (n * 2 > size)
+		fixedSize = n;
 	sortPairs(fixedSize, container);
 }
 
@@ -198,8 +202,8 @@ t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, std::deque<unsigned 
 	{
 		//std::cout << "remainiiiiiing" << std::endl;
 		data_.remaining.insert(data_.remaining.end(), ite, current.end());
-		//std::cout << "remaining after formmainpending = ";
-		//printContainer(data->remaining);
+		std::cout << "remaining after formmainpending = ";
+		printContainer(data_.remaining);
 	}
 
 	if (size == current.size() || size == current.size() / 2)
@@ -214,9 +218,9 @@ t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, std::deque<unsigned 
 	data_.pending.insert(data_.pending.end(), it + half * 2, it + half * 3);
 	
 	//std::cout << "[MAIN] after base insert = ";
-	//printContainer(data->main);
+	//printContainer(data_.main);
 	//std::cout << "[PENDING] after base insert = ";
-	//printContainer(data->pending);
+	//printContainer(data_.pending);
 
 	std::deque<unsigned int>::iterator begin = current.begin();
 	size_t	n = 3;
