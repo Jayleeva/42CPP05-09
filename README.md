@@ -157,29 +157,72 @@ it = container.begin(); // permet d'acceder au premier element du container
 it = container.end(); 	// permet d'acceder au dernier element du container
 ```
 
-# L'algorithme Ford-Johnson
-## Bases à avoir en tête
+# L'algorithme Ford-Johnson expliqué par et pour celleux qui n'aiment pas les maths
+## En gros
 Il s'agit d'un algorithme de tri qui vise à faire **le moins de comparaisons possibles** pour limiter le temps de calcul.
 
 Pour cela, on va travailler avec des **paires d'éléments**: d'abord un unsigned et son voisin unsigned int (niveau 1), puis une paire d'unsigned int et sa paire voisine (niveau 2), puis une paire de paire d'unsigned int et sa paire de paire voisine (niveau 3), etc. On verra quoi faire des éléments "en trop" (qu'on n'a pas pu mettre dans une paire) le moment venu.
 
-On va effectuer **plusieurs opérations sur chaque paire d'éléments de chaque niveau**, la première opération en partant du premier niveau, et les suivantes en partant du dernier. **On va donc d'abord itérer dans un sens, puis dans l'autre.**
+On va effectuer **plusieurs opérations sur chaque paire d'éléments de chaque niveau**, la première opération en partant du premier niveau, et la suivante en partant du dernier. **On va donc d'abord itérer dans un sens, puis dans l'autre.**
 
+### Opération 1: compare and swap (niveau 1 -> ...)
 La première opération va consister à **comparer les éléments de chaque paire entre eux** (dans la paire A-B, on compare A avec B, dans la paire C-D, on compare C avec D, etc). Si le premier est plus grand que le deuxième, on les inverse.
 
 **ATTENTION**: 
 On échange les **éléments entiers**: dès le niveau 2, on échange donc non pas un unsigned int avec son voisin, mais une séquence avec sa séquence voisine. Au niveau 2, la séquence A2 (composée de l'unsigned int A et de l'unsigned int B) s'échange le cas échéant avec la séquence B2 (composée de l'unsigned int C et de l'unsigned int D). Au niveau 3, la séquence A3 (composée de la séquence A2 et de la séquence B2) s'échange le cas échéant avec la séquence B3 (composée de la séquence C2 et de la séquence D2), et ainsi de suite.
 
 **CEPENDANT**:
-Les comparaisons se font **toujours** avec l'unsigned int le plus grand de l'élément.
-- Au niveau 1, vu qu'il n'y a que deux unsigned int au total, c'est le plus grand des deux qui l'emporte, et il est placé en dernier.
+Les comparaisons se font **toujours** avec les unsigned int les plus grands de chaque paire du niveau 1.
+- Au niveau 1, le plus grand des deux unsigned int est placé en dernier.
 - Au niveau 2, vu qu'on a déjà fait les échanges si nécessaires, on sait que les plus grands unsigned int sont les gagnants du niveau 1: on compare alors le dernier unsigned int de la séquence A2 avec le dernier unsigned int de la séquence B2. Si le premier est plus grand que le second, on les échange.
 - La même logique s'applique aux niveaux suivants: comme on sait que le niveau précédent est déjà "trié", on compare le dernier unsigned int de la séquence A3 avec le dernier unsigned int de la séquence B3. Et de même, si le premier est plus grand que le second, on les échange.
 
-La deuxième opération consistera à 
+### Opération 2: merge insert (... -> niveau 1)
+La deuxième opération consistera à **former 2 nouvelles séquences, respectivement le** ``main`` **et le** ``pending``(j'ai repris les appellations de l'article () pour éviter des confusions inutiles), en "distribuant" les éléments de la séquence actuelle (au début, celle obtenue grâce à la première opération) soit dans l'une soit dans l'autre. Les règles sont les suivantes:
+- le main est toujours composé des deux premiers éléments du résultat précédent, puis, s'il en reste, des éléments pairs (4ème, 6ème, 8ème, ...).
+- le pending est toujours composé du 3ème élément du résultat précédent s'il existe, puis, s'il en reste, des éléments impairs (5ème, 7ème, 9ème, ...).
+Si des éléments ne peuvent pas être distribués, on les garde de côté.
 
-Pour commencer, on utilise la récursivité pour diviser la taille de la séquence par deux jusqu'à ce qu'on arrive à size / 2 == 1. Pourquoi?
+A présent, on va insérer le pending dans le main, puis, s'il y en a, nos éléments "de trop" gardés de côté, afin de recréer une séquence plus triée sur laquelle effectuer à nouveau la deuxième opération, au niveau en-dessous. Mais attention! Pas n'importe comment: pour le pending, on va faire du **binary insert**. Mais attention!! Pas n'importe comment: en utilisant **la suite de Jacobsthal**. Enfin, sous certaines conditions.
 
-Parce qu'on doit effectuer une opération sur chaque paire d'éléments de chaque niveau, en commençant par le niveau 1, la paire d'unsigned int. Comme on ne sait pas à l'avance quelle taille fera la séquence, on prend sa taille initiale et on la divise par deux jusqu'à ce qu'on arrive à 2.
+- Au dernier niveau, nous sommes censés découper notre séquence en éléments dont la taille fait en réalité toute la séquence: inutile donc de lancer la fonction censées distribuer les éléments dans plusieurs séquences tout comme celle censée les réinsérer en une seule.
+- A l'avant-dernier niveau, nous sommes censés découper notre séquence en éléments qui contiennent chacun une moitié de la séquence: puisque nous n'avons que 2 éléments, nous ne lançerons pas les fonctions ici non plus.
+- A l'avant-avant-dernier niveau, nos éléments sont de taille suffisamment petites pour qu'il y en ait au minimum 2 à mettre dans le main, et au moins 1 dans le pending. Alors allons-y!
+- La même logique s'applique aux niveaux suivants, jusqu'au niveau 1.
 
-Ce que ça permet? De faire effectuer la fonction qui va échanger les min et max de chaque paire d'élément.
+#### Suite de Jacobsthal
+Il s'agit d'une suite de nombre qui fonctionne par paire, selon la logique suivante:
+
+- On commence par la paire 0 et 1.
+- Le chiffre suivant sera la somme du second nombre avec le produit du premier.
+
+La même règle s'applique à l'infini:
+```
+	0	1
+		0 * 2 + 1 = 1;
+	1	1
+		1 * 2 + 1 = 3;
+	1	3
+		1 * 2 + 3 = 5;
+	3	5
+		3 * 2 + 5 = 11;
+	5	11
+		5 * 2 + 11 = 21;
+	...
+```
+Dans notre algorithme, nous commençons la suite de Jacobsthal directement avec 1 et 3.
+
+Dans certains cas, on va utiliser cette suite pour insérer les éléments du pending dans le main dans un ordre spécifique, qui permet de limiter le nombre de comparaisons (soit l'objectif de l'algo). Pourquoi ça réduit? :sparkler:Magie des maths:sparkler: (je n'en sais pas plus).
+
+Plus précisément, si une certaine condition est remplie, on lance la fonction du binary insert en lui passant l'élément indexé par le 2ème nombre actuel de la suite jacobsthal (par ex., si la paire actuelle de Jacobsthal est 3 et 5, on envoie le 5ème élément du pending au binary insert). Sinon, on la lance avec un index normal.
+
+Quelle est cette fameuse condition?
+On boucle tant qu'il y a des éléments à envoyer au binary insert; si le nombre d'éléments qu'il reste à traiter est plus grand que la différence entre les deux nombres actuels de Jacbosthal, la condition est remplie: on utilise le 2ème comme index.
+
+Exemple: il me reste 3 éléments à traiter, et la paire de Jacbosthal en est à 3 et 5.
+	5 - 3 = 2;
+	3 > 2;
+	=> on passe au binary insert le 5ème élément du pending.
+
+#### Binary insert
+

@@ -135,7 +135,7 @@ void	jacobsthalInsert(t_dataDeq *data)
 		}
 		else
 		{
-			std::cout << "[DEQ] jacobsthal; big[i] = " << data->pending[i] << std::endl;
+			std::cout << "[DEQ] jacobsthal; big[i] = " <<  data->pending[jacobsthal[1]] << std::endl;
 			binaryInsert(data->main, data->pending[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
