@@ -19,20 +19,20 @@
 
 typedef struct s_dataVec
 {
-	std::vector<unsigned int>	container;
+	//std::vector<unsigned int>	container;
 	std::vector<unsigned int>	small;
 	std::vector<unsigned int>	big;
-	size_t						nlvl;
+	//size_t						nlvl;
 }								t_dataVec;
 
 typedef struct s_dataDeq
 {
-	std::deque<std::pair<unsigned int, unsigned int> > pairs;
-	std::deque<unsigned int>	container;
+	//std::deque<std::pair<unsigned int, unsigned int> > pairs;
+	//std::deque<unsigned int>	container;
 	std::deque<unsigned int>	main;
 	std::deque<unsigned int>	pending;
 	std::deque<unsigned int>	remaining;
-	size_t						nlvl;
+	//size_t						nlvl;
 }								t_dataDeq;
 
 
@@ -44,10 +44,12 @@ class	PmergeMe
 		PmergeMe &operator=(PmergeMe const &original);
 		~PmergeMe();
 
-		t_dataVec	getDataVec() const;
+		std::deque<unsigned int>	getDeq() const;
+		void						setDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
+		/*t_dataVec	getDataVec() const;
 		void		setDataVec(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end);
 		t_dataDeq	getDataDeq() const;
-		void		setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
+		void		setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);*/
 
 		/*template<typename T, typename Titerator>
 		void	standardBinaryInsert(T &container, unsigned int ui);
@@ -61,12 +63,14 @@ class	PmergeMe
 		template<typename T>
 		void	mergePairs(size_t size, T *current, T *big, T *small);*/
 
-		void		sortVector(t_dataVec *data);
-		void		sortDequeue(t_dataDeq *data);
+		//void		sortVector(t_dataVec *data);
+		//void		sortDequeue(t_dataDeq *data);
+		void		sortDequeue();
 
 	private:
-		t_dataVec	dataVec;
-		t_dataDeq	dataDeq;
+		//t_dataVec	dataVec;
+		//t_dataDeq	dataDeq;
+		std::deque<unsigned int>	container;
 };
 
 		void	binaryInsert(std::vector<unsigned int> &container, unsigned int ui);
@@ -75,13 +79,14 @@ class	PmergeMe
 		void	jacobsthalInsert(t_dataVec *data);
 		void	jacobsthalInsert(t_dataDeq *data);
 
-		void	swapSort(std::vector<unsigned int> &current, t_dataVec *data);
-		void	swapSort(std::deque<unsigned int> &current, t_dataDeq *data);
+		//void	swapSort(std::vector<unsigned int> &current, t_dataVec *data);
+		void	swapping(size_t size, std::deque<unsigned int> &current);
 
-		void	merging(size_t size, t_dataVec *data);
+		//void	merging(size_t size, t_dataVec *data);
+		void	merging(size_t size, std::deque<unsigned int> &container);
 		//void	mergeSort(size_t size, std::vector<unsigned int> &current, t_dataVec *data);
 		//void	mergeSort(size_t size, std::deque<unsigned int> &current, t_dataDeq *data);
-		void 	mergeSort2(std::deque<std::pair<unsigned int, unsigned int> >::iterator start, std::deque<std::pair<unsigned int, unsigned int> >::iterator end, size_t size);
+		//void 	mergeSort2(std::deque<std::pair<unsigned int, unsigned int> >::iterator start, std::deque<std::pair<unsigned int, unsigned int> >::iterator end, size_t size);
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 

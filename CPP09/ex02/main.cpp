@@ -147,23 +147,25 @@ int main(int argc, char **argv)
 		deq.push_back(ui);
 	}
 
+	p.setDeq(deq.begin(), deq.end());
 	std::cout << "[DEQ] Before : ";
 	printContainer(deq);
     
-	p.setDataDeq(deq.begin(), deq.end());
-	t_dataDeq	dataDeq = p.getDataDeq();
+	//p.setDataDeq(deq.begin(), deq.end());
+	//t_dataDeq	dataDeq = p.getDataDeq();
 	//std::cout << "[DEQ] size = " << dataDeq.container.size() << std::endl;
-	p.sortDequeue(&dataDeq);
+	p.sortDequeue();
     endDeq = clock();
 
 	std::cout << "[DEQ] After : ";
-	printContainer(dataDeq.container);
-	std::cout << "[DEQ] Time to process a range of " << dataDeq.container.size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << std::endl;
+	deq = p.getDeq();
+	printContainer(deq);
+	std::cout << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << std::endl;
 	std::cout << std::endl;
 
 	//if (!is_sorted(size, dataVec.container))
 	//	std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
-	if (!is_sorted(size, dataDeq.container))
+	if (!is_sorted(size, p.getDeq()))
 		std::cout << RED << "check: [DEQ] KO." << DEFAULT << std::endl;
 	//if (is_sorted(size, dataVec.container) && is_sorted(size, dataDeq.container))
 	else

@@ -15,8 +15,8 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &original)
 {
 	if (this != &original)
 	{
-		this->dataVec.container = original.dataVec.container;
-		this->dataDeq.container = original.dataDeq.container;
+		this->container = original.container;
+		//this->dataDeq.container = original.dataDeq.container;
 	}
 	std::cout << YELLOW << "[PMERGEME] : Assignment operator overload called" << DEFAULT << std::endl;
 	return (*this);
@@ -27,7 +27,18 @@ PmergeMe::~PmergeMe()
 	std::cout << YELLOW << "[PMERGEME] : Default destructor called" << DEFAULT << std::endl;
 }
 
-t_dataVec	PmergeMe::getDataVec() const
+
+std::deque<unsigned int>	PmergeMe::getDeq() const
+{
+	return (this->container);
+}
+
+void	PmergeMe::setDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
+{
+	this->container.insert(this->container.end(), begin, end);
+}
+
+/*t_dataVec	PmergeMe::getDataVec() const
 {
 	return (this->dataVec);
 }
@@ -45,7 +56,8 @@ void	PmergeMe::setDataVec(std::vector<unsigned int>::iterator begin, std::vector
 void	PmergeMe::setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
 {
 	this->dataDeq.container.insert(this->dataDeq.container.end(), begin, end);
-}
+}*/
+
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 {
@@ -146,10 +158,10 @@ void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::dequ
 	}
 }
 
-void	sortPairs(size_t size, t_dataDeq *data)
+void	sortPairs(size_t size, std::deque<unsigned int>	&container)
 {
 	//std::cout << "entered sort pairs with size = " << size << std::endl;
-	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it += size)
+	for (std::deque<unsigned int>::iterator it = container.begin(); it + size / 2 < container.end(); it += size)
 	{
 		std::deque<unsigned int>::iterator ite = it + size - 1;
 		if (*(it + size / 2 - 1) > *(ite))
@@ -159,42 +171,41 @@ void	sortPairs(size_t size, t_dataDeq *data)
 		}
 	}
 	//std::cout << "exits sort pairs = ";
-	//printContainer(data->container);
+	//printContainer(container);
 }
 
-void	swapping(size_t size, t_dataDeq *data)
+void	swapping(size_t size, std::deque<unsigned int> &container)
 {
 	if (size / 2 > 1)
 	{
-		swapping(size / 2, data);
+		swapping(size / 2, container);
 	}
 	size_t	fixedSize = size;
 	if (size % 2 != 0)
 		fixedSize --;
-	sortPairs(fixedSize, data);
+	sortPairs(fixedSize, container);
 }
 
-t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, t_dataDeq *data) //, std::deque<unsigned int> &current)
+t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, std::deque<unsigned int> &current) // t_dataDeq *data) //, )
 {
 	//main = 'b1' puis tous les 'a' : premier bloc, deuxième bloc, puis un sur deux (4ème, 6ème...)
 	//pending = tous les autres 'b' : troisième bloc, puis un sur sur deux (5ème, 7ème...)
 	t_dataDeq	data_;
-	std::deque<unsigned int>::iterator it = data->container.begin();
-	std::deque<unsigned int>::iterator ite = data->container.begin() + fixedSize;
+	std::deque<unsigned int>::iterator it = current.begin();
+	std::deque<unsigned int>::iterator ite = current.begin() + fixedSize;
 
 	if (fixedSize < size)
 	{
 		//std::cout << "remainiiiiiing" << std::endl;
-		data_.remaining.insert(data_.remaining.end(), ite, data_.container.end());
+		data_.remaining.insert(data_.remaining.end(), ite, current.end());
 		//std::cout << "remaining after formmainpending = ";
 		//printContainer(data->remaining);
 	}
 
-
-	if (size == data->container.size() || size == data->container.size() / 2)
+	if (size == current.size() || size == current.size() / 2)
 	{
 		data_.main.insert(data_.main.end(), it, ite);
-		std::cout << "FIRST / SECOND : container.size() = " << data->container.size() << " size = " << size << " size /2 = " << size /2 << std::endl;
+		std::cout << "FIRST / SECOND : container.size() = " << current.size() << " size = " << size << " size /2 = " << size /2 << std::endl;
 		return (data_);
 	}
 
@@ -207,7 +218,7 @@ t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, t_dataDeq *data) //,
 	//std::cout << "[PENDING] after base insert = ";
 	//printContainer(data->pending);
 
-	std::deque<unsigned int>::iterator begin = data->container.begin();
+	std::deque<unsigned int>::iterator begin = current.begin();
 	size_t	n = 3;
 	for (it = begin + half * n; it != ite; it += fixedSize)
 	{
@@ -231,15 +242,7 @@ std::deque<unsigned int>	copy_deque(std::deque<unsigned int> deq)
 	return (res);
 }
 
-void	update_containers(t_dataDeq *data)
-{
-	data->container = copy_deque(data->main);
-	data->main.clear();
-	data->pending.clear();
-	data->remaining.clear();
-}
-
-void	merging(size_t size, t_dataDeq *data) //, std::deque<unsigned int> &current)
+void	merging(size_t size, std::deque<unsigned int> &container) //, std::deque<unsigned int> &current)
 {
 	t_dataDeq	data_;
 
@@ -252,29 +255,26 @@ void	merging(size_t size, t_dataDeq *data) //, std::deque<unsigned int> &current
 		if (n * 2 > size)
 			fixedSize = n;
 		//std::cout << "entered merging with size = " << size << " and fixedSize = " << fixedSize << std::endl;
-		data_ = formMainAndPending(size, fixedSize, data); //, current);
+		data_ = formMainAndPending(size, fixedSize, container);
 		jacobsthalInsert(&data_);
 		if (data_.remaining.size())
 			data_.main.insert(data_.main.end(), data_.remaining.begin(), data_.remaining.end());
-		data->container = copy_deque(data_.main);
-		//update_containers(data_);
-		//std::cout << "container after update: ";
-		//printContainer(data->container);
-		merging(size / 2, data); //, data->main);
+		container = copy_deque(data_.main);
+		merging(size / 2, container); //, data->main);
 	}
 }
 
-void		PmergeMe::sortDequeue(t_dataDeq *data)
+void		PmergeMe::sortDequeue()
 {
-	size_t	size = data->container.size();
+	size_t	size = this->container.size();
 
-	swapping(size, data);
+	swapping(size, this->container);
 	std::cout << "container after swapping = ";
-	printContainer(data->container);
+	printContainer(this->container);
 
-	merging(size, data); //, data->container);
+	merging(size, this->container); //, data->container);
 	std::cout << "container after merging = ";
-	printContainer(data->container);
+	printContainer(this->container);
 
-	binaryInsert(data->container, data->remaining[0]);
+	//binaryInsert(container, data->remaining[0]);
 }
