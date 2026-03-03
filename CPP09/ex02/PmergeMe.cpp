@@ -208,7 +208,7 @@ t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, std::deque<unsigned 
 		printContainer(data_.remaining);
 	}
 
-	if (size == current.size() || size == current.size() / 2 )
+	if (size == current.size()|| size == current.size() / 2 )
 	{
 		data_.main.insert(data_.main.end(), it, ite);
 		std::cout << "FIRST / SECOND : size = " << size << " container.size() = " << current.size() << " half container = " << current.size() /2 << std::endl;
