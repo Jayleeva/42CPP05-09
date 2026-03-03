@@ -165,7 +165,7 @@ Pour cela, on va travailler avec des **paires d'éléments**: d'abord un unsigne
 
 On va effectuer **plusieurs opérations sur chaque paire d'éléments de chaque niveau**, la première opération en partant du premier niveau, et la suivante en partant du dernier. **On va donc d'abord itérer dans un sens, puis dans l'autre.**
 
-### Opération 1: compare and swap (niveau 1 -> ...)
+## Opération 1: compare and swap (niveau 1 -> ...)
 La première opération va consister à **comparer les éléments de chaque paire entre eux** (dans la paire A-B, on compare A avec B, dans la paire C-D, on compare C avec D, etc). Si le premier est plus grand que le deuxième, on les inverse.
 
 **ATTENTION**: 
@@ -177,7 +177,7 @@ Les comparaisons se font **toujours** avec les unsigned int les plus grands de c
 - Au niveau 2, vu qu'on a déjà fait les échanges si nécessaires, on sait que les plus grands unsigned int sont les gagnants du niveau 1: on compare alors le dernier unsigned int de la séquence A2 avec le dernier unsigned int de la séquence B2. Si le premier est plus grand que le second, on les échange.
 - La même logique s'applique aux niveaux suivants: comme on sait que le niveau précédent est déjà "trié", on compare le dernier unsigned int de la séquence A3 avec le dernier unsigned int de la séquence B3. Et de même, si le premier est plus grand que le second, on les échange.
 
-### Opération 2: merge insert (... -> niveau 1)
+## Opération 2: merge insert (... -> niveau 1)
 La deuxième opération consistera à **former 2 nouvelles séquences, respectivement le** ``main`` **et le** ``pending``(j'ai repris les appellations de l'article () pour éviter des confusions inutiles), en "distribuant" les éléments de la séquence actuelle (au début, celle obtenue grâce à la première opération) soit dans l'une soit dans l'autre. Les règles sont les suivantes:
 - le main est toujours composé des deux premiers éléments du résultat précédent, puis, s'il en reste, des éléments pairs (4ème, 6ème, 8ème, ...).
 - le pending est toujours composé du 3ème élément du résultat précédent s'il existe, puis, s'il en reste, des éléments impairs (5ème, 7ème, 9ème, ...).
@@ -190,7 +190,7 @@ A présent, on va insérer le pending dans le main, puis, s'il y en a, nos élé
 - A l'avant-avant-dernier niveau, nos éléments sont de taille suffisamment petites pour qu'il y en ait au minimum 2 à mettre dans le main, et au moins 1 dans le pending. Alors allons-y!
 - La même logique s'applique aux niveaux suivants, jusqu'au niveau 1.
 
-#### Suite de Jacobsthal
+### Suite de Jacobsthal
 Il s'agit d'une suite de nombre qui fonctionne par paire, selon la logique suivante:
 
 - On commence par la paire 0 et 1.
@@ -224,5 +224,5 @@ Exemple: il me reste 3 éléments à traiter, et la paire de Jacbosthal en est �
 	3 > 2;
 	=> on passe au binary insert le 5ème élément du pending.
 
-#### Binary insert
+### Binary insert
 
