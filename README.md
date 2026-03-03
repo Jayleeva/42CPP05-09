@@ -158,5 +158,28 @@ it = container.end(); 	// permet d'acceder au dernier element du container
 ```
 
 # L'algorithme Ford-Johnson
-Il s'agit d'un algorithme de tri qui vise à faire le moins de comparaisons possibles pour limiter le temps de calcul.
+## Bases à avoir en tête
+Il s'agit d'un algorithme de tri qui vise à faire **le moins de comparaisons possibles** pour limiter le temps de calcul.
 
+Pour cela, on va travailler avec des **paires d'éléments**: d'abord un unsigned et son voisin unsigned int (niveau 1), puis une paire d'unsigned int et sa paire voisine (niveau 2), puis une paire de paire d'unsigned int et sa paire de paire voisine (niveau 3), etc. On verra quoi faire des éléments "en trop" (qu'on n'a pas pu mettre dans une paire) le moment venu.
+
+On va effectuer **plusieurs opérations sur chaque paire d'éléments de chaque niveau**, la première opération en partant du premier niveau, et les suivantes en partant du dernier. **On va donc d'abord itérer dans un sens, puis dans l'autre.**
+
+La première opération va consister à **comparer les éléments de chaque paire entre eux** (dans la paire A-B, on compare A avec B, dans la paire C-D, on compare C avec D, etc). Si le premier est plus grand que le deuxième, on les inverse.
+
+**ATTENTION**: 
+On échange les **éléments entiers**: dès le niveau 2, on échange donc non pas un unsigned int avec son voisin, mais une séquence avec sa séquence voisine. Au niveau 2, la séquence A2 (composée de l'unsigned int A et de l'unsigned int B) s'échange le cas échéant avec la séquence B2 (composée de l'unsigned int C et de l'unsigned int D). Au niveau 3, la séquence A3 (composée de la séquence A2 et de la séquence B2) s'échange le cas échéant avec la séquence B3 (composée de la séquence C2 et de la séquence D2), et ainsi de suite.
+
+**CEPENDANT**:
+Les comparaisons se font **toujours** avec l'unsigned int le plus grand de l'élément.
+- Au niveau 1, vu qu'il n'y a que deux unsigned int au total, c'est le plus grand des deux qui l'emporte, et il est placé en dernier.
+- Au niveau 2, vu qu'on a déjà fait les échanges si nécessaires, on sait que les plus grands unsigned int sont les gagnants du niveau 1: on compare alors le dernier unsigned int de la séquence A2 avec le dernier unsigned int de la séquence B2. Si le premier est plus grand que le second, on les échange.
+- La même logique s'applique aux niveaux suivants: comme on sait que le niveau précédent est déjà "trié", on compare le dernier unsigned int de la séquence A3 avec le dernier unsigned int de la séquence B3. Et de même, si le premier est plus grand que le second, on les échange.
+
+La deuxième opération consistera à 
+
+Pour commencer, on utilise la récursivité pour diviser la taille de la séquence par deux jusqu'à ce qu'on arrive à size / 2 == 1. Pourquoi?
+
+Parce qu'on doit effectuer une opération sur chaque paire d'éléments de chaque niveau, en commençant par le niveau 1, la paire d'unsigned int. Comme on ne sait pas à l'avance quelle taille fera la séquence, on prend sa taille initiale et on la divise par deux jusqu'à ce qu'on arrive à 2.
+
+Ce que ça permet? De faire effectuer la fonction qui va échanger les min et max de chaque paire d'élément.
