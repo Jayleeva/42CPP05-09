@@ -184,14 +184,12 @@ void	swapping(size_t size, std::deque<unsigned int> &container)
 	if (n * 2 > fixedSize)
 		fixedSize = n;
 
-	/*if (size % 2 != 0)
-		size --;*/
-	if (size / 2 == 1)
+	if (size % 2 != 0)
 		sortPairs(fixedSize, container, container.end() - size / 2);
 	else
-		sortPairs(fixedSize, container, container.end() - size / 2);
-	std::cout << "after sortpairs of size = " << size << ": \n   ";
-	printContainer(container);
+		sortPairs(fixedSize, container, container.end() - size / 2 + 1);
+	//std::cout << "after sortpairs of size = " << size << ": \n   ";
+	//printContainer(container);
 }
 
 t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, std::deque<unsigned int> &current) // t_dataDeq *data) //, )
@@ -210,12 +208,15 @@ t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, std::deque<unsigned 
 		printContainer(data_.remaining);
 	}
 
-	if (size == current.size() || size == current.size() / 2)
+	if (size == current.size() || size == current.size() / 2 )
 	{
 		data_.main.insert(data_.main.end(), it, ite);
-		std::cout << "FIRST / SECOND : container.size() = " << current.size() << " size = " << size << " size /2 = " << size /2 << std::endl;
+		std::cout << "FIRST / SECOND : size = " << size << " container.size() = " << current.size() << " half container = " << current.size() /2 << std::endl;
+		std::cout << "main after base = ";
+		printContainer(data_.main);
 		return (data_);
 	}
+
 
 	size_t half = fixedSize / 2;
 	data_.main.insert(data_.main.end(), it, it + half * 2);

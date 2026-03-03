@@ -103,9 +103,8 @@ int main(int argc, char **argv)
 	PmergeMe					p;
 	size_t						size;
 
-	//NOT WORKING: 32 57 74 38 39 82 59 90 29 23 51 76 91 43 87 68 93 9 72 47 25
-	//JACOBSTHAL NOT WORKING:  23 30 60 22 43 27 58 25 38 29 41 37 26 50 53 56 47 44 55 45 39 62 48 46 59 33 28 57
-	
+	// TEST: ./PmergeMe 14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
+	// after whole swapping, should be : 1 2 7 10 4 8 12 14 5 9 6 13 3 11 15 16
 	if (argc < 3)
 	{
 		std::cerr << "Error: not enough arguments." << std::endl;
