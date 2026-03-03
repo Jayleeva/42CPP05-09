@@ -174,47 +174,59 @@ void	swapping(size_t size, t_dataDeq *data)
 	sortPairs(fixedSize, data);
 }
 
-void	formMainAndPending(size_t size, t_dataDeq *data)
+void	formMainAndPending(size_t size, size_t half, t_dataDeq *data)
 {
+	//main = 'b1' puis tous les 'a' : premier bloc, deuxième bloc, puis un sur deux (4ème, 6ème...)
+	//pending = tous les autres 'b' : troisième bloc, puis un sur sur deux (5ème, 7ème...)
+
 	std::deque<unsigned int>::iterator it;
 	std::deque<unsigned int>::iterator ite = data->container.end();
-
-	/*if (size % (size / 2) != 0)
-		std::cout << "modulo = " << size % (size / 2) << std::endl;*/
-
 	// range = de it à (it + size / 2 - 1), et de (it + size / 2) à (it + size - 1));
 
-	for (it = data->container.begin(); it + size / 2 != ite; it += size)
+	if (size == data->container.size())
+	{
+		size_t	fixedSize = size;
+		if (size % 2 != 0)
+		{
+			fixedSize --;
+			data->remaining.insert(data->remaining.end(), data->container.end(), data->container.end());
+		}
+		data->main.insert(data->main.end(), data->container.begin(), data->container.begin() + fixedSize);
+		std::cout << "hey" << std::endl;
+		return ;
+	}
+
+	for (it = data->container.begin(); it + half < ite; it += size)
 	{
 		std::cout << "test " << std::endl;
-		data->pending.insert(it, size / 2); // segfault
-		data->main.insert(it + size / 2, size / 2);
+		data->pending.insert(data->pending.end(), it, it + half); // segfault
+		data->main.insert(data->main.end(), it + half, it + size);
 	}
-	size_t	dis = distance(it + size / 2, ite);
+	size_t	dis = distance(it + half, ite);
 	for (size_t i = 0; i < dis; i ++)
 	{
-		data->remaining.insert(it + size / 2, dis);
+		data->remaining.insert(data->remaining.end(), it + half, it + dis);
 	}
 	std::cout << "remaining after formmainpending = ";
 	printContainer(data->remaining);
 }
 
-void	merging(size_t size, t_dataDeq *data)
+void	merging(size_t size, size_t half, t_dataDeq *data)
 {
 	if (size / 2 > 1)
 	{
 		/*size_t	fixedSize = size;
 		if (size % 2 != 0)
 			fixedSize --;*/
-		std::cout << "entered merging with size = " << size << std::endl;
-		formMainAndPending(size, data);
+		std::cout << "entered merging with size = " << size << " and half = " << half << std::endl;
+		formMainAndPending(size, half, data);
 		jacobsthalInsert(data);
 		size_t	n = data->remaining.size();
 		if (n)
 		{
-			data->pending.insert(data->remaining.begin(), n);
+			data->pending.insert(data->remaining.end(), data->remaining.begin(), data->remaining.begin() + n);
 		}
-		merging(size / 2, data);
+		merging(size / 2, half / 2, data);
 	}
 }
 
@@ -226,7 +238,7 @@ void		PmergeMe::sortDequeue(t_dataDeq *data)
 	std::cout << "container after swapping = ";
 	printContainer(data->container);
 
-	merging(size, data);
+	merging(size, size / 2, data);
 	std::cout << "container after merging = ";
 	printContainer(data->container);
 
