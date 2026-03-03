@@ -212,7 +212,7 @@ La même règle s'applique à l'infini:
 ```
 Dans notre algorithme, nous commençons la suite de Jacobsthal directement avec 1 et 3.
 
-Dans certains cas, on va utiliser cette suite pour insérer les éléments du pending dans le main dans un ordre spécifique, qui permet de limiter le nombre de comparaisons (soit l'objectif de l'algo). Pourquoi ça réduit? :sparkle:Magie des maths:sparkle: (je n'en sais pas plus).
+Dans certains cas, on va utiliser cette suite pour insérer les éléments du pending dans le main dans un ordre spécifique, qui permet de limiter le nombre de comparaisons (soit l'objectif de l'algo). Pourquoi ça réduit? :sparkles:Magie des maths:sparkles: (je n'en sais pas plus).
 
 Plus précisément, si une certaine condition est remplie, on lance la fonction du binary insert en lui passant l'élément indexé par le 2ème nombre actuel de la suite jacobsthal (par ex., si la paire actuelle de Jacobsthal est 3 et 5, on envoie le 5ème élément du pending au binary insert). Sinon, on la lance avec un index normal.
 
