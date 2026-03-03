@@ -118,12 +118,12 @@ void	jacobsthalInsert(t_dataDeq *data)
 		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
 		if (jacobsthal[1] - jacobsthal[0] > remaining)
 		{
-			std::cout << "[DEQ] standard; big[i] = " << data->pending[i] << std::endl;
+			//std::cout << "[DEQ] standard; big[i] = " << data->pending[i] << std::endl;
 			binaryInsert(data->main, data->pending[i]);
 		}
 		else
 		{
-			std::cout << "[DEQ] jacobsthal; big[i] = " << data->pending[i] << std::endl;
+			//std::cout << "[DEQ] jacobsthal; big[i] = " << data->pending[i] << std::endl;
 			binaryInsert(data->main, data->pending[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
@@ -148,18 +148,18 @@ void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::dequ
 
 void	sortPairs(size_t size, t_dataDeq *data)
 {
-	std::cout << "entered sort pairs with size = " << size << std::endl;
+	//std::cout << "entered sort pairs with size = " << size << std::endl;
 	for (std::deque<unsigned int>::iterator it = data->container.begin(); it + size / 2 < data->container.end(); it += size)
 	{
 		std::deque<unsigned int>::iterator ite = it + size - 1;
 		if (*(it + size / 2 - 1) > *(ite))
 		{
-			std::cout << "must swap it = " << *(it + size / 2 - 1) << " and ite = " << *(ite) << std::endl;
+			//std::cout << "must swap it = " << *(it + size / 2 - 1) << " and ite = " << *(ite) << std::endl;
 			swap_elements(size / 2, it, it + size / 2);
 		}
 	}
-	std::cout << "exits sort pairs = ";
-	printContainer(data->container);
+	//std::cout << "exits sort pairs = ";
+	//printContainer(data->container);
 }
 
 void	swapping(size_t size, t_dataDeq *data)
@@ -174,66 +174,65 @@ void	swapping(size_t size, t_dataDeq *data)
 	sortPairs(fixedSize, data);
 }
 
-void	formMainAndPending(size_t size, size_t fixedSize, t_dataDeq *data) //, std::deque<unsigned int> &current)
+t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, t_dataDeq *data) //, std::deque<unsigned int> &current)
 {
 	//main = 'b1' puis tous les 'a' : premier bloc, deuxième bloc, puis un sur deux (4ème, 6ème...)
 	//pending = tous les autres 'b' : troisième bloc, puis un sur sur deux (5ème, 7ème...)
-
-	std::deque<unsigned int>::iterator it = current.begin();
-	std::deque<unsigned int>::iterator ite = current.begin() + fixedSize;
+	t_dataDeq	data_;
+	std::deque<unsigned int>::iterator it = data->container.begin();
+	std::deque<unsigned int>::iterator ite = data->container.begin() + fixedSize;
 
 	if (fixedSize < size)
 	{
-		std::cout << "remainiiiiiing" << std::endl;
-		data->remaining.insert(data->remaining.end(), ite, current.end());
+		//std::cout << "remainiiiiiing" << std::endl;
+		data_.remaining.insert(data_.remaining.end(), ite, data_.container.end());
+		//std::cout << "remaining after formmainpending = ";
+		//printContainer(data->remaining);
 	}
-	std::cout << "remaining after formmainpending = ";
-	printContainer(data->remaining);
 
-	if (size == current.size() || size == current.size() / 2)
+
+	if (size == data->container.size() || size == data->container.size() / 2)
 	{
-		data->main.insert(data->main.end(), it, ite);
-		std::cout << "FIRST / SECOND" << std::endl;
-		return ;
+		data_.main.insert(data_.main.end(), it, ite);
+		std::cout << "FIRST / SECOND : container.size() = " << data->container.size() << " size = " << size << " size /2 = " << size /2 << std::endl;
+		return (data_);
 	}
 
 	size_t half = fixedSize / 2;
-	data->main.insert(data->main.end(), it, it + half * 2);
-	data->pending.insert(data->pending.end(), it + half * 2, it + half * 3);
+	data_.main.insert(data_.main.end(), it, it + half * 2);
+	data_.pending.insert(data_.pending.end(), it + half * 2, it + half * 3);
 	
-	std::cout << "[MAIN] after base insert = ";
-	printContainer(data->main);
-	std::cout << "[PENDING] after base insert = ";
-	printContainer(data->pending);
+	//std::cout << "[MAIN] after base insert = ";
+	//printContainer(data->main);
+	//std::cout << "[PENDING] after base insert = ";
+	//printContainer(data->pending);
 
-	std::deque<unsigned int>::iterator begin = current.begin();
+	std::deque<unsigned int>::iterator begin = data->container.begin();
 	size_t	n = 3;
 	for (it = begin + half * n; it != ite; it += fixedSize)
 	{
 		n ++;
 		if (begin + half * n != ite)
 		{
-			std::cout << "maiiiiiiiin" << std::endl;
-			data->main.insert(data->main.end(), it, begin + half * n); // segfault
-			std::cout << "pendiiiiing" << std::endl;
-			data->pending.insert(data->pending.end(), begin + half * n, begin + half * (n + 1));
+			//std::cout << "maiiiiiiiin" << std::endl;
+			data_.main.insert(data_.main.end(), it, begin + half * n); // segfault
+			//std::cout << "pendiiiiing" << std::endl;
+			data_.pending.insert(data_.pending.end(), begin + half * n, begin + half * (n + 1));
 		}
-		std::cout << "n = " << n << std::endl;
+		//std::cout << "n = " << n << std::endl;
 	}
+	return (data_);
 }
 
 std::deque<unsigned int>	copy_deque(std::deque<unsigned int> deq)
 {
 	std::deque<unsigned int>	res;
-	for (std::deque<unsigned int>::iterator	it = deq.begin(); it != deq.end(); it ++)
-		res.push_back(*it);
-	std::reverse(res.begin(), res.end());
+	res.insert(res.end(), deq.begin(), deq.end() -1);
 	return (res);
 }
 
 void	update_containers(t_dataDeq *data)
 {
-	data->container.clear();
 	data->container = copy_deque(data->main);
 	data->main.clear();
 	data->pending.clear();
@@ -242,6 +241,8 @@ void	update_containers(t_dataDeq *data)
 
 void	merging(size_t size, t_dataDeq *data) //, std::deque<unsigned int> &current)
 {
+	t_dataDeq	data_;
+
 	if (size / 2 > 1)
 	{
 		size_t	fixedSize = size;
@@ -250,12 +251,15 @@ void	merging(size_t size, t_dataDeq *data) //, std::deque<unsigned int> &current
 			n *= 2;
 		if (n * 2 > size)
 			fixedSize = n;
-		std::cout << "entered merging with size = " << size << " and fixedSize = " << fixedSize << std::endl;
-		formMainAndPending(size, fixedSize, data); //, current);
-		jacobsthalInsert(data);
-		if (data->remaining.size())
-			data->main.insert(data->main.end(), data->remaining.begin(), data->remaining.end());
-		update_containers(data);
+		//std::cout << "entered merging with size = " << size << " and fixedSize = " << fixedSize << std::endl;
+		data_ = formMainAndPending(size, fixedSize, data); //, current);
+		jacobsthalInsert(&data_);
+		if (data_.remaining.size())
+			data_.main.insert(data_.main.end(), data_.remaining.begin(), data_.remaining.end());
+		data->container = copy_deque(data_.main);
+		//update_containers(data_);
+		//std::cout << "container after update: ";
+		//printContainer(data->container);
 		merging(size / 2, data); //, data->main);
 	}
 }

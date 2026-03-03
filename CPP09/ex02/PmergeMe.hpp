@@ -88,7 +88,7 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 template<typename T>
 void	printContainer(T &container)
 {
-	size_t	max_ = 16;
+	size_t	max_ = 20;
 	size_t	size = container.size();
 
 	for (size_t i = 0; i < size -1 ; i++)
