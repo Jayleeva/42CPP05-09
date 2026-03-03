@@ -160,10 +160,3 @@ it = container.end(); 	// permet d'acceder au dernier element du container
 # L'algorithme Ford-Johnson
 Il s'agit d'un algorithme de tri qui vise à faire le moins de comparaisons possibles pour limiter le temps de calcul.
 
-Je pensais d'abord expliquer l'approche mathématique puis l'implémentation en code, mais j'ai peur que ça ne crée plus de confusion que nécessaire (comme ça a été le cas pour moi).
-
-En gros, l'algorithme fonctionne de manière récursive, en 3 étapes: 
-1. On lance la fonction récursive. Si on peut diviser la taille de la séquence par 2 et obtenir un résultat plus grand que 1, on relance la fonction récursive avec taille / 2. Si cette condition n'est pas remplie, on exécute l'étape suivante. Cela permet de d'abord arriver au plus petit niveau de paire (deux unsigned int) et d'exécuter l'étape suivante sur ce niveau, puis sur le niveau au-dessus (deux paires d'unsigned int), puis le suivant (deux paires de paires d'unsigned int, etc.).
-2. On compare chaque élément de la séquence actuelle avec son suivant (paires) et on les répartit en éléments forts (max de chaque paire) et en éléments faibles (min de chaque paire). Au total, nous avons donc 3 séquences: celle actuelle, celle des éléments forts, et celle des éléments faibles. A la première itération, la séquence "actuelle" est celle reçue par l'algorithme. Ensuite, elle est d'abord nettoyée (.clear()) puis copie la séquence des éléments forts. Ainsi, on sépare d'abord les éléments forts et faibles de chaque paire, puis de chaque paire de paire, puis de chaque paire de paire de paire, etc. **ATTENTION:** la séquence des éléments faibles doit être remplie avec un **binary insert**, afin qu'elle soit triée au fur et à mesure. Les éventuels éléments "de trop" (en cas de taille impaire) sont également insérés, de la même manière, dans la séquence des éléments faibles.
-3. On sort de la fonction récursive. Il nous reste à combiner notre séquence d'éléments forts restant avec celle des éléments faibles déjà triée. Pour ce faire, nous allons également utiliser le binary insert, avec une couche supplémentaire: la suite de Jacobsthal.
-
