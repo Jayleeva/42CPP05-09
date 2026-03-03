@@ -195,16 +195,19 @@ void	formMainAndPending(size_t size, size_t fixedSize, t_dataDeq *data)
 	size_t half = fixedSize / 2;
 	data->main.insert(data->main.end(), it, it + half * 2);
 	data->pending.insert(data->pending.end(), it + half * 2, it + half * 3);
-	//std::deque<unsigned int>::iterator tmpite = it + half * 3;
-
+	
+	std::deque<unsigned int>::iterator begin = data->container.begin();
 	size_t	n = 3;
-	for (it = it + half * n; it != ite; it += fixedSize)
+	for (it = begin + half * n; it != ite; it += fixedSize)
 	{
 		n ++;
-		data->main.insert(data->main.end(), it, it + half * n);
-		
-		if (it + half * n != ite)
-			data->pending.insert(data->pending.end(), it + half * n, it + half * (n + 1));
+		if (begin + half * n != ite)
+		{
+			std::cout << "maiiiiiiiin" << std::endl;
+			data->main.insert(data->main.end(), it, it + half); // segfault
+			std::cout << "pendiiiiing" << std::endl;
+			data->pending.insert(data->pending.end(), it + half, it + half * 2);
+		}
 		std::cout << "n = " << n << std::endl;
 	}
 	std::cout << "remaining after formmainpending = ";
