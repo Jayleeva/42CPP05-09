@@ -174,38 +174,35 @@ void	swapping(size_t size, t_dataDeq *data)
 	sortPairs(fixedSize, data);
 }
 
-void	formMainAndPending(size_t size, size_t half, t_dataDeq *data)
+void	formMainAndPending(size_t size, size_t half, size_t fixedSize, t_dataDeq *data)
 {
 	//main = 'b1' puis tous les 'a' : premier bloc, deuxième bloc, puis un sur deux (4ème, 6ème...)
 	//pending = tous les autres 'b' : troisième bloc, puis un sur sur deux (5ème, 7ème...)
 
 	std::deque<unsigned int>::iterator it;
-	std::deque<unsigned int>::iterator ite = data->container.end();
-	// range = de it à (it + size / 2 - 1), et de (it + size / 2) à (it + size - 1));
+	std::deque<unsigned int>::iterator ite = data->container.begin() + fixedSize;
 
-	if (size == data->container.size())
+	if (fixedSize < size)
+		data->remaining.insert(data->remaining.end(), data->container.begin() + fixedSize, ite);
+
+	if (size == data->container.size() || size == data->container.size() / 2)
 	{
-		size_t	fixedSize = size;
-		if (size % 2 != 0)
-		{
-			fixedSize --;
-			data->remaining.insert(data->remaining.end(), data->container.end(), data->container.end());
-		}
 		data->main.insert(data->main.end(), data->container.begin(), data->container.begin() + fixedSize);
 		std::cout << "hey" << std::endl;
 		return ;
 	}
 
-	for (it = data->container.begin(); it + half < ite; it += size)
+	it = data->container.begin();
+	data->main.insert(data->main.end(), it, it + half * 2);
+	data->pending.insert(data->pending.end(), it + half * 2, it + half * 3);
+
+	size_t	n = 3;
+	for (it = it + half * n; it != ite; it += size)
 	{
-		std::cout << "test " << std::endl;
-		data->pending.insert(data->pending.end(), it, it + half); // segfault
-		data->main.insert(data->main.end(), it + half, it + size);
-	}
-	size_t	dis = distance(it + half, ite);
-	for (size_t i = 0; i < dis; i ++)
-	{
-		data->remaining.insert(data->remaining.end(), it + half, it + dis);
+		n ++;
+		data->main.insert(data->main.end(), it, it + half * n);
+		if (it + half * n != ite)
+			data->pending.insert(data->pending.end(), it + half * n, it + half * (n + 1));
 	}
 	std::cout << "remaining after formmainpending = ";
 	printContainer(data->remaining);
@@ -215,17 +212,22 @@ void	merging(size_t size, size_t half, t_dataDeq *data)
 {
 	if (size / 2 > 1)
 	{
-		/*size_t	fixedSize = size;
-		if (size % 2 != 0)
-			fixedSize --;*/
-		std::cout << "entered merging with size = " << size << " and half = " << half << std::endl;
-		formMainAndPending(size, half, data);
+		size_t	fixedSize = size;
+		//if (int(sqrt(size)) * int(sqrt(size)) != size) // if (sqrt(size) % 2 != 0) // si size racinée carrée n'est pas entière, rapetissir
+			//std::cout << "racine pas entiere" << std::endl;
+		size_t	n = 2;
+		while (n * 2 < size)
+			n *= 2;
+		if (n * 2 > size)
+			fixedSize = n ;
+		std::cout << "entered merging with size = " << size << " and fixedSize = " << fixedSize << std::endl;
+		formMainAndPending(size, half, fixedSize, data);
 		jacobsthalInsert(data);
-		size_t	n = data->remaining.size();
+		/*size_t	n = data->remaining.size();
 		if (n)
 		{
 			data->pending.insert(data->remaining.end(), data->remaining.begin(), data->remaining.begin() + n);
-		}
+		}*/
 		merging(size / 2, half / 2, data);
 	}
 }
