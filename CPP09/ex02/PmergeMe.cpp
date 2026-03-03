@@ -158,10 +158,9 @@ void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::dequ
 	}
 }
 
-void	sortPairs(size_t size, std::deque<unsigned int>	&container)
+void	sortPairs(size_t size, std::deque<unsigned int>	&container, std::deque<unsigned int>::iterator max_)
 {
-	std::cout << "entered sort pairs with size = " << size << std::endl;
-	for (std::deque<unsigned int>::iterator it = container.begin(); it + size / 2 < container.end(); it += size)
+	for (std::deque<unsigned int>::iterator it = container.begin(); it + size / 2 < max_; it += size)
 	{
 		std::deque<unsigned int>::iterator ite = it + size - 1;
 		if (*(it + size / 2 - 1) > *(ite))
@@ -170,8 +169,6 @@ void	sortPairs(size_t size, std::deque<unsigned int>	&container)
 			swap_elements(size / 2, it, it + size / 2);
 		}
 	}
-	//std::cout << "exits sort pairs = ";
-	//printContainer(container);
 }
 
 void	swapping(size_t size, std::deque<unsigned int> &container)
@@ -179,15 +176,22 @@ void	swapping(size_t size, std::deque<unsigned int> &container)
 	size_t	fixedSize = size;
 
 	if (size / 2 > 1)
-	{
 		swapping(size / 2, container);
-	}
+
 	size_t	n = 2;
-	while (n * 2 < size)
+	while (n * 2 < fixedSize)
 		n *= 2;
-	if (n * 2 > size)
+	if (n * 2 > fixedSize)
 		fixedSize = n;
-	sortPairs(fixedSize, container);
+
+	/*if (size % 2 != 0)
+		size --;*/
+	if (size / 2 == 1)
+		sortPairs(fixedSize, container, container.end() - size / 2);
+	else
+		sortPairs(fixedSize, container, container.end() - size / 2);
+	std::cout << "after sortpairs of size = " << size << ": \n   ";
+	printContainer(container);
 }
 
 t_dataDeq	formMainAndPending(size_t size, size_t fixedSize, std::deque<unsigned int> &current) // t_dataDeq *data) //, )
