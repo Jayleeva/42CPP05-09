@@ -114,6 +114,7 @@ void	jacobsthalInsert(t_dataDeq *data)
 	size_t				size = data->pending.size();
 	size_t				i = 0;
 	size_t				remaining;
+	size_t				n = 0;
 
 	jacobsthal.push_front(3);
 	jacobsthal.push_front(1);
@@ -124,24 +125,54 @@ void	jacobsthalInsert(t_dataDeq *data)
 		data->main.push_back(data->pending[i]);
 		return ;
 	}*/
-	while (i < size)
+
+	std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
+	n = jacobsthal[1] - jacobsthal[0];
+	if (n < size)
 	{
-		remaining = size - i;
-		std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
-		if (jacobsthal[1] - jacobsthal[0] >= remaining)
+		while (size > 0)
 		{
-			std::cout << "[DEQ] standard; pending[i] = " << data->pending[i] << std::endl;
-			binaryInsert(data->main, data->pending[i]);
+			std::cout << "[DEQ] standard; pending[i] = " << data->pending[size] << std::endl;
+			binaryInsert(data->main, data->pending[size]);
+			size --;
 		}
-		else
+	}
+	else
+	{
+		while (n > 0)
 		{
 			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[jacobsthal[1]] << std::endl;
 			binaryInsert(data->main, data->pending[jacobsthal[1]]);
+			jacobsthal = update_jacobsthal(jacobsthal);
+			n --;
+		}
+	}
+	
+	/*while (i < size)
+	{
+		remaining = size - i;
+		std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
+		n = jacobsthal[1] - jacobsthal[0];
+		if (n < remaining)
+		{
+			std::cout << "[DEQ] standard; pending[i] = " << data->pending[i] << std::endl;
+			binaryInsert(data->main, data->pending[i]);
+			i ++;
+		}
+		else
+		{
+			while (n > 0)
+			{
+				std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[jacobsthal[1]] << std::endl;
+				binaryInsert(data->main, data->pending[jacobsthal[1]]);
+				i ++;
+				n --;
+			}
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
-		i ++;
-	}
-};
+	}*/
+	
+}
 
 void	swap_elements(size_t size, std::deque<unsigned int>::iterator it, std::deque<unsigned int>::iterator ite)
 {
