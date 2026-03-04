@@ -157,7 +157,7 @@ void	jacobsthalInsert(t_dataDeq *data)
 	{
 		while (size > 0)
 		{
-			std::cout << "[DEQ] standard; pending[i] = " << data->pending[size -1] << std::endl;
+			std::cout << "[DEQ] standard; pending[i] = " << data->pending[size -1] << std::endl; // PAS UN UNSIGNED INT PAR UNSIGNED INT, MAIS UN ELEMENT PAR ELEMENT!
 			binaryInsert(data->main, data->pending[size -1]);
 			size --;
 		}
