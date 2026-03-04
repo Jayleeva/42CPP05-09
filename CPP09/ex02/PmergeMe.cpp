@@ -117,7 +117,7 @@ void	jacobsthalInsert(t_dataDeq *data)
 
 	jacobsthal.push_front(3);
 	jacobsthal.push_front(1);
-	std::cout << "[DEQ] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
+	//std::cout << "[DEQ] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
 
 	/*if (size == 0)
 	{
@@ -127,15 +127,15 @@ void	jacobsthalInsert(t_dataDeq *data)
 	while (i < size)
 	{
 		remaining = size - i;
-		//std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
-		if (jacobsthal[1] - jacobsthal[0] > remaining)
+		std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
+		if (jacobsthal[1] - jacobsthal[0] >= remaining)
 		{
-			std::cout << "[DEQ] standard; big[i] = " << data->pending[i] << std::endl;
+			std::cout << "[DEQ] standard; pending[i] = " << data->pending[i] << std::endl;
 			binaryInsert(data->main, data->pending[i]);
 		}
 		else
 		{
-			std::cout << "[DEQ] jacobsthal; big[i] = " <<  data->pending[jacobsthal[1]] << std::endl;
+			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[jacobsthal[1]] << std::endl;
 			binaryInsert(data->main, data->pending[jacobsthal[1]]);
 		}
 		jacobsthal = update_jacobsthal(jacobsthal);
@@ -228,29 +228,29 @@ std::deque<unsigned int>	formMainAndPending(size_t size, size_t fixedSize, std::
 	std::deque<unsigned int>::iterator it = current.begin();
 	std::deque<unsigned int>::iterator ite = current.begin() + fixedSize;
 
-	if (fixedSize < size) // marche pas quand sequence est paire de base?
+	if (fixedSize < size)
 	{
 		//std::cout << "remainiiiiiing" << std::endl;
 		data_.remaining.insert(data_.remaining.end(), ite, current.end());
 		std::cout << "remaining after formmainpending = ";
 		printContainer(data_.remaining);
 	}
+	else if (fixedSize == size)
+		ite = current.end();
 
 	static size_t	n = 1;
-	if (n < 3) // size == current.size() || size == current.size() / 2 )
+	if (n < 3)
 	{
-		data_.main.insert(data_.main.end(), it, ite);
-		//std::cout << "FIRST / SECOND : size = " << size << " container.size() = " << current.size() << " half container = " << current.size() /2 << std::endl;
-		//std::cout << "main after base = ";
-		//printContainer(data_.main);
+		data_.main.insert(data_.main.end(), it, current.end());
+		std::cout << "FIRST / SECOND :" << std::endl; // size = " << size << " container.size() = " << current.size() << " half container = " << current.size() /2 << std::endl;
 		n ++;
 		res = mergeMainAndPending(&data_, 0);
 		return (res);
 	}
 
-	size_t half = fixedSize / 2;
-	data_.main.insert(data_.main.end(), it, it + half * 2);
-	data_.pending.insert(data_.pending.end(), it + half * 2, it + half * 3);
+	//size_t half = fixedSize / 2;
+	data_.main.insert(data_.main.end(), it, it + fixedSize * 2);
+	data_.pending.insert(data_.pending.end(), it + fixedSize * 2, it + fixedSize * 3);
 	
 	std::cout << "[MAIN] after base insert = ";
 	printContainer(data_.main);
@@ -258,19 +258,23 @@ std::deque<unsigned int>	formMainAndPending(size_t size, size_t fixedSize, std::
 	printContainer(data_.pending);
 
 	std::deque<unsigned int>::iterator begin = current.begin();
-	for (it = begin + half * n; it < ite; it += fixedSize)
+	//std::deque<unsigned int>::iterator end = current.begin() + ;
+	for (it = begin + fixedSize * n; it < ite; it += fixedSize)
 	{
+		std::cout << "-----------------hello" << std::endl;
 		n ++;
-		if (begin + half * n != ite)
+		if (begin + fixedSize * n < ite)
 		{
 			std::cout << "maiiiiiiiin" << std::endl;
-			data_.main.insert(data_.main.end(), it, begin + half * n); // segfault
+			data_.main.insert(data_.main.end(), it, begin + fixedSize * n); // segfault
 			std::cout << "pendiiiiing" << std::endl;
-			data_.pending.insert(data_.pending.end(), begin + half * n, begin + half * (n + 1));
+			data_.pending.insert(data_.pending.end(), begin + fixedSize * n, begin + fixedSize * (n + 1));
 		}
 		//std::cout << "n = " << n << std::endl;
 	}
 	res = mergeMainAndPending(&data_, 1);
+	//std::cout << "merged container = ";
+	//printContainer(res);
 	return (res);
 }
 
