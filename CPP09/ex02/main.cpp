@@ -162,6 +162,7 @@ int main(int argc, char **argv)
 	std::cout << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << std::endl;
 	std::cout << std::endl;
 
+	std::cout << "TEST BRANCH" << std::endl;
 	//if (!is_sorted(size, dataVec.container))
 	//	std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
 	if (!is_sorted(size, p.getDeq()))
