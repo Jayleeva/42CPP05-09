@@ -289,44 +289,36 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 	std::cout << "[PENDING] after base insert = ";
 	printContainer(data_.pending);*/
 
-	//it += fixedSize * 3;
-	//std::deque<unsigned int>::iterator begin = current.begin();
-
-	
-	//for (it = begin + fixedSize * 3; it + fixedSize <= ite; it += fixedSize)
-	//{
 	std::deque<unsigned int>::iterator it = begin + fixedSize * 3;
-	size_t	mode = 0;
-	n = 1;
-	while (begin + fixedSize * n <= ite)
+
+	while (1)
 	{
 		std::cout << "-----------------hello" << std::endl;
-		std::cout << "it = " << *(it) << std::endl;
+		std::cout << "it = " << *(it -1) << std::endl;
 		if (it + fixedSize <= ite)
 		{
 			std::cout << "pendiiiiing" << std::endl;
 			data_.pending.insert(data_.pending.end(), it, it + fixedSize);
 			std::cout << "pending container = ";
 			printContainer(data_.pending);
+						
 			it += fixedSize;
 		}
+		else
+			break;
+
 		if (it + fixedSize <= ite)
 		{
 			std::cout << "maiiiiiiiin" << std::endl;
-			data_.main.insert(data_.main.end(), it + fixedSize, it + fixedSize);
-	
+			data_.main.insert(data_.main.end(), it + fixedSize, ite);
 			std::cout << "main container = ";
 			printContainer(data_.main);
-			it += fixedSize;			
+			it += fixedSize;	
 		}
-		n ++;
-		//it += fixedSize;
-		//n++;
-		//std::cout << "n = " << n << std::endl;
+		else
+			break;
 	}
 	res = mergeMainAndPending(&data_, 1);
-
-
 	//std::cout << "merged container = ";
 	//printContainer(res);
 	return (res);
