@@ -1,42 +1,5 @@
 #include "PmergeMe.hpp"
-//DEQ ne marche pas parfois, ne parvient pas a push un des elements. VEc n'a pas ce probleme.
 
-
-// Ford-Johnson: 
-// - organiser le container par paires 
-// - trier l'interieur des paires: le plus petit de la paire en premier, le plus grand de la paire en deuxieme
-// - former des paires de paires (a, b), si reste un nombre, son max devient bn.
-// - trier les paires de paires en ne comparant que les b (max) de chaque paire de paires.
-//
-
-// recursif. On fait des paires de paires de paires de paires de paires.... jusqu'a ???? ce que ce qui reste ne puisse plus etre mis en paire de paire de paire
-
-// comment utiliser un container du coup? puisque va avoir un nombre de "couches" differentes en fonction de la longueur de la suite?
-
-
-
-// 11 2 17 0 16 8 6 15 10 3 21 1 18 9 14 19
-
-// 11 2 | 17 0 | 16 8 | 6 15 | 10 3 | 21 1 | 18 9 | 14 19						niveau 1
-// 2 [11] | 0 [17] | 8 [16] | 6 [15] | 3 [10] | 1 [21] | 9 [18] | 14 [19]		
-
-// 2 [11] | 0 [17] || 8 [16] | 6 [15] || 3 [10] | 1 [21] || 9 [18] | 14 [19]	niveau 2
-// 2 [11] | 0 [17] || 6 [15] | 8 [16] || 3 [10] | 1 [21] || 9 [18] | 14 [19]
-
-// 2 [11] | 0 [17] || 6 [15] | 8 [16] ||| 3 [10] | 1 [21] || 9 [18] | 14 [19]	niveau 3
-// 6 [15] | 8 [16] || 2 [11] | 0 [17] ||| 9 [18] | 14 [19] || 3 [10] | 1 [21]
-
-// next would be de tout englober, donc plus de paire de paire de paire... avec quoi comparer, donc fini.
-
-// une fois ce point atteint, on va effectuer initialisation et insertion sur chaque niveau.
-
-
-// une fois cette etape atteinte, on effectue le merge?
-
-
-// former une paire = merge ?
-
-// microsecondes = secondes / 1000000 
 template<typename T>
 int	is_sorted(size_t size, T container)
 {
@@ -56,23 +19,6 @@ int	is_sorted(size_t size, T container)
 	return (1);
 }
 
-/*template<typename T>
-void	printContainer(T &container)
-{
-	size_t	max_ = 10;
-	size_t	size = container.size();
-
-	for (size_t i = 0; i < size -1 ; i++)
-	{
-		if (i == max_)
-		{
-			std:: cout << "[...]" << std::endl;
-			return ;
-		}
-		std::cout << container[i] << ' ';
-	}
-	std::cout << container[size -1] << std::endl;
-}*/
 
 int	parse_arg(char *arg, std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
 {
@@ -93,15 +39,16 @@ int	parse_arg(char *arg, std::deque<unsigned int>::iterator begin, std::deque<un
 
 
 
+// microsecondes = secondes / 1000000 
 int main(int argc, char **argv)
 {
 	//std::vector<unsigned int>	vec;
 	std::deque<unsigned int>	deq;
-	//std::deque<std::pair<unsigned int, unsigned int>>	deq;
     //clock_t						startVec, endVec;
     clock_t 					startDeq, endDeq;
 	PmergeMe					p;
 	size_t						size;
+
 
 	// TEST: ./PmergeMe 14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
 	// after whole swapping, should be : 1 2 7 10 4 8 12 14 5 9 6 13 3 11 15 16
@@ -119,22 +66,22 @@ int main(int argc, char **argv)
 		int tmp = parse_arg(argv[i + 1], vec.begin(), vec.end());
 		if (tmp == -1)
 			return (0);
-		static_cast<unsigned int>(tmp);
-		vec.push_back(tmp);
+		unsigned int ui = static_cast<unsigned int>(tmp)
+		vec.push_back(ui);
 	}
-
-	std::cout << "[VEC] Before : ";
+	p.setVec(vec.begin(), vec.end());
+	std::cout << MAG << << "[VEC] Before : ";
 	printContainer(vec);
-	
-	p.setDataVec(vec.begin(), vec.end());
-	t_dataVec	dataVec = p.getDataVec();
-	p.sortVector(&dataVec);
+	std::cout << DEFAULT;
+
+	p.sortVector();
 	endVec = clock();
 
-	std::cout << "[VEC] After : ";
-	printContainer(dataVec.container);
+	std::cout << MAG << "[VEC] After : ";
+	vec = p.getDeq();
+	printContainer(vec);
 	std::cout << "[VEC] Time to process a range of " << dataVec.container.size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) * 1.0 << " us" << std::endl;
-	std::cout << std::endl;*/
+	std::cout << DEFAULT << std::endl;*/
 
 	startDeq = clock();
 	for (size_t i = 0; i < size; i++)
@@ -145,22 +92,19 @@ int main(int argc, char **argv)
 		unsigned int ui = static_cast<unsigned int>(tmp);
 		deq.push_back(ui);
 	}
-
 	p.setDeq(deq.begin(), deq.end());
-	std::cout << "[DEQ] Before : ";
+	std::cout << MAG << "[DEQ] Before : ";
 	printContainer(deq);
-    
-	//p.setDataDeq(deq.begin(), deq.end());
-	//t_dataDeq	dataDeq = p.getDataDeq();
-	//std::cout << "[DEQ] size = " << dataDeq.container.size() << std::endl;
+	std::cout << DEFAULT;
+
 	p.sortDequeue();
     endDeq = clock();
 
-	std::cout << "[DEQ] After : ";
+	std::cout << MAG << "[DEQ] After : ";
 	deq = p.getDeq();
 	printContainer(deq);
 	std::cout << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << std::endl;
-	std::cout << std::endl;
+	std::cout << DEFAULT << std::endl;
 
 	//if (!is_sorted(size, dataVec.container))
 	//	std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;

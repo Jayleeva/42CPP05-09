@@ -38,27 +38,6 @@ void	PmergeMe::setDeq(std::deque<unsigned int>::iterator begin, std::deque<unsig
 	this->container.insert(this->container.end(), begin, end);
 }
 
-/*t_dataVec	PmergeMe::getDataVec() const
-{
-	return (this->dataVec);
-}
-
-t_dataDeq	PmergeMe::getDataDeq() const
-{
-	return (this->dataDeq);
-}
-
-void	PmergeMe::setDataVec(std::vector<unsigned int>::iterator begin, std::vector<unsigned int>::iterator end)
-{
-	this->dataVec.container.insert(this->dataVec.container.end(), begin, end);
-}
-
-void	PmergeMe::setDataDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
-{
-	this->dataDeq.container.insert(this->dataDeq.container.end(), begin, end);
-}*/
-
-
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 {
 	size_t tmp1 = jacobsthal[0];
@@ -167,14 +146,11 @@ std::deque<unsigned int>	copy_deque(std::deque<unsigned int> deq)
 
 void	jacobsthalInsert(t_dataDeq *data)
 {
-	std::deque<size_t>	jacobsthal(2);
+
 	size_t				size = data->pending.size();
-	//size_t				i = 0;
-	//size_t				remaining;
 	size_t				n = 0;
 
-	jacobsthal.push_front(3);
-	jacobsthal.push_front(1);
+	update_jacobsthal(data->jacobsthal);
 	//std::cout << "[DEQ] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
 
 	/*if (size == 0)
@@ -183,8 +159,8 @@ void	jacobsthalInsert(t_dataDeq *data)
 		return ;
 	}*/
 
-	std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << std::endl;// << " remaining = " << remaining << std::endl;
-	n = jacobsthal[1] - jacobsthal[0];
+	std::cout << "jacob[1] = " << data->jacobsthal[1] << " jacob[0] = " << data->jacobsthal[0] << std::endl;// << " remaining = " << remaining << std::endl;
+	n = data->jacobsthal[1] - data->jacobsthal[0];
 	if (n < size)
 	{
 		while (size > 0)
@@ -198,37 +174,11 @@ void	jacobsthalInsert(t_dataDeq *data)
 	{
 		while (n > 0)
 		{
-			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[jacobsthal[1]] << std::endl;
-			binaryInsert(data->main, data->pending[jacobsthal[1]]);
-			jacobsthal = update_jacobsthal(jacobsthal);
+			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[data->jacobsthal[1]] << std::endl;
+			binaryInsert(data->main, data->pending[data->jacobsthal[1]]);
 			n --;
 		}
-	}
-	
-	/*while (i < size)
-	{
-		remaining = size - i;
-		std::cout << "jacob[1] = " << jacobsthal[1] << " jacob[0] = " << jacobsthal[0] << " remaining = " << remaining << std::endl;
-		n = jacobsthal[1] - jacobsthal[0];
-		if (n < remaining)
-		{
-			std::cout << "[DEQ] standard; pending[i] = " << data->pending[i] << std::endl;
-			binaryInsert(data->main, data->pending[i]);
-			i ++;
-		}
-		else
-		{
-			while (n > 0)
-			{
-				std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[jacobsthal[1]] << std::endl;
-				binaryInsert(data->main, data->pending[jacobsthal[1]]);
-				i ++;
-				n --;
-			}
-		}
-		jacobsthal = update_jacobsthal(jacobsthal);
-	}*/
-	
+	}	
 }
 
 std::deque<unsigned int>	mergeMainAndPending(t_dataDeq *data, bool must_insert)
@@ -236,10 +186,7 @@ std::deque<unsigned int>	mergeMainAndPending(t_dataDeq *data, bool must_insert)
 	std::deque<unsigned int>	merged;
 
 	if (must_insert)
-	{
-		std::cout << "FUCKING MERGE OMFG" << std::endl;
 		jacobsthalInsert(data);
-	}
 		
 	if (data->remaining.size())
 	{
@@ -251,20 +198,21 @@ std::deque<unsigned int>	mergeMainAndPending(t_dataDeq *data, bool must_insert)
 	return (merged);
 }
 
-std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator ite, size_t fixedSize, std::deque<unsigned int> &current) // t_dataDeq *data) //, )
+std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator ite, size_t fixedSize, std::deque<unsigned int> &current, std::deque<size_t> &jacobsthal)//t_dataDeq *data)
 {
 	//main = 'b1' puis tous les 'a' : premier bloc, deuxième bloc, puis un sur deux (4ème, 6ème...)
 	//pending = tous les autres 'b' : troisième bloc, puis un sur sur deux (5ème, 7ème...)
 	t_dataDeq	data_;
 	std::deque<unsigned int>	res;
 	std::deque<unsigned int>::iterator begin = current.begin();
-	//std::deque<unsigned int>::iterator ite = current.end();
+
+	data_.jacobsthal = jacobsthal;
 
 	static size_t	n = 1;
 	if (n < 3)
 	{
 		data_.main.insert(data_.main.end(), begin, current.end());
-		std::cout << "FIRST / SECOND :" << std::endl; // size = " << size << " container.size() = " << current.size() << " half container = " << current.size() /2 << std::endl;
+		std::cout << "FIRST / SECOND" << std::endl;
 		n ++;
 		res = mergeMainAndPending(&data_, 0);
 		return (res);
@@ -276,31 +224,25 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 	{
 		std::cout << "remainiiiiiing" << std::endl;
 		data_.remaining.insert(data_.remaining.end(), ite, current.end());
-		//std::cout << "remaining after formmainpending = ";
+		//std::cout << "[REMAINING] after distribution = ";
 		//printContainer(data_.remaining);
 	}
 
-	//size_t half = fixedSize / 2;
 	data_.main.insert(data_.main.end(), begin, begin + fixedSize * 2);
 	data_.pending.insert(data_.pending.end(), begin + fixedSize * 2, begin + fixedSize * 3);
 	
-	/*std::cout << "[MAIN] after base insert = ";
-	printContainer(data_.main);
-	std::cout << "[PENDING] after base insert = ";
-	printContainer(data_.pending);*/
-
 	std::deque<unsigned int>::iterator it = begin + fixedSize * 3;
 
 	while (1)
 	{
-		std::cout << "-----------------hello" << std::endl;
+		std::cout << "-----------------still has elements to distribute" << std::endl;
 		std::cout << "it = " << *(it -1) << std::endl;
 		if (it + fixedSize <= ite)
 		{
 			std::cout << "maiiiiiiiin" << std::endl;
 			data_.main.insert(data_.main.end(), it, it + fixedSize);
-			std::cout << "main container = ";
-			printContainer(data_.main);		
+			//std::cout << "main container = ";
+			//printContainer(data_.main);		
 			it += fixedSize;
 		}
 		else
@@ -310,24 +252,24 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 		{
 			std::cout << "pendiiiiing" << std::endl;
 			data_.pending.insert(data_.pending.end(), it, it + fixedSize);
-			std::cout << "pending container = ";
-			printContainer(data_.pending);
+			//std::cout << "pending container = ";
+			//printContainer(data_.pending);
 			it += fixedSize;	
 		}
 		else
 			break;
 	}
+	std::cout << "[MAIN] after distribtion = ";
+	printContainer(data_.main);
+	std::cout << "[PENDING] after distribution = ";
+	printContainer(data_.pending);
 	res = mergeMainAndPending(&data_, 1);
-	//std::cout << "merged container = ";
-	//printContainer(res);
 	return (res);
 }
 
-void	merging(size_t size, std::deque<unsigned int> &container) //, std::deque<unsigned int> &current)
+void	merging(size_t size, std::deque<unsigned int> &container, std::deque<size_t> &jacobsthal) //, std::deque<unsigned int> &current)
 {
-	t_dataDeq	data_;
-	
-	if (size / 2 > 1)
+	if (size / 2 >= 1)
 	{
 		size_t	fixedSize = size;
 		size_t	n = 2;
@@ -350,36 +292,26 @@ void	merging(size_t size, std::deque<unsigned int> &container) //, std::deque<un
 		}
 		size_t remaining = container.size() - fixedSize * nlvl;
 		std::cout << "entered merging with lvl = " << nlvl << " remaining = " << remaining << " and fixedSize = " << fixedSize << std::endl;
-		container = formMainAndPending(container.end() - remaining, fixedSize, container);
+		container = formMainAndPending(container.end() - remaining, fixedSize, container, jacobsthal);
 		std::cout << "merged container = ";
 		printContainer(container);
-		//data_ = formMainAndPending(size, fixedSize, container);
-		//container = mergeMainAndPending(&data_);
-		//container = copy_deque(data_.main);
-		merging(size / 2, container); //, data->main);
+		jacobsthal = update_jacobsthal(jacobsthal);
+		merging(size / 2, container, jacobsthal);
 	}
 }
 
 void		PmergeMe::sortDequeue()
 {
-	size_t	size = this->container.size();
+	t_dataDeq	data;
+	data.jacobsthal.push_front(1);
+	data.jacobsthal.push_front(0);
 
-	/*size_t	nlvl = 1;
-	size_t	n = 2;
-	while (n * 2 < size)
-	{
-		n *= 2;
-		nlvl ++;
-	}
-	if (n * 2 > size)
-	{
-		nlvl --;
-	}*/
+	size_t	size = this->container.size();
 	swapping(size, this->container);
 	std::cout << "container after swapping = ";
 	printContainer(this->container);
 
-	merging(size, this->container); //, data->container);
+	merging(size, this->container, data.jacobsthal);
 	std::cout << "container after merging = ";
 	printContainer(this->container);
 
