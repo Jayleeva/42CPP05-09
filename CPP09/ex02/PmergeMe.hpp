@@ -15,7 +15,7 @@
 # define YELLOW "\001\033[1;93m\002"
 # define RED "\001\033[0;31m\002"
 # define GREEN "\001\033[1;32m\002"
-# define MAG  "\001\033[1;35m\002" // "\x1B[35m"
+# define MAG  "\001\033[1;35m\002"
 
 typedef struct s_dataVec
 {
@@ -33,7 +33,6 @@ typedef struct s_dataDeq
 	std::deque<size_t> 			jacobsthal;
 }								t_dataDeq;
 
-
 class	PmergeMe
 {
 	public:
@@ -45,23 +44,23 @@ class	PmergeMe
 		std::deque<unsigned int>	getDeq() const;
 		void						setDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
 
-		void		sortDequeue();
+		void						sortDequeue();
 
 	private:
 		std::deque<unsigned int>	container;
 };
 
-		void	binaryInsert(std::vector<unsigned int> &container, unsigned int ui);
-		void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui);
+void	binaryInsert(std::vector<unsigned int> &container, unsigned int ui);
+void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui);
 
-		void	jacobsthalInsert(t_dataVec *data);
-		void	jacobsthalInsert(t_dataDeq *data);
+void	jacobsthalInsert(t_dataVec *data);
+void	jacobsthalInsert(t_dataDeq *data);
 
-		void	swapping(size_t size, std::vector<unsigned int> &current);
-		void	swapping(size_t size, std::deque<unsigned int> &current);
+void	swapping(size_t size, std::vector<unsigned int> &current);
+void	swapping(size_t size, std::deque<unsigned int> &current);
 
-		void	merging(size_t size, std::vector<unsigned int> &container, std::vector<size_t> &jacobsthal);
-		void	merging(size_t size, std::deque<unsigned int> &container, std::deque<size_t> &jacobsthal);
+void	merging(size_t size, std::vector<unsigned int> &container, std::vector<size_t> &jacobsthal);
+void	merging(size_t size, std::deque<unsigned int> &container, std::deque<size_t> &jacobsthal);
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
 

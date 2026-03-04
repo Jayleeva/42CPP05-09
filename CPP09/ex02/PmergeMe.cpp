@@ -47,7 +47,6 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 	return (jacobsthal);
 }
 
-
 void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui)
 {
 	size_t			i = 0;
@@ -135,13 +134,6 @@ void	swapping(size_t size, std::deque<unsigned int> &container)
 		sortPairs(fixedSize, container, container.end() - size / 2 + 1);
 	//std::cout << "after sortpairs of size = " << size << ": \n   ";
 	//printContainer(container);
-}
-
-std::deque<unsigned int>	copy_deque(std::deque<unsigned int> deq)
-{
-	std::deque<unsigned int>	res;
-	res.insert(res.end(), deq.begin(), deq.end() -1);
-	return (res);
 }
 
 void	jacobsthalInsert(t_dataDeq *data)
@@ -312,8 +304,6 @@ void		PmergeMe::sortDequeue()
 	printContainer(this->container);
 
 	merging(size, this->container, data.jacobsthal);
-	std::cout << "container after merging = ";
-	printContainer(this->container);
-
-	//binaryInsert(container, data->remaining[0]);
+	//std::cout << "container after merging = ";
+	//printContainer(this->container);
 }
