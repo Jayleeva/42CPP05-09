@@ -297,11 +297,10 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 		std::cout << "it = " << *(it -1) << std::endl;
 		if (it + fixedSize <= ite)
 		{
-			std::cout << "pendiiiiing" << std::endl;
-			data_.pending.insert(data_.pending.end(), it, it + fixedSize);
-			std::cout << "pending container = ";
-			printContainer(data_.pending);
-						
+			std::cout << "maiiiiiiiin" << std::endl;
+			data_.main.insert(data_.main.end(), it, it + fixedSize);
+			std::cout << "main container = ";
+			printContainer(data_.main);		
 			it += fixedSize;
 		}
 		else
@@ -309,10 +308,10 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 
 		if (it + fixedSize <= ite)
 		{
-			std::cout << "maiiiiiiiin" << std::endl;
-			data_.main.insert(data_.main.end(), it + fixedSize, ite);
-			std::cout << "main container = ";
-			printContainer(data_.main);
+			std::cout << "pendiiiiing" << std::endl;
+			data_.pending.insert(data_.pending.end(), it, it + fixedSize);
+			std::cout << "pending container = ";
+			printContainer(data_.pending);
 			it += fixedSize;	
 		}
 		else
