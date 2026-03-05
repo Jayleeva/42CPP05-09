@@ -15,8 +15,8 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &original)
 {
 	if (this != &original)
 	{
-		this->container = original.container;
-		//this->dataDeq.container = original.dataDeq.container;
+		//this->vec = original.vec;
+		this->deq = original.deq;
 	}
 	std::cout << YELLOW << "[PMERGEME] : Assignment operator overload called" << DEFAULT << std::endl;
 	return (*this);
@@ -30,12 +30,12 @@ PmergeMe::~PmergeMe()
 
 std::deque<unsigned int>	PmergeMe::getDeq() const
 {
-	return (this->container);
+	return (this->deq);
 }
 
 void	PmergeMe::setDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
 {
-	this->container.insert(this->container.end(), begin, end);
+	this->deq.insert(this->deq.end(), begin, end);
 }
 
 std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
@@ -49,7 +49,7 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 
 void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator ite, size_t blockSize)
 {
-	if (container.size() == 0 || *ite < container[0])
+	if (container.size() == 0 || *ite < *(container.begin()))
 	{
 		container.insert(container.begin(), ite - blockSize, ite);
 		return ;
@@ -133,39 +133,49 @@ void	swapping(size_t size, std::deque<unsigned int> &container)
 
 void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 {
-
+	std::deque<unsigned int>::iterator it;
+	std::deque<unsigned int>::iterator ite;
 	size_t				size = data->pending.size();
 	size_t				n = 0;
 
 	update_jacobsthal(data->jacobsthal);
-	//std::cout << "[DEQ] jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
-
-	/*if (size == 0)
-	{
-		data->main.push_back(data->pending[i]);
-		return ;
-	}*/
-
 	std::cout << "jacob[1] = " << data->jacobsthal[1] << " jacob[0] = " << data->jacobsthal[0] << std::endl;// << " remaining = " << remaining << std::endl;
+	
 	n = data->jacobsthal[1] - data->jacobsthal[0];
-	if (n < size / blockSize)
+	size_t m = size / blockSize - n;
+	if (m > 0)
 	{
 		while (size / blockSize > 0)
 		{
-			std::cout << "[DEQ] standard; pending[i] = " << data->pending[size / blockSize] << std::endl;
-			binaryInsert(data->main, data->pending.begin() + size / blockSize, blockSize);
+			std::cout << "[DEQ] standard reverse; pending[i] = " << data->pending[size / blockSize] << std::endl;
+			//it = data->pending.begin() + blockSize;
+			ite = data->pending.begin() + size / blockSize;
+			binaryInsert(data->main, ite, blockSize);
+			//binaryInsert(data->main, data->pending.begin() + size / blockSize, blockSize);
 			size -= size / blockSize;
+		}
+	}
+	else if (m == 0)
+	{
+		while (n > 0)
+		{
+			ite = data->pending.begin() + size / blockSize;
+			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1]] = " <<  data->pending[size / blockSize] << std::endl;
+			binaryInsert(data->main, ite, blockSize);
+			size -= size / blockSize;
+			n --;
 		}
 	}
 	else
 	{
-		while (n > 0)
+		while (m < 0)
 		{
-			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[data->jacobsthal[1]] << std::endl;
-			binaryInsert(data->main, data->pending.begin() + data->jacobsthal[1] * blockSize, blockSize);
-			n --;
+			ite = data->pending.begin() + blockSize * -m;
+			std::cout << "[DEQ] standard; pending[i] = " << std::endl; // << data->pending[size / blockSize] << std::endl;
+			binaryInsert(data->main, ite, blockSize);
+			m ++;
 		}
-	}	
+	}
 }
 
 std::deque<unsigned int>	mergeMainAndPending(t_dataDeq *data, bool must_insert, size_t fixedSize)
@@ -293,12 +303,12 @@ void		PmergeMe::sortDequeue()
 	data.jacobsthal.push_front(1);
 	data.jacobsthal.push_front(0);
 
-	size_t	size = this->container.size();
-	swapping(size, this->container);
+	size_t	size = this->deq.size();
+	swapping(size, this->deq);
 	std::cout << "container after swapping = ";
-	printContainer(this->container);
+	printContainer(this->deq);
 
-	merging(size, this->container, data.jacobsthal);
+	merging(size, this->deq, data.jacobsthal);
 	//std::cout << "container after merging = ";
 	//printContainer(this->container);
 }

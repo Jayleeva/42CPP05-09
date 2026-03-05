@@ -47,7 +47,8 @@ class	PmergeMe
 		void						sortDequeue();
 
 	private:
-		std::deque<unsigned int>	container;
+		//std::vector<unsigned int>	vec;
+		std::deque<unsigned int>	deq;
 };
 
 void	binaryInsert(std::vector<unsigned int> &container, unsigned int ui);
