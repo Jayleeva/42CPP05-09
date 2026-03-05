@@ -47,40 +47,35 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 	return (jacobsthal);
 }
 
-void	binaryInsert(std::deque<unsigned int> &container, unsigned int ui)
+void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator ite, size_t blockSize)
 {
-	size_t			i = 0;
-
-	if (container.size() == 0)
+	if (container.size() == 0 || *ite < container[0])
 	{
-		container.push_back(ui);
+		container.insert(container.begin(), ite - blockSize, ite);
 		return ;
 	}
 
-	if (ui < container[0])
+	size_t								i = 0;
+	std::deque<unsigned int>::iterator	it = container.begin();
+	while (it + blockSize < container.end())
 	{
-		container.insert(container.begin(), ui);
-		return ;
-	}
-	std::deque<unsigned int>::iterator it = container.begin() + i;
-	while (i + 1 < container.size())
-	{
-		if (ui > container[i] && ui < container[i + 1])
+		if (*ite > *(it) && *ite < *(it + blockSize))
 		{
-			container.insert(it + 1, ui);
+			container.insert(it + blockSize, ui);
 			return ;
 		}
 		it++;
 		i++;
 	}
-	if (ui > container[container.size() -1] && ui < container[container.size()])
+
+	if (*ite > *(container.end() - blockSize) && *ite < *(container.end()))
 	{
-		container.insert(it + 1, ui);
+		container.insert(container.end() - blockSize, ite - blockSize, ite);
 		return ;
 	}
-	if (ui > container[container.size()])
+	if (*ite > *(container.end()))
 	{
-		container.push_back(ui);
+		container.insert(container.end(), ite - blockSize, ite);
 		return ;
 	}
 	//std::cout << "not inserted" << std::endl;
@@ -136,7 +131,7 @@ void	swapping(size_t size, std::deque<unsigned int> &container)
 	//printContainer(container);
 }
 
-void	jacobsthalInsert(t_dataDeq *data)
+void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 {
 
 	size_t				size = data->pending.size();
@@ -153,13 +148,13 @@ void	jacobsthalInsert(t_dataDeq *data)
 
 	std::cout << "jacob[1] = " << data->jacobsthal[1] << " jacob[0] = " << data->jacobsthal[0] << std::endl;// << " remaining = " << remaining << std::endl;
 	n = data->jacobsthal[1] - data->jacobsthal[0];
-	if (n < size)
+	if (n < size / blockSize)
 	{
-		while (size > 0)
+		while (size / blockSize > 0)
 		{
-			std::cout << "[DEQ] standard; pending[i] = " << data->pending[size -1] << std::endl; // PAS UN UNSIGNED INT PAR UNSIGNED INT, MAIS UN ELEMENT PAR ELEMENT!
-			binaryInsert(data->main, data->pending[size -1]);
-			size --;
+			std::cout << "[DEQ] standard; pending[i] = " << data->pending[size / blockSize] << std::endl; // PAS UN UNSIGNED INT PAR UNSIGNED INT, MAIS UN ELEMENT PAR ELEMENT!
+			binaryInsert(data->main, data->pending[size / blockSize], blockSize);
+			size -= size / blockSize;
 		}
 	}
 	else
@@ -167,18 +162,18 @@ void	jacobsthalInsert(t_dataDeq *data)
 		while (n > 0)
 		{
 			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[data->jacobsthal[1]] << std::endl;
-			binaryInsert(data->main, data->pending[data->jacobsthal[1]]);
+			binaryInsert(data->main, data->pending[data->jacobsthal[1] * blockSize], blockSize);
 			n --;
 		}
 	}	
 }
 
-std::deque<unsigned int>	mergeMainAndPending(t_dataDeq *data, bool must_insert)
+std::deque<unsigned int>	mergeMainAndPending(t_dataDeq *data, bool must_insert, size_t fixedSize)
 {
 	std::deque<unsigned int>	merged;
 
 	if (must_insert)
-		jacobsthalInsert(data);
+		jacobsthalInsert(data, fixedSize);
 		
 	if (data->remaining.size())
 	{
@@ -206,7 +201,7 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 		data_.main.insert(data_.main.end(), begin, current.end());
 		std::cout << "FIRST / SECOND" << std::endl;
 		n ++;
-		res = mergeMainAndPending(&data_, 0);
+		res = mergeMainAndPending(&data_, 0, fixedSize);
 		return (res);
 	}
 
@@ -255,7 +250,7 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 	printContainer(data_.main);
 	std::cout << "[PENDING] after distribution = ";
 	printContainer(data_.pending);
-	res = mergeMainAndPending(&data_, 1);
+	res = mergeMainAndPending(&data_, 1, fixedSize);
 	return (res);
 }
 
