@@ -27,10 +27,11 @@ typedef struct s_dataVec
 
 typedef struct s_dataDeq
 {
-	std::deque<unsigned int>	main;
-	std::deque<unsigned int>	pending;
-	std::deque<unsigned int>	remaining;
-	std::deque<size_t> 			jacobsthal;
+	std::deque<unsigned int>						main;
+	std::deque<unsigned int>						pending;
+	std::deque<unsigned int>						remaining;
+	std::deque<size_t> 								jacobsthal;
+	std::deque<std::deque<unsigned int>::iterator>	labels;
 }								t_dataDeq;
 
 class	PmergeMe

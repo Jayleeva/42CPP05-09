@@ -47,7 +47,7 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 	return (jacobsthal);
 }
 
-void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator ite, size_t blockSize)
+void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator ite, size_t blockSize, std::deque<unsigned int>::iterator max_)
 {
 	if (container.size() == 0 || *ite < *(container.begin()))
 	{
@@ -57,7 +57,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 
 	size_t								i = 0;
 	std::deque<unsigned int>::iterator	it = container.begin();
-	while (it + blockSize < container.end())
+	while (it + blockSize < max_) // doit aller jusqu'a l'ancien voisin
 	{
 		if (*ite > *(it) && *ite < *(it + blockSize))
 		{
@@ -68,14 +68,14 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		i++;
 	}
 
-	if (*ite > *(container.end() - blockSize) && *ite < *(container.end()))
+	if (*ite > *(container.end() - blockSize) && *ite < *(max_)) // doit aller jusqu'a l'ancien voisin
 	{
-		container.insert(container.end() - blockSize, ite - blockSize, ite);
+		container.insert(max_ - blockSize, ite - blockSize, ite); // doit aller jusqu'a l'ancien voisin
 		return ;
 	}
 	if (*ite > *(container.end()))
 	{
-		container.insert(container.end(), ite - blockSize, ite);
+		container.insert(max_, ite - blockSize, ite); // doit aller jusqu'a l'ancien voisin
 		return ;
 	}
 	//std::cout << "not inserted" << std::endl;
@@ -133,48 +133,43 @@ void	swapping(size_t size, std::deque<unsigned int> &container)
 
 void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 {
-	std::deque<unsigned int>::iterator it;
-	std::deque<unsigned int>::iterator ite;
-	size_t				size = data->pending.size();
-	size_t				n = 0;
+	std::deque<unsigned int>::iterator	it;
+	std::deque<unsigned int>::iterator	ite;
+	std::deque<unsigned int>::iterator	max_;
+	size_t								size = data->pending.size();
+	size_t								pending_nblocks = size / blockSize;
+	size_t								main_nblocks = data->main.size() / blockSize;
+	size_t								total_nblocs = pending_nblocks + main_nblocks;
+	size_t								difjac = data->jacobsthal[1] - data->jacobsthal[0];
+	//size_t 								type = nblocks - difjac;
 
-	update_jacobsthal(data->jacobsthal);
+	
 	std::cout << "jacob[1] = " << data->jacobsthal[1] << " jacob[0] = " << data->jacobsthal[0] << std::endl;// << " remaining = " << remaining << std::endl;
 	
-	n = data->jacobsthal[1] - data->jacobsthal[0];
-	size_t m = size / blockSize - n;
-	if (m > 0)
+	// une fois un level fini, les blocs paires (0, 2, ..) sont les 'b', et les impaires sont les 'a'. 
+	// si jacob[1] == 5, on commence par inserer b5, et a cause des swap etc precedents, on sait qu'il sera forcement avant a5:
+	//   le binary insert se fait donc uniquement depuis le debut du main jusqu'au a5.
+	// s'il reste des blocs a inserer apres avoir epuise les jacobsthal, on commence par le dernier bloc, et comme avant, on sait qu'il sera forcement avant son ancien voisin.
+	// 
+
+	while (pending_nblocks > 0)
 	{
-		while (size / blockSize > 0)
+		while (data->labels) // tant que le nombre jacobsthal existe dans le pending, ex. jac = 5 et il y a un b6: on insert par jac pour le b5 et le b4, puis insert standard pour le b6.
 		{
-			std::cout << "[DEQ] standard reverse; pending[i] = " << data->pending[size / blockSize] << std::endl;
-			//it = data->pending.begin() + blockSize;
-			ite = data->pending.begin() + size / blockSize;
-			binaryInsert(data->main, ite, blockSize);
-			//binaryInsert(data->main, data->pending.begin() + size / blockSize, blockSize);
-			size -= size / blockSize;
+			while (difjac > 0)
+			{
+				
+				pending_nblocks --;
+				difjac --;
+			}
+			update_jacobsthal(data->jacobsthal);
+			difjac = data->jacobsthal[1] - data->jacobsthal[0];
 		}
-	}
-	else if (m == 0)
-	{
-		while (n > 0)
-		{
-			ite = data->pending.begin() + size / blockSize;
-			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1]] = " <<  data->pending[size / blockSize] << std::endl;
-			binaryInsert(data->main, ite, blockSize);
-			size -= size / blockSize;
-			n --;
-		}
-	}
-	else
-	{
-		while (m < 0)
-		{
-			ite = data->pending.begin() + blockSize * -m;
-			std::cout << "[DEQ] standard; pending[i] = " << std::endl; // << data->pending[size / blockSize] << std::endl;
-			binaryInsert(data->main, ite, blockSize);
-			m ++;
-		}
+		ite = data->pending.begin() + size / blockSize;
+		std::cout << "[DEQ] standard ; pending.begin() + size / blockSize = " << *(data->pending.begin() + size / blockSize) << std::endl;
+		binaryInsert(data->main, ite, blockSize, max_);
+		size -= size / blockSize;
+		pending_nblocks --;
 	}
 }
 
@@ -184,6 +179,8 @@ std::deque<unsigned int>	mergeMainAndPending(t_dataDeq *data, bool must_insert, 
 
 	if (must_insert)
 		jacobsthalInsert(data, fixedSize);
+	else
+		update_jacobsthal(data->jacobsthal);
 		
 	if (data->remaining.size())
 	{
@@ -195,7 +192,7 @@ std::deque<unsigned int>	mergeMainAndPending(t_dataDeq *data, bool must_insert, 
 	return (merged);
 }
 
-std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator ite, size_t fixedSize, std::deque<unsigned int> &current, std::deque<size_t> &jacobsthal)//t_dataDeq *data)
+std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator ite, size_t fixedSize, std::deque<unsigned int> &current, std::deque<size_t> &jacobsthal)
 {
 	//main = 'b1' puis tous les 'a' : premier bloc, deuxième bloc, puis un sur deux (4ème, 6ème...)
 	//pending = tous les autres 'b' : troisième bloc, puis un sur sur deux (5ème, 7ème...)
@@ -228,13 +225,19 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 	data_.main.insert(data_.main.end(), begin, begin + fixedSize * 2);
 	data_.pending.insert(data_.pending.end(), begin + fixedSize * 2, begin + fixedSize * 3);
 	
+	data_.labels.push_back(data_.main.begin());
+	data_.labels.push_back(data_.pending.begin());
+	data_.labels.push_back(data_.main.begin() + fixedSize);
+
 	std::deque<unsigned int>::iterator it = begin + fixedSize * 3;
 
-	while (1)
+	size_t	nblocks = current.size() / fixedSize - 3;
+	size_t	i = 0;
+	while (i < nblocks)
 	{
 		std::cout << "-----------------still has elements to distribute" << std::endl;
 		std::cout << "it = " << *(it -1) << std::endl;
-		if (it + fixedSize <= ite)
+		if (i % 2 == 0)
 		{
 			std::cout << "maiiiiiiiin" << std::endl;
 			data_.main.insert(data_.main.end(), it, it + fixedSize);
@@ -243,9 +246,6 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 			it += fixedSize;
 		}
 		else
-			break;
-
-		if (it + fixedSize <= ite)
 		{
 			std::cout << "pendiiiiing" << std::endl;
 			data_.pending.insert(data_.pending.end(), it, it + fixedSize);
@@ -253,8 +253,19 @@ std::deque<unsigned int>	formMainAndPending(std::deque<unsigned int>::iterator i
 			//printContainer(data_.pending);
 			it += fixedSize;	
 		}
+		i ++;
+	}
+
+	size_t	i = 0;
+	while (i < nblocks)
+	{
+		std::deque<unsigned int>::iterator	tmpit;
+		if (i % 2 == 0)
+			tmpit = data_.main.begin() + i * fixedSize;
 		else
-			break;
+			tmpit = data_.pending.begin() + i * fixedSize;
+		data_.labels.insert(data_.labels.end(), tmpit, tmpit + fixedSize);
+		i ++;
 	}
 	std::cout << "[MAIN] after distribtion = ";
 	printContainer(data_.main);
