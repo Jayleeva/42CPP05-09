@@ -61,7 +61,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	{
 		if (*ite > *(it) && *ite < *(it + blockSize))
 		{
-			container.insert(it + blockSize, ui);
+			container.insert(it, ite - blockSize, ite);
 			return ;
 		}
 		it++;
@@ -152,8 +152,8 @@ void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 	{
 		while (size / blockSize > 0)
 		{
-			std::cout << "[DEQ] standard; pending[i] = " << data->pending[size / blockSize] << std::endl; // PAS UN UNSIGNED INT PAR UNSIGNED INT, MAIS UN ELEMENT PAR ELEMENT!
-			binaryInsert(data->main, data->pending[size / blockSize], blockSize);
+			std::cout << "[DEQ] standard; pending[i] = " << data->pending[size / blockSize] << std::endl;
+			binaryInsert(data->main, data->pending.begin() + size / blockSize, blockSize);
 			size -= size / blockSize;
 		}
 	}
@@ -162,7 +162,7 @@ void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 		while (n > 0)
 		{
 			std::cout << "[DEQ] jacobsthal; pending[jacobsthal[1] = " <<  data->pending[data->jacobsthal[1]] << std::endl;
-			binaryInsert(data->main, data->pending[data->jacobsthal[1] * blockSize], blockSize);
+			binaryInsert(data->main, data->pending.begin() + data->jacobsthal[1] * blockSize, blockSize);
 			n --;
 		}
 	}	
