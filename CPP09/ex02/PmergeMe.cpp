@@ -173,13 +173,13 @@ void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 	// une fois un level fini, les blocs paires (0, 2, ..) sont les 'b', et les impaires sont les 'a'.
 	// 	main = b1, a1, a2, a3, ...
 	// 	pending = b2, b3, ...
-	// si jacob[1] == 5, on commence par inserer b5, et a cause des swap etc precedents, on sait qu'il sera forcement avant a5:
-	//   le binary insert se fait donc uniquement depuis le debut du main jusqu'au a5.
-	// apres avoir insere b5, on insere b4, meme logique qu'avant. 
-	// comme 5 - 3 = 2, on s'arrete la pour cette suite et on update jacobsthal.
-	// jacob[1] == 11 desormais, on commence par inserer b11 (s'il existe).
-	// s'il reste des blocs a inserer apres avoir epuise les jacobsthal, on commence par le dernier bloc, et comme avant, on sait qu'il sera forcement avant son ancien voisin.
-	// 
+	// si jacob[1] == 5, on commence par insérer b5, et à cause des swap etc précédents, on sait qu'il sera forcément avant a5:
+	//   le binary insert se fait donc uniquement depuis le début du main jusqu'au a5.
+	// après avoir inséré b5, on insère b4, même logique qu'avant. 
+	// comme 5 - 3 = 2, on s'arrête là pour cette suite et on update jacobsthal.
+	// jacob[1] == 11 désormais: on commence par insérer b11 s'il existe; s'il n'existe pas, on abandonne la logique jacobsthal.
+	// s'il reste des blocs à insérer après avoir épuisé les jacobsthal, on commence par le dernier bloc, et comme avant, on sait qu'il sera forcément avant son ancien voisin.
+	
 
 	while (pending_nblocks >= difjac)
 	{
@@ -187,7 +187,7 @@ void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 		{
 			//max_ = ?
 			//ite = ?
-			std::cout << "[DEQ] jacobsthal ; pending. = " ; //<< *(data->pending.begin() + size / blockSize) << std::endl;
+			std::cout << "[DEQ] jacobsthal ;  " ;
 			binaryInsert(data->main, ite, blockSize, max_);
 			pending_nblocks --;
 			difjac --;
