@@ -238,7 +238,9 @@ Il nous reste 4 éléments à insérer, mais nous avons déjà fait les 2 insert
 11 - 5 = 6;
 ```
 On va faire 6 insertions: d'abord l'élément b11, puis le b10, etc.
+
 **!!!il n'y a pas d'élément b11!!!**
+
 On laisse tomber la suite de Jacobsthal et on insère les éléments sans elle, en partant de la fin du pending.
 
 ### Binary insert
