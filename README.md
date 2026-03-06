@@ -251,6 +251,27 @@ A présent, on va insérer le pending dans le main, puis, s'il y en a, nos élé
 - A l'avant-avant-dernier niveau, nos éléments sont de taille suffisamment petites pour qu'il y en ait au minimum 2 à mettre dans le main, et au moins 1 dans le pending. Alors allons-y!
 - La même logique s'applique aux niveaux suivants, jusqu'au niveau 1.
 
+````
+Visualisation
+--------------
+
+Séquence initiale :								14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
+
+Séquence après la première opération :  		1 2 7 10 4 8 12 14 5 9 6 13 3 11 15 16
+
+Séquence "main":								|1 2, 7 10|    |4 8, 12 14|    |3 11, 15 16|
+Séquence "pending":								|5 9, 6 13|
+
+Paire de Jacobsthal:							1, 3
+Element correspondant:							inexistant
+=> On insère dans l'ordre normal.
+
+Un seul élément dans le pending +
+Pas d'ancien voisin pour cet élément:			la zone d'insertion n'est pas restreinte.
+=> On fait le binary insert sur tout le main.
+
+````
+
 Avant de nous pencher sur la suite de Jacobsthal et le binary insert, il nous faut nous attarder sur cette histoire de restriction de la zone d'insertion. J'ai dit qu'on ne compare pas notre élément avec tous ceux de la séquence où on veut le placer, mais uniquement avec ceux jusqu'à un "certain point". Comment ce dernier est-il déterminé?
 
 Avant de faire notre distribution main-pending, nous avions une séquence d'éléments. On pourrait appeler le premier élément b1, et son voisin direct a1, puis le suivant b2, et son voisin direct a2, et ainsi de suite. Notre main serait donc premièrement composé de b1 et a1, et notre pending de b2, puis le main intégrerait a2, a3, etc jusqu'à ce qu'il n'y ait plus de 'a', et le pending comprendrait b3, b5, etc jusqu'à ce qu'il n'y ait plus de 'b'.
