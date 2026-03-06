@@ -270,6 +270,7 @@ Un seul élément dans le pending +
 Pas d'ancien voisin pour cet élément:			la zone d'insertion n'est pas restreinte.
 => On fait le binary insert sur tout le main.
 
+Séquence "main" après insertion:				|1 2, 7 10|    |5 9, 6 13|    |4 8, 12 14|    |3 11, 15 16|
 ````
 
 Avant de nous pencher sur la suite de Jacobsthal et le binary insert, il nous faut nous attarder sur cette histoire de restriction de la zone d'insertion. J'ai dit qu'on ne compare pas notre élément avec tous ceux de la séquence où on veut le placer, mais uniquement avec ceux jusqu'à un "certain point". Comment ce dernier est-il déterminé?
