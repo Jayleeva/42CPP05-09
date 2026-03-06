@@ -183,7 +183,7 @@ La deuxième opération consistera à **former 2 nouvelles séquences, respectiv
 - le pending est toujours composé du 3ème élément du résultat précédent s'il existe, puis, s'il en reste, des éléments impairs (5ème, 7ème, 9ème, ...).
 Si des éléments ne peuvent pas être distribués, on les garde de côté.
 
-A présent, on va insérer le pending dans le main, puis, s'il y en a, nos éléments "de trop" gardés de côté, afin de recréer une séquence plus triée sur laquelle effectuer à nouveau la deuxième opération, au niveau en-dessous. Mais attention! Pas n'importe comment: pour le pending, on va faire du **binary insert**. Mais attention!! Pas n'importe comment: en utilisant **la suite de Jacobsthal**. Enfin, sous certaines conditions.
+A présent, on va insérer le pending dans le main, puis, s'il y en a, nos éléments "de trop" gardés de côté, afin de recréer une séquence plus triée sur laquelle effectuer à nouveau la deuxième opération, au niveau en-dessous. Mais attention! Pas n'importe comment: pour le pending, on va faire du **binary insert**. Mais attention!! Pas n'importe comment: en utilisant autant que possible **la suite de Jacobsthal**, qui nous donne un ordre optimisé dans lequel insérer nos éléments, mais aussi en utilisant une logique permettant de restreindre la zone où les insérer. Au lieu de comparer notre élément avec l'entierté de la séquence, on peut se permettre, grâce aux étapes précédentes, de le comparer jusqu'à un certain point de la séquence. N'oubliez pas: notre but est toujours de limiter au maximum les comparaisons!
 
 - Au dernier niveau, nous sommes censés découper notre séquence en éléments dont la taille fait en réalité toute la séquence: inutile donc de lancer la fonction censées distribuer les éléments dans plusieurs séquences tout comme celle censée les réinsérer en une seule.
 - A l'avant-dernier niveau, nous sommes censés découper notre séquence en éléments qui contiennent chacun une moitié de la séquence: puisque nous n'avons que 2 éléments, nous ne lançerons pas les fonctions ici non plus.
@@ -210,19 +210,25 @@ La même règle s'applique à l'infini:
 		5 * 2 + 11 = 21;
 	...
 ```
-Dans notre algorithme, nous commençons la suite de Jacobsthal directement avec 1 et 3.
+Dans notre algorithme, nous commençons la suite de Jacobsthal directement avec 1 et 3?
 
-Dans certains cas, on va utiliser cette suite pour insérer les éléments du pending dans le main dans un ordre spécifique, qui permet de limiter le nombre de comparaisons (soit l'objectif de l'algo). Pourquoi ça réduit? :sparkles:Magie des maths:sparkles: (je n'en sais pas plus).
+Voici un exemple de comment l'utiliser:
 
-Plus précisément, si une certaine condition est remplie, on lance la fonction du binary insert en lui passant l'élément indexé par le 2ème nombre actuel de la suite jacobsthal (par ex., si la paire actuelle de Jacobsthal est 3 et 5, on envoie le 5ème élément du pending au binary insert). Sinon, on la lance avec un index normal.
+*Supposons qu'il me reste 6 éléments à traiter, et que la paire de Jacbosthal en est à 3 et 5.*
 
-Quelle est cette fameuse condition?
-On boucle tant qu'il y a des éléments à envoyer au binary insert; si le nombre d'éléments qu'il reste à traiter est plus grand que la différence entre les deux nombres actuels de Jacbosthal, la condition est remplie: on utilise le 2ème comme index.
+```
+5 - 3 = 2;
+``` 
+On va faire 2 insertions: d'abord l'élément b5, puis l'élément b4. On part du plus grand "index" et on va dans l'ordre décroissant.
 
-Exemple: il me reste 3 éléments à traiter, et la paire de Jacbosthal en est à 3 et 5.
-	5 - 3 = 2;
-	3 > 2;
-	=> on passe au binary insert le 5ème élément du pending.
+Il nous reste 4 éléments à insérer, mais nous avons déjà fait les 2 insertions ordonnées par la paire de Jacobsthal 3 et 5. On passe donc à la paire suivante: 5 et 11.
+
+```
+11 - 5 = 6;
+```
+On va faire 6 insertions: d'abord l'élément b11, puis le b10, etc.
+**!!!il n'y a pas d'élément b11!!!**
+On laisse tomber la suite de Jacobsthal et on insère les éléments sans elle, en partant de la fin du pending.
 
 ### Binary insert
 
