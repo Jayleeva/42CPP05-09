@@ -208,6 +208,9 @@ Visualisation
 
 Séquence :		14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
 
+Base: un élément = un unsigned int
+|14|    |12|    |8|    |4|    |2|    |1|    |7|    |10|    |13|    |6|    |9|    |5|    |11|   |3|    |16|    |15|
+
 Niveau 1: un élément = une paire d'unsigned int
 |14 12|    |8 4|    |2 1|    |7 10|    |13 6|    |9 5|    |11 3|    |16 15|
 
@@ -267,15 +270,15 @@ Séquence initiale :								14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
 Séquence après la première opération :  		1 2 7 10 4 8 12 14 5 9 6 13 3 11 15 16
 
 Paire de Jacobsthal:							0, 1
-
+--------------------------------------------------------------------------------------------------------------
 A ce stade, un élément = une paire de paires de paires de paires d'unsigned int: recouvre toute la séquence.
 => On baisse d'un niveau.
 Paire de Jacobsthal:							1, 1
-
+--------------------------------------------------------------------------------------------------------------
 A ce stade un élément = une paire de paires de paires d'unsigned int: pas assez d'éléments.
 => On baisse d'un niveau. 
 Paire de Jacobsthal:							1, 3
-
+--------------------------------------------------------------------------------------------------------------
 A ce stade un élément = une paire de paires d'unsigned int: assez d'éléments!
 
 Séquence "main":								|1 2, 7 10|    |4 8, 12 14|    |3 11, 15 16|
@@ -293,6 +296,7 @@ Séquence "main" après insertion:				|1 2, 7 10|    |5 9, 6 13|    |4 8, 12 14|
 => On baisse d'un niveau.
 Paire de Jacobsthal:							3, 5
 
+--------------------------------------------------------------------------------------------------------------
 
 Séquence actuelle : 					 		1 2 7 10 5 9 6 13 4 8 12 14 3 11 15 16
 A ce stade un élément = une paire d'unsigned int: assez d'éléments!
@@ -307,6 +311,8 @@ Séquence "main" après insertion:				|1 2|    |4 8|    |5 9|    |7 10|   |3 11|
 
 => On baisse d'un niveau.
 Paire de Jacobsthal:							5, 11
+
+--------------------------------------------------------------------------------------------------------------
 
 Séquence actuelle : 					 		1 2 4 8 5 9 7 10 3 11 6 13 12 14 15 16
 A ce stade un élément =  un unsigned int: assez d'éléments!
