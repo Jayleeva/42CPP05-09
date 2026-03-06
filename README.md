@@ -169,7 +169,7 @@ Visualisation
 
 Séquence :		14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
 
-Niveau 0: un élément = un unsigned int
+Base: un élément = un unsigned int
 |14|    |12|    |8|    |4|    |2|    |1|    |7|    |10|    |13|    |6|    |9|    |5|    |11|    |3|    |16|    |15|
 
 Niveau 1: un élément = une paire d'unsigned int
