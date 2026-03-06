@@ -275,11 +275,11 @@ A ce stade, un élément = une paire de paires de paires de paires d'unsigned in
 => On baisse d'un niveau.
 Paire de Jacobsthal:							1, 1
 --------------------------------------------------------------------------------------------------------------
-A ce stade un élément = une paire de paires de paires d'unsigned int: pas assez d'éléments.
+A ce stade, un élément = une paire de paires de paires d'unsigned int: pas assez d'éléments.
 => On baisse d'un niveau. 
 Paire de Jacobsthal:							1, 3
 --------------------------------------------------------------------------------------------------------------
-A ce stade un élément = une paire de paires d'unsigned int: assez d'éléments!
+A ce stade, un élément = une paire de paires d'unsigned int: assez d'éléments!
 
 Séquence "main":								|1 2, 7 10|    |4 8, 12 14|    |3 11, 15 16|
 Séquence "pending":								|5 9, 6 13|
@@ -298,7 +298,7 @@ Paire de Jacobsthal:							3, 5
 --------------------------------------------------------------------------------------------------------------
 
 Séquence actuelle : 					 		1 2 7 10 5 9 6 13 4 8 12 14 3 11 15 16
-A ce stade un élément = une paire d'unsigned int: assez d'éléments!
+A ce stade, un élément = une paire d'unsigned int: assez d'éléments!
 
 Séquence "main":								|1 2|    |7 10|   |6 13|    |12 14|    |15 16|
 Séquence "pending":								|5 9|    |4 8|    |3 11|
@@ -317,7 +317,7 @@ Paire de Jacobsthal:							5, 11
 --------------------------------------------------------------------------------------------------------------
 
 Séquence actuelle : 					 		1 2 4 8 5 9 7 10 3 11 6 13 12 14 15 16
-A ce stade un élément =  un unsigned int: assez d'éléments!
+A ce stade, un élément =  un unsigned int: assez d'éléments!
 
 Séquence "main":								|1|    |2|    |8|    |9|    |10|    |11|    |13|    |14|    |16|
 Séquence "pending":								|4|    |5|    |7|    |3|    |6|    |12|    |15|
