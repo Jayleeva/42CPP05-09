@@ -163,6 +163,25 @@ Il s'agit d'un algorithme de tri qui vise à faire **le moins de comparaisons po
 
 Pour cela, on va travailler avec des **paires d'éléments**: d'abord un unsigned int et son voisin unsigned int (niveau 1), puis une paire d'unsigned int et sa paire voisine (niveau 2), puis une paire de paire d'unsigned int et sa paire de paire voisine (niveau 3), etc. On verra quoi faire des éléments "en trop" (qu'on n'a pas pu mettre dans une paire) le moment venu.
 
+````
+Visualisation
+--------------
+
+Séquence :		14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
+
+Niveau 1: un élément = un unsigned int
+|14|	|12|	|8|	|4|	|2|	|1|	|7|	|10|	|13|	|6|	|9|	|5|	|11|	|3|	|16|	|15|
+
+Niveau 2: un élément = une paire d'unsigned int
+|14 12|	|8 4|	|2 1|	|7 10|	|13 6|	|9 5|	|11 3|	|16 15|
+
+Niveau 3: un élément = une paire de paires d'unsigned int
+|14 12 8 4|	|2 1 7 10|	|13 6 9 5|	|11 3 16 15|
+
+Niveau 4: un élément = une paire de paires de paires d'unsigned int
+|14 12 8 4 2 1 7 10|	|13 6 9 5 11 3 16 15|
+````
+
 On va effectuer **plusieurs opérations sur chaque paire d'éléments de chaque niveau**, la première opération en partant du premier niveau, et la suivante en partant du dernier. **On va donc d'abord itérer dans un sens, puis dans l'autre.**
 
 Tout d'abord, on va comparer chaque élément de chaque niveau avec son voisin, et les échanger si ils ne sont pas dans l'ordre croissant. A cette étape, on ignore les éléments qui n'ont pas pu être "pairés" avec un voisin.
