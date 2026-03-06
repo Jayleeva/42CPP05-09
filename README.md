@@ -287,9 +287,8 @@ Séquence "pending":								|5 9, 6 13|
 Element correspondant au max Jacobsthal:		inexistant
 => On insère dans l'ordre normal.
 
-Un seul élément dans le pending +
-Pas d'ancien voisin pour cet élément:			la zone d'insertion n'est pas restreinte.
-=> On fait le binary insert sur tout le main.
+Pas d'ancien voisin pour l'élément :			la zone d'insertion n'est pas restreinte.
+=> binary insert sur tout le main.
 
 Séquence "main" après insertion:				|1 2, 7 10|    |5 9, 6 13|    |4 8, 12 14|    |3 11, 15 16|
 
@@ -307,6 +306,9 @@ Séquence "pending":								|5 9|    |4 8|    |3 11|
 Element correspondant au max Jacobsthal:		inexistant
 => On insère dans l'ordre normal.
 
+Les éléments ont d'anciens voisins :			la zone d'insertion est restreinte.
+=> binary insert sur une partie du main.
+
 Séquence "main" après insertion:				|1 2|    |4 8|    |5 9|    |7 10|   |3 11|    |6 13|    |12 14|    |15 16|
 
 => On baisse d'un niveau.
@@ -322,6 +324,9 @@ Séquence "pending":								|4|    |5|    |7|    |3|    |6|    |12|    |15|
 
 Element correspondant au max Jacobsthal:		inexistant
 => On insère dans l'ordre normal.
+
+Les éléments ont d'anciens voisins :			la zone d'insertion est restreinte.
+=> binary insert sur une partie du main.
 
 Séquence "main" après insertion:				|1|    |2|    |3|    |4|    |5|    |6|    |7|    |8|    |9|    |10|    |11|    |12|    |13|    |14|    |15|    |16|
 
