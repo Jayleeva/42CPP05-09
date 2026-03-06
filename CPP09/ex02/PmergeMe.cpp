@@ -134,19 +134,27 @@ void	swapping(size_t size, std::deque<unsigned int> &container)
 void	prepareLabels(t_dataDeq *data, size_t blockSize)
 {
 	size_t								nblocks = (data->pending.size() + data->main.size()) / blockSize;
-	std::deque<unsigned int>::iterator 	mit = data->main.begin();
-	std::deque<unsigned int>::iterator	pit = data->pending.begin();
+	std::deque<unsigned int>::iterator 	mit = data->main.begin() + blockSize;
+	std::deque<unsigned int>::iterator	pit = data->pending.begin() + blockSize;
 
-	data->labels.insert(data->labels.end(), mit, mit + blockSize * 2);
-	data->labels.insert(data->labels.end(), pit, pit + blockSize);
+	data->labels.push_back(mit);
+	mit += blockSize;
+	data->labels.push_back(mit);
+	data->labels.push_back(pit);
 
 	size_t	i = 3;
 	while (i < nblocks)
 	{
 		if (i % 2 != 0)
-			data->labels.insert(data->labels.end(), mit, mit + blockSize);
+		{
+			mit += blockSize;
+			data->labels.push_back(mit);
+		}
 		else
-			data->labels.insert(data->labels.end(), pit, pit + blockSize);
+		{
+			pit += blockSize;
+			data->labels.push_back(pit);
+		}
 		i ++;
 	}
 }
@@ -187,16 +195,18 @@ void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 		update_jacobsthal(data->jacobsthal);
 		difjac = data->jacobsthal[1] - data->jacobsthal[0];
 	}
+	size_t	i = 0;
 	while (pending_nblocks > 0)
 	{
-		if (pending_nblocks == 1) // hmmm, plutot si le bloc actuel est le dernier du pending.
+		if (i == 0) // si le bloc actuel est à la toute fin du pending
 			max_ = data->main.end();
-		else
-			max_ = ?
+		/*else
+			max_ = ?*/
 		ite = data->pending.begin() + size / blockSize;
 		std::cout << "[DEQ] standard ; pending.begin() + size / blockSize = " << *(data->pending.begin() + size / blockSize) << std::endl;
 		binaryInsert(data->main, ite, blockSize, max_);
 		size -= size / blockSize;
+		i ++;
 		pending_nblocks --;
 	}
 }

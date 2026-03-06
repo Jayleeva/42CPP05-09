@@ -165,9 +165,9 @@ Pour cela, on va travailler avec des **paires d'éléments**: d'abord un unsigne
 
 On va effectuer **plusieurs opérations sur chaque paire d'éléments de chaque niveau**, la première opération en partant du premier niveau, et la suivante en partant du dernier. **On va donc d'abord itérer dans un sens, puis dans l'autre.**
 
-Tout d'abord, on va comparer chaque paire d'éléments de chaque niveau avec sa voisine, et les échanger si elles ne sont pas dans l'ordre croissant. A cette étape, on ignore les éléments qui n'ont pas pu être mis dans une paire.
+Tout d'abord, on va comparer chaque élément de chaque niveau avec son voisin, et les échanger si ils ne sont pas dans l'ordre croissant. A cette étape, on ignore les éléments qui n'ont pas pu être "pairés" avec un voisin.
 
-Ensuite, à chaque niveau, on va distribuer chaque paire d'éléments dans deux nouvelles séquences, puis insérer celles de l'une dans l'autre, en respectant certaines règles, afin de reformer une seule séquence plus triée. On ajoute à la fin de cette séquence les éléments qui n'ont pas pu être mis dans une paire.
+Ensuite, à chaque niveau, on va distribuer chaque élément dans deux nouvelles séquences, puis insérer celui de l'une dans l'autre, en respectant certaines règles liées aux paires formées précédemment, afin de les refondre en une seule séquence plus triée. On ajoute à la fin de cette séquence les éléments qui n'ont pas pu être mis dans une paire.
 
 Comme la première étape se fait du premier niveau jusqu'au dernier, et la deuxième étape du dernier niveau jusqu'au premier, tous les éléments finiront par être traités, garantissant ainsi une séquence triée avec un minimum de comparaisons.
 
