@@ -202,6 +202,42 @@ Les comparaisons se font **toujours** avec les unsigned int les plus grands de c
 - Au niveau 2, vu qu'on a déjà fait les échanges si nécessaires, on sait que les plus grands unsigned int sont les gagnants du niveau 1: on compare alors le dernier unsigned int de la séquence A2 avec le dernier unsigned int de la séquence B2. Si le premier est plus grand que le second, on échange les deux séquences.
 - La même logique s'applique aux niveaux suivants: comme on sait que le niveau précédent est déjà "trié", on compare le dernier unsigned int de la séquence A3 avec le dernier unsigned int de la séquence B3. Et de même, si le premier est plus grand que le second, on échange les deux séquences.
 
+````
+Visualisation
+--------------
+
+Séquence :		14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
+
+Niveau 1: un élément = une paire d'unsigned int
+|14 12|    |8 4|    |2 1|    |7 10|    |13 6|    |9 5|    |11 3|    |16 15|
+
+14 > 12    8 > 4    2 > 1     7 < 10   13 > 6     9 > 5   11 > 3    16 > 15
+
+|12 14|    |4 8|    |1 2|    |7 10|    |6 13|    |5 9|    |3 11|    |15 16|
+
+Niveau 2: un élément = une paire de paires d'unsigned int
+|12 14, 4 8|    |1 2, 7 10|    |6 13, 5 9|    |3 11, 15 16|
+
+14 > 8           2 < 10         13 > 9         11 < 16                       
+
+|4 8, 12 14|    |1 2, 7 10|    |5 9, 6 13|    |3 11, 15 16|
+
+Niveau 3: un élément = une paire de paires de paires d'unsigned int
+|4 8, 12 14; 1 2, 7 10|    |5 9, 6 13; 3 11, 15 16|
+
+14 > 10                     13 < 16
+
+|1 2, 7 10; 4 8, 12 14|    |5 9, 6 13; 3 11, 15 16|
+
+Niveau 4?
+|1 2, 7 10; 4 8, 12 14 :: 5 9, 6 13; 3 11, 15 16|
+
+14 < 16
+
+|1 2, 7 10; 4 8, 12 14 :: 5 9, 6 13; 3 11, 15 16|
+
+````
+
 ## Opération 2: merge insert (... -> niveau 1)
 La deuxième opération consistera à **former 2 nouvelles séquences, respectivement le** ``main`` **et le** ``pending``(j'ai repris les appellations de l'article par emuminov (https://dev.to/emuminov/human-explanation-and-step-by-step-visualisation-of-the-ford-johnson-algorithm-5g91) pour éviter des confusions inutiles), en "distribuant" les éléments de la séquence actuelle (au début, celle obtenue grâce à la première opération) soit dans l'une soit dans l'autre. Les règles sont les suivantes:
 - le main est toujours composé des deux premiers éléments du résultat précédent, puis, s'il en reste, des éléments pairs (4ème, 6ème, 8ème, ...).
