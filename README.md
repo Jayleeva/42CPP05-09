@@ -199,8 +199,8 @@ On échange les **éléments entiers**: dès le niveau 2, on échange donc non p
 **CEPENDANT**:
 Les comparaisons se font **toujours** avec les unsigned int les plus grands de chaque paire du niveau 1.
 - Au niveau 1, le plus grand des deux unsigned int est placé en dernier.
-- Au niveau 2, vu qu'on a déjà fait les échanges si nécessaires, on sait que les plus grands unsigned int sont les gagnants du niveau 1: on compare alors le dernier unsigned int de la séquence A2 avec le dernier unsigned int de la séquence B2. Si le premier est plus grand que le second, on les échange.
-- La même logique s'applique aux niveaux suivants: comme on sait que le niveau précédent est déjà "trié", on compare le dernier unsigned int de la séquence A3 avec le dernier unsigned int de la séquence B3. Et de même, si le premier est plus grand que le second, on les échange.
+- Au niveau 2, vu qu'on a déjà fait les échanges si nécessaires, on sait que les plus grands unsigned int sont les gagnants du niveau 1: on compare alors le dernier unsigned int de la séquence A2 avec le dernier unsigned int de la séquence B2. Si le premier est plus grand que le second, on échange les deux séquences.
+- La même logique s'applique aux niveaux suivants: comme on sait que le niveau précédent est déjà "trié", on compare le dernier unsigned int de la séquence A3 avec le dernier unsigned int de la séquence B3. Et de même, si le premier est plus grand que le second, on échange les deux séquences.
 
 ## Opération 2: merge insert (... -> niveau 1)
 La deuxième opération consistera à **former 2 nouvelles séquences, respectivement le** ``main`` **et le** ``pending``(j'ai repris les appellations de l'article par emuminov (https://dev.to/emuminov/human-explanation-and-step-by-step-visualisation-of-the-ford-johnson-algorithm-5g91) pour éviter des confusions inutiles), en "distribuant" les éléments de la séquence actuelle (au début, celle obtenue grâce à la première opération) soit dans l'une soit dans l'autre. Les règles sont les suivantes:
@@ -250,13 +250,13 @@ Voici un exemple de comment l'utiliser:
 ```
 5 - 3 = 2;
 ``` 
-On va faire 2 insertions: d'abord l'élément b5, puis l'élément b4. On part du plus grand "index" et on va dans l'ordre décroissant.
+On peut faire jusqu'2 insertions: d'abord l'élément b5, puis l'élément b4. On part du plus grand "index" et on va dans l'ordre décroissant.
 
 Il nous reste 4 éléments à insérer, mais nous avons déjà fait les 2 insertions ordonnées par la paire de Jacobsthal 3 et 5. On passe donc à la paire suivante: 5 et 11.
 ```
 11 - 5 = 6;
 ```
-On va faire 6 insertions: d'abord l'élément b11, puis le b10, etc.
+On peut faire jusqu'6 insertions: d'abord l'élément b11, puis le b10, etc.
 
 **!!!il n'y a pas d'élément b11!!!**
 
