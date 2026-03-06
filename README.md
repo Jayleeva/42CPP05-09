@@ -251,6 +251,13 @@ A présent, on va insérer le pending dans le main, puis, s'il y en a, nos élé
 - A l'avant-avant-dernier niveau, nos éléments sont de taille suffisamment petites pour qu'il y en ait au minimum 2 à mettre dans le main, et au moins 1 dans le pending. Alors allons-y!
 - La même logique s'applique aux niveaux suivants, jusqu'au niveau 1.
 
+
+Avant de nous pencher sur la suite de Jacobsthal et le binary insert, il nous faut nous attarder sur cette histoire de restriction de la zone d'insertion. J'ai dit qu'on ne compare pas notre élément avec tous ceux de la séquence où on veut le placer, mais uniquement avec ceux jusqu'à un "certain point". Comment ce dernier est-il déterminé?
+
+Avant de faire notre distribution main-pending, nous avions une séquence d'éléments. On pourrait appeler le premier élément b1, et son voisin direct a1, puis le suivant b2, et son voisin direct a2, et ainsi de suite. Notre main serait donc premièrement composé de b1 et a1, et notre pending de b2, puis le main intégrerait a2, a3, etc jusqu'à ce qu'il n'y ait plus de 'a', et le pending comprendrait b3, b5, etc jusqu'à ce qu'il n'y ait plus de 'b'.
+
+Grâce à notre première opération, nous savons que l'élément a1 est nécessairement plus grand que l'élément b1, tout comme le a2 est nécessairement plus grand que l'élément b2, et ainsi de suite. Partant de là, quand on cherche où insérer l'élément b2, on sait qu'il sera nécessairement placé avant le a2. Le binary insert peut donc s'effectuer depuis le premier élément du main jusqu'à l'élément a2 seulement: pas besoin de tester plus loin. 
+
 ````
 Visualisation
 --------------
@@ -315,11 +322,6 @@ Séquence "main" après insertion:				|1|    |2|    |3|    |4|    |5|    |6|    
 Séquence après la 2ème opération:				1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
 ````
 
-Avant de nous pencher sur la suite de Jacobsthal et le binary insert, il nous faut nous attarder sur cette histoire de restriction de la zone d'insertion. J'ai dit qu'on ne compare pas notre élément avec tous ceux de la séquence où on veut le placer, mais uniquement avec ceux jusqu'à un "certain point". Comment ce dernier est-il déterminé?
-
-Avant de faire notre distribution main-pending, nous avions une séquence d'éléments. On pourrait appeler le premier élément b1, et son voisin direct a1, puis le suivant b2, et son voisin direct a2, et ainsi de suite. Notre main serait donc premièrement composé de b1 et a1, et notre pending de b2, puis le main intégrerait a2, a3, etc jusqu'à ce qu'il n'y ait plus de 'a', et le pending comprendrait b3, b5, etc jusqu'à ce qu'il n'y ait plus de 'b'.
-
-Grâce à notre première opération, nous savons que l'élément a1 est nécessairement plus grand que l'élément b1, tout comme le a2 est nécessairement plus grand que l'élément b2, et ainsi de suite. Partant de là, quand on cherche où insérer l'élément b2, on sait qu'il sera nécessairement placé avant le a2. Le binary insert peut donc s'effectuer depuis le premier élément du main jusqu'à l'élément a2 seulement: pas besoin de tester plus loin. 
 
 ### Suite de Jacobsthal
 Il s'agit d'une suite de nombre qui fonctionne par paire, selon la logique suivante:
