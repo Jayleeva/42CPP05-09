@@ -165,8 +165,14 @@ Pour cela, on va travailler avec des **paires d'éléments**: d'abord un unsigne
 
 On va effectuer **plusieurs opérations sur chaque paire d'éléments de chaque niveau**, la première opération en partant du premier niveau, et la suivante en partant du dernier. **On va donc d'abord itérer dans un sens, puis dans l'autre.**
 
+Tout d'abord, on va comparer chaque paire d'éléments de chaque niveau avec sa voisine, et les échanger si elles ne sont pas dans l'ordre croissant. A cette étape, on ignore les éléments qui n'ont pas pu être mis dans une paire.
+
+Ensuite, à chaque niveau, on va distribuer chaque paire d'éléments dans deux nouvelles séquences, puis insérer celles de l'une dans l'autre, en respectant certaines règles, afin de reformer une seule séquence plus triée. On ajoute à la fin de cette séquence les éléments qui n'ont pas pu être mis dans une paire.
+
+Comme la première étape se fait du premier niveau jusqu'au dernier, et la deuxième étape du dernier niveau jusqu'au premier, tous les éléments finiront par être traités, garantissant ainsi une séquence triée avec un minimum de comparaisons.
+
 ## Opération 1: compare and swap (niveau 1 -> ...)
-La première opération va consister à **comparer les éléments de chaque paire entre eux** (dans la paire A-B, on compare A avec B, dans la paire C-D, on compare C avec D, etc). Si le premier est plus grand que le deuxième, on les inverse.
+Comme annoncé, la première opération va consister à **comparer les éléments de chaque paire entre eux** (dans la paire A-B, on compare A avec B, dans la paire C-D, on compare C avec D, etc). Si le premier est plus grand que le deuxième, on les inverse.
 
 **ATTENTION**: 
 On échange les **éléments entiers**: dès le niveau 2, on échange donc non pas un unsigned int avec son voisin, mais une séquence avec sa séquence voisine. Au niveau 2, la séquence A2 (composée de l'unsigned int A et de l'unsigned int B) s'échange le cas échéant avec la séquence B2 (composée de l'unsigned int C et de l'unsigned int D). Au niveau 3, la séquence A3 (composée de la séquence A2 et de la séquence B2) s'échange le cas échéant avec la séquence B3 (composée de la séquence C2 et de la séquence D2), et ainsi de suite.
@@ -189,6 +195,12 @@ A présent, on va insérer le pending dans le main, puis, s'il y en a, nos élé
 - A l'avant-dernier niveau, nous sommes censés découper notre séquence en éléments qui contiennent chacun une moitié de la séquence: puisque nous n'avons que 2 éléments, nous ne lançerons pas les fonctions ici non plus.
 - A l'avant-avant-dernier niveau, nos éléments sont de taille suffisamment petites pour qu'il y en ait au minimum 2 à mettre dans le main, et au moins 1 dans le pending. Alors allons-y!
 - La même logique s'applique aux niveaux suivants, jusqu'au niveau 1.
+
+Avant de nous pencher sur la suite de Jacobsthal et le binary insert, il nous faut nous attarder sur cette histoire de restriction de la zone d'insertion. J'ai dit qu'on ne compare pas notre élément avec tous ceux de la séquence où on veut le placer, mais uniquement avec ceux jusqu'à un "certain point". Comment ce dernier est-il déterminé?
+
+Avant de faire notre distribution main-pending, nous avions une séquence d'éléments. On pourrait appeler le premier élément b1, et son voisin direct a1, puis le suivant b2, et son voisin direct a2, et ainsi de suite. Notre main serait donc premièrement composé de b1 et a1, et notre pending de b2, puis le main intégrerait a2, a3, etc jusqu'à ce qu'il n'y ait plus de 'a', et le pending comprendrait b3, b5, etc jusqu'à ce qu'il n'y ait plus de 'b'.
+
+Grâce à notre première opération, nous savons que l'élément a1 est nécessairement plus grand que l'élément b1, tout comme le a2 est nécessairement plus grand que l'élément b2, et ainsi de suite. Partant de là, quand on cherche où insérer l'élément b2, on sait qu'il sera nécessairement placé avant le a2. Le binary insert peut donc s'effectuer depuis le premier élément du main jusqu'à l'élément a2 seulement: pas besoin de tester plus loin. 
 
 ### Suite de Jacobsthal
 Il s'agit d'une suite de nombre qui fonctionne par paire, selon la logique suivante:
@@ -222,7 +234,6 @@ Voici un exemple de comment l'utiliser:
 On va faire 2 insertions: d'abord l'élément b5, puis l'élément b4. On part du plus grand "index" et on va dans l'ordre décroissant.
 
 Il nous reste 4 éléments à insérer, mais nous avons déjà fait les 2 insertions ordonnées par la paire de Jacobsthal 3 et 5. On passe donc à la paire suivante: 5 et 11.
-
 ```
 11 - 5 = 6;
 ```
