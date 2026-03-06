@@ -170,16 +170,16 @@ Visualisation
 Séquence :		14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
 
 Niveau 0: un élément = un unsigned int
-|14|	|12|	|8|	|4|	|2|	|1|	|7|	|10|	|13|	|6|	|9|	|5|	|11|	|3|	|16|	|15|
+|14|    |12|    |8|    |4|    |2|    |1|    |7|    |10|    |13|    |6|    |9|    |5|    |11|    |3|    |16|    |15|
 
 Niveau 1: un élément = une paire d'unsigned int
-|14 12|	|8 4|	|2 1|	|7 10|	|13 6|	|9 5|	|11 3|	|16 15|
+|14 12|    |8 4|    |2 1|    |7 10|    |13 6|    |9 5|    |11 3|    |16 15|
 
 Niveau 2: un élément = une paire de paires d'unsigned int
-|14 12 8 4|	|2 1 7 10|	|13 6 9 5|	|11 3 16 15|
+|14 12 8 4|    |2 1 7 10|    |13 6 9 5|    |11 3 16 15|
 
 Niveau 3: un élément = une paire de paires de paires d'unsigned int
-|14 12 8 4 2 1 7 10|	|13 6 9 5 11 3 16 15|
+|14 12 8 4 2 1 7 10|    |13 6 9 5 11 3 16 15|
 ````
 
 On va effectuer **plusieurs opérations sur chaque paire d'éléments de chaque niveau**, la première opération en partant du premier niveau, et la suivante en partant du dernier. **On va donc d'abord itérer dans un sens, puis dans l'autre.**
