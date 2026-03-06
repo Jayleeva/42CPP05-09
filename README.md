@@ -259,11 +259,22 @@ Séquence initiale :								14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
 
 Séquence après la première opération :  		1 2 7 10 4 8 12 14 5 9 6 13 3 11 15 16
 
+Paire de Jacobsthal:							0, 1
+
+A ce stade, un élément = une paire de paires de paires de paires d'unsigned int: recouvre toute la séquence.
+=> On baisse d'un niveau.
+Paire de Jacobsthal:							1, 1
+
+A ce stade un élément = une paire de paires de paires d'unsigned int: pas assez d'éléments.
+=> On baisse d'un niveau. 
+Paire de Jacobsthal:							1, 3
+
+A ce stade un élément = une paire de paires d'unsigned int: assez d'éléments!
+
 Séquence "main":								|1 2, 7 10|    |4 8, 12 14|    |3 11, 15 16|
 Séquence "pending":								|5 9, 6 13|
 
-Paire de Jacobsthal:							1, 3
-Element correspondant:							inexistant
+Element correspondant au max Jacobsthal:		inexistant
 => On insère dans l'ordre normal.
 
 Un seul élément dans le pending +
@@ -271,6 +282,37 @@ Pas d'ancien voisin pour cet élément:			la zone d'insertion n'est pas restrein
 => On fait le binary insert sur tout le main.
 
 Séquence "main" après insertion:				|1 2, 7 10|    |5 9, 6 13|    |4 8, 12 14|    |3 11, 15 16|
+
+=> On baisse d'un niveau.
+Paire de Jacobsthal:							3, 5
+
+
+Séquence actuelle : 					 		1 2 7 10 5 9 6 13 4 8 12 14 3 11 15 16
+A ce stade un élément = une paire d'unsigned int: assez d'éléments!
+
+Séquence "main":								|1 2|    |7 10|   |6 13|    |12 14|    |15 16|
+Séquence "pending":								|5 9|    |4 8|    |3 11|
+
+Element correspondant au max Jacobsthal:		inexistant
+=> On insère dans l'ordre normal.
+
+Séquence "main" après insertion:				|1 2|    |4 8|    |5 9|    |7 10|   |3 11|    |6 13|    |12 14|    |15 16|
+
+=> On baisse d'un niveau.
+Paire de Jacobsthal:							5, 11
+
+Séquence actuelle : 					 		1 2 4 8 5 9 7 10 3 11 6 13 12 14 15 16
+A ce stade un élément =  un unsigned int: assez d'éléments!
+
+Séquence "main":								|1|    |2|    |8|    |9|    |10|    |11|    |13|    |14|    |16|
+Séquence "pending":								|4|    |5|    |7|    |3|    |6|    |12|    |15|
+
+Element correspondant au max Jacobsthal:		inexistant
+=> On insère dans l'ordre normal.
+
+Séquence "main" après insertion:				|1|    |2|    |3|    |4|    |5|    |6|    |7|    |8|    |9|    |10|    |11|    |12|    |13|    |14|    |15|    |16|
+
+Séquence après la 2ème opération:				1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
 ````
 
 Avant de nous pencher sur la suite de Jacobsthal et le binary insert, il nous faut nous attarder sur cette histoire de restriction de la zone d'insertion. J'ai dit qu'on ne compare pas notre élément avec tous ceux de la séquence où on veut le placer, mais uniquement avec ceux jusqu'à un "certain point". Comment ce dernier est-il déterminé?
