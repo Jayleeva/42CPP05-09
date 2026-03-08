@@ -245,7 +245,8 @@ Niveau 4?
 La deuxième opération consistera à **former 2 nouvelles séquences, respectivement le** ``main`` **et le** ``pending``(j'ai repris les appellations de l'article par emuminov (https://dev.to/emuminov/human-explanation-and-step-by-step-visualisation-of-the-ford-johnson-algorithm-5g91) pour éviter des confusions inutiles), en "distribuant" les éléments de la séquence actuelle (au début, celle obtenue grâce à la première opération) soit dans l'une soit dans l'autre. Les règles sont les suivantes:
 - le main est toujours composé des deux premiers éléments du résultat précédent, puis, s'il en reste, des éléments pairs (4ème, 6ème, 8ème, ...).
 - le pending est toujours composé du 3ème élément du résultat précédent s'il existe, puis, s'il en reste, des éléments impairs (5ème, 7ème, 9ème, ...).
-Si des éléments ne peuvent pas être distribués, on les garde de côté.
+
+Si des unsigned int ne peuvent pas être distribués, on les garde de côté.
 
 A présent, on va insérer le pending dans le main, puis, s'il y en a, nos éléments "de trop" gardés de côté, afin de recréer une séquence plus triée sur laquelle effectuer à nouveau la deuxième opération, au prochain niveau. Mais attention! Pas n'importe comment: pour le pending, on va faire du **binary insert**. Mais attention!! Pas n'importe comment: en utilisant autant que possible **la suite de Jacobsthal**, qui nous donne un ordre optimisé dans lequel insérer nos éléments, mais aussi en utilisant une logique permettant de restreindre la zone où les insérer. Au lieu de comparer notre élément avec l'entierté de la séquence, on peut se permettre, grâce aux étapes précédentes, de le comparer jusqu'à un certain point de la séquence. N'oubliez pas: notre but est toujours de limiter au maximum les comparaisons!
 
