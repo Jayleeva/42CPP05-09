@@ -272,7 +272,7 @@ Séquence après la première opération :  		1 2 7 10 4 8 12 14 5 9 6 13 3 11 1
 
 Paire de Jacobsthal:							0, 1
 --------------------------------------------------------------------------------------------------------------
-A ce stade, un élément = une paire de paires de paires de paires d'unsigned int: recouvre toute la séquence.
+A ce stade, un élément = une paire de paires de paires de paires d'unsigned int: pas assez d'éléments.
 => On baisse d'un niveau.
 Paire de Jacobsthal:							1, 1
 --------------------------------------------------------------------------------------------------------------
@@ -394,7 +394,7 @@ Séquence après la première opération :  		10 13 2 18 6 9 5 11 12 14 8 17 1 7
 
 Paire de Jacobsthal:							0, 1
 --------------------------------------------------------------------------------------------------------------
-A ce stade, un élément = une paire de paires de paires de paires d'unsigned int: recouvre toute la séquence.
+A ce stade, un élément = une paire de paires de paires de paires d'unsigned int: pas assez d'éléments.
 => On baisse d'un niveau.
 Paire de Jacobsthal:							1, 1
 --------------------------------------------------------------------------------------------------------------
