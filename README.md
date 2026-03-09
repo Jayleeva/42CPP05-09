@@ -250,8 +250,8 @@ Si des unsigned int ne peuvent pas être distribués, on les garde de côté.
 
 A présent, on va insérer le pending dans le main, puis, s'il y en a, nos unsigned int "de trop" gardés de côté, afin de recréer une séquence plus triée sur laquelle effectuer à nouveau la deuxième opération, au prochain niveau. Mais attention! Pas n'importe comment: pour le pending, on va faire du **binary insert**. Mais attention!! Pas n'importe comment: en utilisant autant que possible **la suite de Jacobsthal**, qui nous donne un ordre optimisé dans lequel insérer nos éléments, mais aussi en utilisant une logique permettant de restreindre la zone où les insérer. Au lieu de comparer notre élément avec l'entierté de la séquence, on peut se permettre, grâce aux étapes précédentes, de le comparer jusqu'à un certain point de la séquence. N'oubliez pas: notre but est toujours de limiter au maximum les comparaisons!
 
-- Au dernier niveau, nous sommes censés découper notre séquence en éléments dont la taille fait en réalité toute la séquence: inutile donc de lancer la fonction censées distribuer les éléments dans plusieurs séquences tout comme celle censée les réinsérer en une seule.
-- A l'avant-dernier niveau, nous sommes censés découper notre séquence en éléments qui contiennent chacun une moitié de la séquence: puisque nous n'avons que 2 éléments, nous ne lançerons pas les fonctions ici non plus.
+- Au dernier niveau, nous sommes censés découper notre séquence en éléments dont la taille est si grande qu'il n'y en a qu'un seul: inutile donc de lancer la fonction censées distribuer les éléments dans plusieurs séquences tout comme celle censée les réinsérer en une seule.
+- A l'avant-dernier niveau, nous sommes censés découper notre séquence en éléments dont la taille est si grande qu'il n'y en a que deux: nous ne lançerons pas les fonctions ici non plus.
 - A l'avant-avant-dernier niveau, nos éléments sont de taille suffisamment petites pour qu'il y en ait au minimum 2 à mettre dans le main, et au moins 1 dans le pending. Alors allons-y!
 - La même logique s'applique aux niveaux suivants, jusqu'au niveau 1.
 
