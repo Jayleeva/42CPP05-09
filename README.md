@@ -388,9 +388,10 @@ Visualisation
 Séquence initiale :								14 12 8 17 4 19 7 1 13 10 2 18 11 5 9 6 16 3 20 15
 												12 14 8 17 4 19 1 7 10 13 2 18 5 11 6 9 3 16 15 20
 												12 14 8 17 1 7 4 19 10 13 2 18 6 9 5 11 3 16 15 20
-												10 13 2 18 6 9 5 11 12 14 8 17 1 7 4 19 3 16 15 20
+												12 14 8 17 1 7 4 19 6 9 5 11 10 13 2 18 3 16 15 20
+												6 9 5 11 10 13 2 18 12 14 8 17 1 7 4 19 3 16 15 20
 
-Séquence après la première opération :  		10 13 2 18 6 9 5 11 12 14 8 17 1 7 4 19 3 16 15 20
+Séquence après la première opération :  		6 9 5 11 10 13 2 18 12 14 8 17 1 7 4 19 3 16 15 20
 
 Paire de Jacobsthal:							0, 1
 --------------------------------------------------------------------------------------------------------------
@@ -403,10 +404,10 @@ A ce stade, un élément = une paire de paires de paires d'unsigned int: pas ass
 Paire de Jacobsthal:							1, 3
 --------------------------------------------------------------------------------------------------------------
 
-Séquence actuelle : 					 		10 13 2 18 6 9 5 11 12 14 8 17 1 7 4 19 3 16 15 20
+Séquence actuelle : 					 		6 9 5 11 10 13 2 18 12 14 8 17 1 7 4 19 3 16 15 20
 A ce stade, un élément = une paire de paires d'unsigned int: assez d'éléments!
 
-Séquence "main":								|10 13 2 18|    |6 9 5 11|    |1 7 4 19|
+Séquence "main":								|6 9 5 11|      |10 13 2 18|    |1 7 4 19|
 Séquence "pending":								|12 14 8 17|    |3 16 15 20|
 
 Elément correspondant au max Jacobsthal:		inexistant
@@ -418,18 +419,18 @@ Le dernier élément n'a pas d'ancien voisin :	la zone d'insertion n'est pas res
 Le second élément a un ancien voisin :			la zone d'insertion est restreinte.
 => binary insert jusqu'à l'ancien voisin.
 
-Séquence "main" après insertion:				|10 13 2 18|    |6 9 5 11|    |12 14 8 17|    |1 7 4 19|    |3 16 15 20|
+Séquence "main" après insertion:				|6 9 5 11|    |12 14 8 17|    |10 13 2 18|    |1 7 4 19|    |3 16 15 20|
 
 => On baisse d'un niveau.
 Paire de Jacobsthal:							3, 5
 
 --------------------------------------------------------------------------------------------------------------
 
-Séquence actuelle : 					 		10 13 2 18 6 9 5 11 12 14 8 17 1 7 4 19 3 16 15 20
+Séquence actuelle : 					 		 6 9 5 11 12 14 8 17 10 13 2 18 1 7 4 19 3 16 15 20
 A ce stade, un élément = une paire d'unsigned int: assez d'éléments!
 
-Séquence "main":								|10 13|      |2 18|   |5 11|    |8 17|    |4 19|    |15 20|
-Séquence "pending":								|6 9|        |12 14|  |1 7|     |3 16|
+Séquence "main":								|6 9|    |5 11|   |8 17|   |2 18|    |4 19|    |15 20|
+Séquence "pending":								|12 14|  |10 13|  |1 7|    |3 16|
 
 Elément correspondant au max Jacobsthal:		|3 16|
 => On insère depuis cet élément.
@@ -437,18 +438,18 @@ Elément correspondant au max Jacobsthal:		|3 16|
 Les éléments ont d'anciens voisins :			la zone d'insertion est restreinte.
 => binary insert jusqu'à leurs anciens voisins.
 
-Séquence "main" après insertion:				|1 7|    |6 9|    |10 13|      |12 14|    |2 18|    |5 11|    |3 16|    |8 17|    |4 19|    |15 20|
+Séquence "main" après insertion:				|1 7|    |6 9|    |5 11|   |10 13|    |12 14|    |3 16|    |8 17|   |2 18|    |4 19|    |15 20|
 
 => On baisse d'un niveau.
 Paire de Jacobsthal:							5, 11
 
 --------------------------------------------------------------------------------------------------------------
 
-Séquence actuelle : 					 		1 7 6 9 10 13 12 14 2 18 5 11 3 16 8 17 4 19 15 20
+Séquence actuelle : 					 		1 7 6 9 5 11 10 13 12 14 3 16 8 17 2 18 4 19 15 20
 A ce stade, un élément =  un unsigned int: assez d'éléments!
 
-Séquence "main":								|1|    |7|    |9|    |13|    |14|   |18|   |11|   |16|   |17|    |19|    |20|
-Séquence "pending":								|6|    |10|   |12|   |2|     |5|    |3|    |8|    |4|    |15|
+Séquence "main":								|1|    |7|    |9|    |11|   |13|    |14|   |16|    |17|   |18|   |19|    |20|
+Séquence "pending":								|6|    |5|    |10|   |12|   |3|     |8|    |2|     |4|    |15|
 
 Elément correspondant au max Jacobsthal:		inexistant
 => On insère dans l'ordre normal.
