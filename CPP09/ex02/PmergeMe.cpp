@@ -332,18 +332,41 @@ void	merging(size_t size, std::deque<unsigned int> &container, std::deque<size_t
 	}
 }
 
+void	fordJohnson(t_dataDeq *data, size_t size, std::deque<unsigned int> &container)
+{
+	std::deque<unsigned int> newContainer;
+
+	if (n de pair < 2)
+		return pair;
+
+	swapping(pair[])
+	data = formMainAndPending(data, size, container);
+	newContainer = pair(main)
+
+	sortedmain[] = ford-jonhson(newContainer)
+
+	sortedpending[] = sortedpair[pair] -> new position des éléments du pending
+	result = mergeWithJacobsthal(sortedpair, pending)
+	return result;
+}
+
+
+
 void		PmergeMe::sortDequeue()
 {
+	//pair = { petit : grand }
 	t_dataDeq	data;
 	data.jacobsthal.push_front(1);
 	data.jacobsthal.push_front(0);
 
 	size_t	size = this->deq.size();
-	swapping(size, this->deq);
+	fordJohnson(&data, size, this->deq);
+	
+	/*swapping(size, this->deq);
 	std::cout << "container after swapping = ";
 	printContainer(this->deq);
 
-	merging(size, this->deq, data.jacobsthal);
+	merging(size, this->deq, data.jacobsthal);*/
 	//std::cout << "container after merging = ";
 	//printContainer(this->container);
 }
