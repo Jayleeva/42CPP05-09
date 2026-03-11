@@ -47,38 +47,36 @@ std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal)
 	return (jacobsthal);
 }
 
-void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator ite, size_t blockSize, std::deque<unsigned int>::iterator max_)
+void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator elend, size_t blockSize, std::deque<unsigned int>::iterator max_)
 {
-	if (container.size() == 0 || *ite < *(container.begin()))
+	size_t								dist = distance(min_, max_) / blockSize;
+	std::deque<unsigned int>::iterator	it;
+
+	if (dist == 2)
 	{
-		container.insert(container.begin(), ite - blockSize, ite);
-		return ;
+		if (*elend < *(min_))
+			it = min_ - blockSize;
+		else if (*elend > *(min_) && *elend < *(max_))
+			it = min_;
+		else if (*elend > *(max_))
+			it = max_;
+		container.insert(it, elend - blockSize, elend);
+		return;
 	}
 
-	size_t								i = 0;
-	std::deque<unsigned int>::iterator	it = container.begin();
-	while (it + blockSize < max_) // doit aller jusqu'a l'ancien voisin
+	std::deque<unsigned int>::iterator	it;
+	if (dist / 2 >= 1)
 	{
-		if (*ite > *(it) && *ite < *(it + blockSize))
-		{
-			container.insert(it, ite - blockSize, ite);
-			return ;
-		}
-		it++;
-		i++;
+		if (dist % 2 == 0)
+			dist = dist / 2 - 1;
+		else 
+			dist /= 2;
+		it = max_ - dist;
+		if (*elend > *it)
+			binaryInsert(container, it, elend, blockSize, max_);
+		else if (*elend < *it)
+			binaryInsert(container, min_, elend, blockSize, it);
 	}
-
-	if (*ite > *(container.end() - blockSize) && *ite < *(max_)) // doit aller jusqu'a l'ancien voisin
-	{
-		container.insert(max_ - blockSize, ite - blockSize, ite); // doit aller jusqu'a l'ancien voisin
-		return ;
-	}
-	if (*ite > *(container.end()))
-	{
-		container.insert(max_, ite - blockSize, ite); // doit aller jusqu'a l'ancien voisin
-		return ;
-	}
-	//std::cout << "not inserted" << std::endl;
 }
 
 
@@ -162,7 +160,7 @@ void	prepareLabels(t_dataDeq *data, size_t blockSize)
 void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 {
 	std::deque<unsigned int>::iterator	it;
-	std::deque<unsigned int>::iterator	ite;
+	std::deque<unsigned int>::iterator	elend;
 	std::deque<unsigned int>::iterator	max_;
 	size_t								size = data->pending.size();
 	size_t								pending_nblocks = size / blockSize;
@@ -188,7 +186,7 @@ void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 			//max_ = ?
 			//ite = ?
 			std::cout << "[DEQ] jacobsthal ;  " ;
-			binaryInsert(data->main, ite, blockSize, max_);
+			binaryInsert(data->main, data->main.begin(), elend, blockSize, max_);
 			pending_nblocks --;
 			difjac --;
 		}
@@ -202,9 +200,9 @@ void	jacobsthalInsert(t_dataDeq *data, size_t blockSize)
 			max_ = data->main.end();
 		/*else
 			max_ = ?*/
-		ite = data->pending.begin() + size / blockSize;
+		elend = data->pending.begin() + size / blockSize;
 		std::cout << "[DEQ] standard ; pending.begin() + size / blockSize = " << *(data->pending.begin() + size / blockSize) << std::endl;
-		binaryInsert(data->main, ite, blockSize, max_);
+		binaryInsert(data->main, data->main.begin(), elend, blockSize, max_);
 		size -= size / blockSize;
 		i ++;
 		pending_nblocks --;
