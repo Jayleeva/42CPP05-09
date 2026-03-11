@@ -64,7 +64,7 @@ void	swapping(size_t size, std::deque<unsigned int> &current);
 void	merging(size_t size, std::vector<unsigned int> &container, std::vector<size_t> &jacobsthal);
 void	merging(size_t size, std::deque<unsigned int> &container, std::deque<size_t> &jacobsthal);
 
-std::deque<size_t>	update_jacobsthal(std::deque<size_t> jacobsthal);
+std::deque<size_t>	update_jacobsthal(std::deque<size_t> &jacobsthal);
 
 template<typename T>
 void	printContainer(T &container)
