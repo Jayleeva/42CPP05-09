@@ -46,11 +46,11 @@ void	update_jacobsthal(std::deque<size_t> &jacobsthal)
 	jacobsthal[1] = tmp1 * 2 + tmp2;
 }
 
-void	formMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, size_t blockSize, std::deque<unsigned int>::iterator ite)
+void	formMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator ite) //size_t blockSize,
 {
 	size_t	size = current.size();
 
-	std::cout << "blocksize in FORM = " << blockSize << std::endl;
+	//std::cout << "blocksize in FORM = " << blockSize << std::endl;
 
 	if (size < 2)
 	{
@@ -61,22 +61,22 @@ void	formMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, size
 
 	std::cout << "container before distributing = ";
 	printContainer(current);
-	std::cout << "size = " << size << ", blockSize = " << blockSize << ", size / blockSize = " << size / blockSize << std::endl;
+	std::cout << "size = " << size << std::endl;//<< ", blockSize = " << blockSize << ", size / blockSize = " << size / blockSize << std::endl;
 	std::deque<unsigned int>::iterator it = current.begin();
 
 	size_t	i = 0;
-	while (i < size / blockSize)
+	while (i < size / 2)
 	{
 		std::cout << "-----------------still has elements to distribute: " << std::endl;
-		std::cout << "it + blockSize -1 = " << *(it + blockSize -1) << std::endl;
-		if (blockSize == 2)
-		{
+		std::cout << "it + 1 = " << *(it + 1) << std::endl;
+		//if (blockSize == 2)
+		//{
 			data->pending.push_back(*it);
 			it ++;
 			data->main.push_back(*it);
 			it ++;
 			i ++;
-		}
+		/*}
 		else
 		{
 			std::cout << "pendiiiiing" << std::endl;
@@ -88,7 +88,7 @@ void	formMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, size
 			it += blockSize /2;
 		
 			i ++;
-		}
+		}*/
 	}
 
 	if (ite != current.end())
@@ -120,17 +120,20 @@ void	swap_elements(size_t blockSize, std::deque<unsigned int>::iterator it, std:
 	}
 }
 
-void	sortPairs(size_t blockSize, std::deque<unsigned int> &container, std::deque<unsigned int>::iterator max_)
+void	sortPairs(size_t blockSize, std::deque<unsigned int> &main, std::deque<unsigned int> &pending, std::deque<unsigned int>::iterator max_)
 {
-	//std::cout << "blocksize in SORT = " << blockSize << std::endl;
-	for (std::deque<unsigned int>::iterator it = container.begin(); it + blockSize / 2 < max_; it += blockSize)
+	std::deque<unsigned int>::iterator pit = pending.begin();
+	for (std::deque<unsigned int>::iterator it = main.begin(); it + blockSize / 2 < max_; it += blockSize)
 	{
-		std::deque<unsigned int>::iterator ite = it + blockSize / 2; // -1
+		std::deque<unsigned int>::iterator ite = it + blockSize / 2;
 		if (*(it + blockSize / 2 - 1) > *(ite))
+		{
 			swap_elements(blockSize / 2, it, it + blockSize / 2);
+			if (!pending.empty())
+				swap_elements(blockSize / 2, pit, pit + blockSize / 2);
+		}
+		pit += blockSize;
 	}
-	//std::cout << "sorted = ";
-	//printContainer(container);
 }
 
 
@@ -245,11 +248,11 @@ std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pair
 	size_t 								remaining = container.size() - nblocks * blockSize;
 	std::deque<unsigned int>::iterator	ite = container.end() - remaining;
 
-	sortPairs(pairSize, container, ite);
+	sortPairs(pairSize, container, data.pending, ite);
 	
-	formMainAndPending(&data, container, pairSize, ite);
+	formMainAndPending(&data, container, ite); // pairSize,
 
-	tmp = fordJohnson(jacobsthal, pairSize * 2, size / 2, data.main);
+	tmp = fordJohnson(jacobsthal, pairSize, size / 2, data.main);
 
 	std::cout << "******************************** tmp = ";
 	printContainer(tmp);
