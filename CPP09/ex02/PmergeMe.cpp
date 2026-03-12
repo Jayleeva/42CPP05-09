@@ -249,14 +249,16 @@ std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pair
 	std::deque<unsigned int>::iterator	ite = container.end() - remaining;
 
 	sortPairs(pairSize, container, data.pending, ite);
-	
+	std::cout << "pending after sortPairs = ";
+	printContainer(data.pending);
 	formMainAndPending(&data, container, ite); // pairSize,
 
 	tmp = fordJohnson(jacobsthal, pairSize, size / 2, data.main);
 
 	std::cout << "******************************** tmp = ";
 	printContainer(tmp);
-
+	std::cout << "pending = ";
+	printContainer(data.pending);
 	tmp = jacobsthalMerge(jacobsthal, data);
 	return (tmp);
 }
