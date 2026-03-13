@@ -257,8 +257,8 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 	std::deque<unsigned int>	merged;
 
 	std::deque<unsigned int>::iterator	it;
-	std::deque<unsigned int>::iterator	blockEnd;
-	std::deque<unsigned int>::iterator	max_;
+	//std::deque<unsigned int>::iterator	blockEnd;
+	//std::deque<unsigned int>::iterator	max_;
 	size_t								size = data.pending.size();
 	//size_t								difjac = jacobsthal[1] - jacobsthal[0];
 	
@@ -286,26 +286,27 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 		update_jacobsthal(jacobsthal);
 		difjac = jacobsthal[1] - jacobsthal[0];
 	}*/
-	std::deque<std::deque<unsigned int>::iterator> max_;
-	std::deque<std::deque<unsigned int>::iterator> blockEnd_;
+	std::deque<unsigned int> max_;
+	std::deque<unsigned int> blockEnd_;
 	//size_t	last = size -1;
 	size_t	i = 0;
 	while (size > 0)
 	{
 		//std::deque<unsigned int>::iterator lastit = data.main.begin() + last;
-		max_.push_back(data.main.begin() + (size -1));
+		max_.push_back(size -1);
 		//max_ = lastit; // lastit = ou a été placé le dernier (NOPE!!)
-		blockEnd_.push_back(data.pending.begin() + (size -1));
+		blockEnd_.push_back(size -1);
 		//blockEnd = data.pending.begin() + (size -1);
 		std::cout << "[DEQ] standard ; " << std::endl;
 		//binaryInsert(data.main, blockEnd, data.main.begin(), max_); //, &last);
 		i ++;
 		size --;
 	}
-	while (i > 0)
+	size_t j = 0;
+	while (j < i)
 	{
-		binaryInsert(data.main, blockEnd[i], data.main.begin(), max_[i]);
-		i --;
+		binaryInsert(data.main, data.pending.begin() + blockEnd_[j], data.main.begin(), data.main.begin() + max_[j]);
+		j ++;
 	}
 	merged.insert(merged.end(), data.main.begin(), data.main.end());
 	merged.insert(merged.end(), data.remaining.begin(), data.remaining.end());
