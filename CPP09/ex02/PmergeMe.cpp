@@ -65,6 +65,7 @@ void	formMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, std:
 	size_t	i = 0;
 	while (i < size / 2)
 	{
+		
 		if (blockSize == 2)
 		{
 			data->pending.push_back(*it);
@@ -82,6 +83,7 @@ void	formMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, std:
 		i ++;
 	}
 
+	std::cout << "WTF" << std::endl;
 	if (ite != current.end())
 	{
 		data->remaining.insert(data->remaining.end(), ite, current.end());
@@ -261,9 +263,9 @@ std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pair
 		return (container);
 	}
 	
-	size_t								blockSize = getBlockSize(size);
-	size_t								nblocks = size / blockSize;
-	size_t 								nremaining = size - nblocks * blockSize;
+	size_t								blockSize = pairSize / 2;
+	size_t								npairs = size / blockSize;
+	size_t 								nremaining = size - npairs * blockSize;
 	std::deque<unsigned int>::iterator	ite = container.end() - nremaining; //getRemainingIt(container, blockSize, size);//  
 
 	sortPairs(pairSize, container, ite);
@@ -273,7 +275,8 @@ std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pair
 	std::cout << "******************************** tmp = ";
 	printContainer(tmp);
 
-	formMainAndPending(&data, container, ite, blockSize);
+	std::cout << "ite = " << *(ite -1) << std::endl; 
+	formMainAndPending(&data, tmp, tmp.end() - nremaining, blockSize); // LOOOOOOOOOOOOOOOOOOOOOOOOOL
 
 	tmp = jacobsthalMerge(jacobsthal, data);
 	return (tmp);
