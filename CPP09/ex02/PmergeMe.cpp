@@ -156,7 +156,7 @@ size_t	getBlockSize(size_t size)
 	return (blockSize);
 }
 
-void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator blockEnd, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_)
+void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator blockEnd, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, size_t *last)
 {
 	size_t								dist = distance(min_, max_) + 1;
 	std::deque<unsigned int>::iterator	it;
@@ -170,23 +170,20 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			it = min_ + 1;
 		else if (*blockEnd > *(max_))
 			it = max_;
+		*last = distance(container.begin(), it);
 		container.insert(it, *(blockEnd));
-		return;
+		return ;
 	}
 
 	if (dist > 2)
 	{
-		size_t	middle;
-		if (dist % 2 == 0)
-			middle = dist / 2 - 1;
-		else 
-			middle = dist / 2;
+		size_t	middle = dist / 2;
 		std::cout << "middle = " << *(container.begin() + middle) << std::endl;
 		it = min_ + middle;
 		if (*blockEnd > *it)
-			binaryInsert(container, blockEnd, it, max_);
+			binaryInsert(container, blockEnd, it, max_, last);
 		else if (*blockEnd < *it)
-			binaryInsert(container, blockEnd, min_, it);
+			binaryInsert(container, blockEnd, min_, it, last);
 	}
 }
 
@@ -225,13 +222,14 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 		update_jacobsthal(jacobsthal);
 		difjac = jacobsthal[1] - jacobsthal[0];
 	}*/
+	size_t	last = size -1;
 	size_t	i = 0;
 	while (size > 0)
 	{
-		max_ = data.main.begin() + (size -1);
+		max_ = data.main.begin() + last; // main.begin + last = ou a été placé le dernier
 		blockEnd = data.pending.begin() + (size -1);
 		std::cout << "[DEQ] standard ; " << std::endl;
-		binaryInsert(data.main, blockEnd, data.main.begin(), max_);
+		binaryInsert(data.main, blockEnd, data.main.begin(), max_, &last);
 		i ++;
 		size --;
 	}
@@ -288,6 +286,9 @@ std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t iter
 
 	std::cout << "******************************** tmp = ";
 	printContainer(tmp);
+	data.main = tmp;
+	std::cout << "*** main = ";
+	printContainer(data.main);
 
 	if (size / 2 >= 2)
 	{
