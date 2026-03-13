@@ -220,7 +220,7 @@ size_t	getBlockSize(size_t size)
 	return (blockSize);
 }
 
-void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator blockEnd, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, size_t *last)
+void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator blockEnd, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_) //, size_t *last)
 {
 	size_t								dist = distance(min_, max_) + 1;
 	std::deque<unsigned int>::iterator	it;
@@ -234,7 +234,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			it = min_ + 1;
 		else if (*blockEnd > *(max_))
 			it = max_;
-		*last = distance(container.begin(), it);
+		//*last = distance(container.begin(), it);
 		container.insert(it, *(blockEnd));
 		return ;
 	}
@@ -245,9 +245,9 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		std::cout << "middle = " << *(container.begin() + middle) << std::endl;
 		it = min_ + middle;
 		if (*blockEnd > *it)
-			binaryInsert(container, blockEnd, it, max_, last);
+			binaryInsert(container, blockEnd, it, max_); // last);
 		else if (*blockEnd < *it)
-			binaryInsert(container, blockEnd, min_, it, last);
+			binaryInsert(container, blockEnd, min_, it); //, last);
 	}
 }
 
@@ -286,16 +286,26 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 		update_jacobsthal(jacobsthal);
 		difjac = jacobsthal[1] - jacobsthal[0];
 	}*/
-	size_t	last = size -1;
+	std::deque<std::deque<unsigned int>::iterator> max_;
+	std::deque<std::deque<unsigned int>::iterator> blockEnd_;
+	//size_t	last = size -1;
 	size_t	i = 0;
 	while (size > 0)
 	{
-		max_ = data.main.begin() + last; // main.begin + last = ou a été placé le dernier
-		blockEnd = data.pending.begin() + (size -1);
+		//std::deque<unsigned int>::iterator lastit = data.main.begin() + last;
+		max_.push_back(data.main.begin() + (size -1));
+		//max_ = lastit; // lastit = ou a été placé le dernier (NOPE!!)
+		blockEnd_.push_back(data.pending.begin() + (size -1));
+		//blockEnd = data.pending.begin() + (size -1);
 		std::cout << "[DEQ] standard ; " << std::endl;
-		binaryInsert(data.main, blockEnd, data.main.begin(), max_, &last);
+		//binaryInsert(data.main, blockEnd, data.main.begin(), max_); //, &last);
 		i ++;
 		size --;
+	}
+	while (i > 0)
+	{
+		binaryInsert(data.main, blockEnd[i], data.main.begin(), max_[i]);
+		i --;
 	}
 	merged.insert(merged.end(), data.main.begin(), data.main.end());
 	merged.insert(merged.end(), data.remaining.begin(), data.remaining.end());
@@ -324,7 +334,8 @@ std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t iter
 
 	sortPairs(2, iteration, main, mustSwap, ite);
 
-	sortPending(mustSwap, pending);
+	if (!pending.empty())
+		sortPending(mustSwap, pending);
 	std::cout << "sorted pending = ";
 	printContainer(pending);
 	
@@ -348,15 +359,6 @@ void		PmergeMe::sortDequeue()
 	jacobsthal.push_back(0);
 	jacobsthal.push_back(1);
 
-	t_dataDeq							data;
-	std::deque<unsigned int>::iterator	ite;
-	if (this->deq.size() % 2 == 0)
-		ite = this->deq.end();
-	else 
-		ite = this->deq.end() -1;
-	sortFirstPairs(2, this->deq, ite);
-	formFirstMainAndPending(&data, this->deq, ite);
-
-	this->deq = fordJohnson(jacobsthal, 1, data.main.size(), data.main, data.pending);
-	//this->deq = jacobsthalMerge(jacobsthal, data); // pas la bonne data du coup!
+	std::deque<unsigned int> pending;
+	this->deq = fordJohnson(jacobsthal, 0, this->deq.size(), this->deq, pending);
 }
