@@ -228,7 +228,7 @@ size_t	getBlockSize(size_t size)
 	return (i);
 }*/
 
-void	binarySearch(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator blockEnd, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, size_t *pos) //, size_t *last)
+void	binarySearch(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator blockEnd, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, std::deque<unsigned int>::iterator *pos) //, size_t *last)
 {
 	size_t								dist = distance(min_, max_) + 1;
 	std::deque<unsigned int>::iterator	it;
@@ -243,7 +243,8 @@ void	binarySearch(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		else if (*blockEnd > *(max_))
 			it = max_;
 		//*last = distance(container.begin(), it);
-		*pos = distance(container.begin(), it);
+		*pos = it;
+		//*pos = distance(container.begin(), it);
 		//container.insert(it, *(blockEnd));
 		return ;
 	}
@@ -295,31 +296,27 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 		update_jacobsthal(jacobsthal);
 		difjac = jacobsthal[1] - jacobsthal[0];
 	}*/
-	//std::deque<unsigned int> max_;
-	//std::deque<unsigned int> blockEnd_;
-	std::deque<size_t> pos_;
-	size_t	pos;
-	//size_t	last = size -1;
+
+
+	std::deque<std::deque<unsigned int>::iterator> pos_;
+	std::deque<unsigned int>::iterator	pos;
 	size_t	i = 0;
 	while (size > 0)
 	{
-		//std::deque<unsigned int>::iterator lastit = data.main.begin() + last;
-		//max_.push_back(size -1);
-		max_ = data.main.begin() + (size -1); // lastit = ou a été placé le dernier (NOPE!!)
-		//blockEnd_.push_back(size -1);
+		max_ = data.main.begin() + (size -1);
 		blockEnd = data.pending.begin() + (size -1);
 		std::cout << "[DEQ] standard ; " << std::endl;
-		//binaryInsert(data.main, blockEnd, data.main.begin(), max_); //, &last);
 		binarySearch(data.main, blockEnd, data.main.begin(), max_, &pos);
 		pos_.push_back(pos);
 		i ++;
 		size --;
 	}
+
 	size_t j = 0;
 	while (j < i)
 	{
-		std::cout << "blockEnd = " << *(data.pending.begin() + j) << " pos = " << *(data.main.begin() + pos_[j]) << std::endl;
-		data.main.insert(data.main.begin() + pos_[j], *(data.pending.begin() + j)); // besoin que pos soit un itérateur directement pour éviter le main.begin()
+		std::cout << "blockEnd = " << *(data.pending.begin() + j) << " pos = " << *(pos_[j]) << std::endl;
+		data.main.insert(pos_[j], *(data.pending.begin() + j)); // même problème que dans l'autre sens: main.begin() change.... il faudrait commencer l'insertion à la première itération.
 		j ++;
 	}
 	merged.insert(merged.end(), data.main.begin(), data.main.end());
