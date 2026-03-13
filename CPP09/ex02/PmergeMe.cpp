@@ -67,8 +67,8 @@ void	formMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, std:
 	size_t	i = 0;
 	while (i < size / 2)
 	{
-		std::cout << "-----------------still has elements to distribute: " << std::endl;
-		std::cout << "it + 1 = " << *(it + 1) << std::endl;
+		//std::cout << "-----------------still has elements to distribute: " << std::endl;
+		//std::cout << "it + 1 = " << *(it + 1) << std::endl;
 		//if (blockSize == 2)
 		//{
 			data->pending.push_back(*it);
@@ -120,19 +120,18 @@ void	swap_elements(size_t blockSize, std::deque<unsigned int>::iterator it, std:
 	}
 }
 
-void	sortPairs(size_t blockSize, std::deque<unsigned int> &main, std::deque<unsigned int> &pending, std::deque<unsigned int>::iterator max_)
+void	sortPairs(size_t blockSize, std::deque<unsigned int> &main, std::deque<size_t> &mustSwap, std::deque<unsigned int>::iterator max_)
 {
-	std::deque<unsigned int>::iterator pit = pending.begin();
+	size_t	i = 0;
 	for (std::deque<unsigned int>::iterator it = main.begin(); it + blockSize / 2 < max_; it += blockSize)
 	{
 		std::deque<unsigned int>::iterator ite = it + blockSize / 2;
 		if (*(it + blockSize / 2 - 1) > *(ite))
 		{
 			swap_elements(blockSize / 2, it, it + blockSize / 2);
-			if (!pending.empty())
-				swap_elements(blockSize / 2, pit, pit + blockSize / 2);
+			mustSwap.push_back(i);
 		}
-		pit += blockSize;
+		i += blockSize;
 	}
 }
 
@@ -193,17 +192,18 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 	std::deque<unsigned int>::iterator	blockEnd;
 	std::deque<unsigned int>::iterator	max_;
 	size_t								size = data.pending.size();
-	size_t								difjac = jacobsthal[1] - jacobsthal[0];
+	//size_t								difjac = jacobsthal[1] - jacobsthal[0];
 	
-	std::cout << "jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
-
+	
+	(void)jacobsthal;
 	/*std::cout << "main = ";
 	printContainer(data->main);
 	std::cout << "pending = ";	 			//pas bon passé un certain niveau
 	printContainer(data->pending);*/
 
-	while (size >= difjac)
+	/*while (size >= difjac)
 	{
+		std::cout << "jacob[0] = " << jacobsthal[0] << " jacob[1] = " << jacobsthal[1] << std::endl;
 		size_t	i = 0;
 		while (difjac > 0)
 		{
@@ -217,11 +217,11 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 		}
 		update_jacobsthal(jacobsthal);
 		difjac = jacobsthal[1] - jacobsthal[0];
-	}
+	}*/
 	size_t	i = 0;
 	while (size > 0)
 	{
-		max_ = data.main.begin() + (size); 
+		max_ = data.main.begin() + (size -1);
 		blockEnd = data.pending.begin() + (size -1);
 		std::cout << "[DEQ] standard ; " << std::endl;
 		binaryInsert(data.main, blockEnd, data.main.begin(), max_);
@@ -233,10 +233,26 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 	return (merged);
 }
 
+void	sortPending(std::deque<size_t> mustSwap, std::deque<unsigned int> &pending)
+{
+	if (mustSwap.empty())
+		return;
+
+	std::deque<unsigned int>::iterator pit;
+	for (std::deque<size_t>::iterator it = mustSwap.begin() ; it < mustSwap.end(); it ++)
+	{
+		
+		pit = pending.begin() + *it;
+		std::cout << "*it = " << *it << " pit = " << *pit << std::endl;
+		swap_elements(1, pit, pit + 1);
+	}
+}
+
 std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pairSize, size_t size, std::deque<unsigned int> &container)
 {
 	t_dataDeq					data;
 	std::deque<unsigned int>	tmp;
+	std::deque<size_t>			mustSwap;
 	size_t						blockSize;
 
 	if (size / 2 < 2)
@@ -248,17 +264,23 @@ std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pair
 	size_t 								remaining = container.size() - nblocks * blockSize;
 	std::deque<unsigned int>::iterator	ite = container.end() - remaining;
 
-	sortPairs(pairSize, container, data.pending, ite);
-	std::cout << "pending after sortPairs = ";
-	printContainer(data.pending);
+	sortPairs(pairSize, container, mustSwap, ite); 
+
 	formMainAndPending(&data, container, ite); // pairSize,
+
+	sortPending(mustSwap, data.pending);
+	std::cout << "pending = ";
+	printContainer(data.pending); 
 
 	tmp = fordJohnson(jacobsthal, pairSize, size / 2, data.main);
 
 	std::cout << "******************************** tmp = ";
 	printContainer(tmp);
-	std::cout << "pending = ";
-	printContainer(data.pending);
+
+
+	
+
+
 	tmp = jacobsthalMerge(jacobsthal, data);
 	return (tmp);
 }
