@@ -228,7 +228,7 @@ size_t	getBlockSize(size_t size)
 	return (i);
 }*/
 
-void	binarySearch(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator blockEnd, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, std::deque<unsigned int>::iterator *pos) //, size_t *last)
+void	binarySearch(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator blockEnd, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, size_t *pos) //, size_t *last)
 {
 	size_t								dist = distance(min_, max_) + 1;
 	std::deque<unsigned int>::iterator	it;
@@ -243,8 +243,8 @@ void	binarySearch(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		else if (*blockEnd > *(max_))
 			it = max_;
 		//*last = distance(container.begin(), it);
-		*pos = it;
-		//*pos = distance(container.begin(), it);
+		//*pos = it;
+		*pos = distance(container.begin(), it);
 		//container.insert(it, *(blockEnd));
 		return ;
 	}
@@ -272,7 +272,11 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 	size_t								size = data.pending.size();
 	//size_t								difjac = jacobsthal[1] - jacobsthal[0];
 	
-	
+	//data.main.insert(data.main.begin(), *(data.pending.begin())); // mettre b1 directement avant a1
+
+	/*merged.insert(merged.end(), *(data.pending.begin()));
+	merged.insert(merged.end(), *(data.main.begin()));*/
+
 	(void)jacobsthal;
 	/*std::cout << "main = ";
 	printContainer(data->main);
@@ -298,8 +302,10 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 	}*/
 
 
-	std::deque<std::deque<unsigned int>::iterator> pos_;
-	std::deque<unsigned int>::iterator	pos;
+	std::deque<size_t>	pos_;
+	size_t				pos;
+	//std::deque<unsigned int>::iterator	pos;
+	
 	size_t	i = 0;
 	while (size > 0)
 	{
@@ -312,14 +318,40 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 		size --;
 	}
 
+	/*size_t	totalSize = data.pending.size() + data.main.size();
+	size_t	j = 0;
+	size_t	k = 0;
+	while (j < totalSize -1)
+	{
+		
+		if (j == pos_[k])
+		{
+			std::cout << "j = " << j << " pos_k = " << pos_[k] << " pending[i] " << data.pending[i] << std::endl;
+			merged.push_back(data.pending[i]);
+			k ++;
+		}
+			
+		else
+		{
+			std::cout << "j = " << j << " pos_k = " << pos_[k] << " main[i] " << data.main[i] << std::endl;
+			merged.push_back(data.main[i]);
+		}
+			
+		i --;
+		j ++;
+	}*/
+
+	/*std::deque<unsigned int>::iterator mit = data.main.begin()
 	size_t j = 0;
 	while (j < i)
 	{
 		std::cout << "blockEnd = " << *(data.pending.begin() + j) << " pos = " << *(pos_[j]) << std::endl;
 		data.main.insert(pos_[j], *(data.pending.begin() + j)); // même problème que dans l'autre sens: main.begin() change.... il faudrait commencer l'insertion à la première itération.
+		if () //itérateur d'insertion pos_[j] distance(tmp, pos_[j]))
 		j ++;
 	}
-	merged.insert(merged.end(), data.main.begin(), data.main.end());
+	merged.insert(merged.end(), data.main.begin(), data.main.end());*/
+
 	merged.insert(merged.end(), data.remaining.begin(), data.remaining.end());
 	return (merged);
 }
