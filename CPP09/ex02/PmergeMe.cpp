@@ -1,5 +1,7 @@
 #include "PmergeMe.hpp"
 
+size_t		g_counter;
+
 PmergeMe::PmergeMe()
 {
 	std::cout << YELLOW << "[PMERGEME] : Default constructor called" << DEFAULT << std::endl;
@@ -61,61 +63,12 @@ void	swap_elements(size_t blockSize, std::deque<unsigned int>::iterator it, std:
 	}
 }
 
-void	sortFirstPairs(size_t blockSize, std::deque<unsigned int> &container, std::deque<unsigned int>::iterator max_)
-{
-	size_t	i = 0;
-	for (std::deque<unsigned int>::iterator it = container.begin(); it + blockSize / 2 < max_; it += blockSize)
-	{
-		std::deque<unsigned int>::iterator ite = it + blockSize / 2;
-		if (*(it + blockSize / 2 - 1) > *(ite))
-		{
-			swap_elements(blockSize / 2, it, it + blockSize / 2);				
-		}
-		i += blockSize;
-	}
-}
-
-void	formFirstMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator ite)
-{
-	size_t	size = current.size();
-
-	if (size < 2)
-	{
-		data->main.insert(data->main.end(), current.begin(), current.end());
-		std::cout << "NOT ENOUGH ELEMENTS" << std::endl;
-		return ;
-	}
-
-	std::deque<unsigned int>::iterator it = current.begin();
-	size_t	i = 0;
-	while (i < size / 2)
-	{
-		data->pending.push_back(*it);
-		it ++;
-		data->main.push_back(*it);
-		it ++;
-		i ++;
-	}
-
-	if (ite != current.end())
-	{
-		data->remaining.insert(data->remaining.end(), ite, current.end());
-		std::cout << "[REMAINING] after distribution = ";
-		printContainer(data->remaining);
-	}
-
-	std::cout << "[MAIN] after distribtion = ";
-	printContainer(data->main);
-	std::cout << "[PENDING] after distribution = ";
-	printContainer(data->pending);
-	return ;
-}
-
 void	sortPairs(size_t blockSize, size_t iteration, std::deque<unsigned int> &main, std::deque<size_t> &mustSwap, std::deque<unsigned int>::iterator max_)
 {
 	size_t	i = 0;
 	for (std::deque<unsigned int>::iterator it = main.begin(); it + blockSize / 2 < max_; it += blockSize)
 	{
+		g_counter ++;
 		std::deque<unsigned int>::iterator ite = it + blockSize / 2;
 		if (*(it + blockSize / 2 - 1) > *(ite))
 		{
@@ -198,7 +151,7 @@ void	sortPending(std::deque<size_t> mustSwap, std::deque<unsigned int> &pending)
 	std::deque<unsigned int>::iterator pit;
 	for (std::deque<size_t>::iterator it = mustSwap.begin() ; it < mustSwap.end(); it ++)
 	{
-		
+		g_counter ++;
 		pit = pending.begin() + *it;
 		std::cout << "*it = " << *it << " pit = " << *pit << std::endl;
 		swap_elements(1, pit, pit + 1);
@@ -246,6 +199,7 @@ void	binarySearch(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		//*pos = it;
 		*pos = distance(container.begin(), it);
 		//container.insert(it, *(blockEnd));
+		g_counter ++;
 		return ;
 	}
 
@@ -254,6 +208,7 @@ void	binarySearch(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		size_t	middle = dist / 2;
 		//std::cout << "middle = " << *(container.begin() + middle) << std::endl;
 		it = min_ + middle;
+		g_counter ++;
 		if (*blockEnd > *it)
 			binarySearch(container, blockEnd, it, max_, pos); // last);
 		else if (*blockEnd < *it)
@@ -403,6 +358,7 @@ void		PmergeMe::sortDequeue()
 	jacobsthal.push_back(0);
 	jacobsthal.push_back(1);
 
-	std::deque<unsigned int> pending;
+	std::deque<unsigned int>	pending;
 	this->deq = fordJohnson(jacobsthal, 0, this->deq.size(), this->deq, pending);
+	std::cout << YELLOW << "Comparaison counter = " << g_counter << DEFAULT << std::endl;
 }
