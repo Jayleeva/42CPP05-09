@@ -38,6 +38,7 @@ int	parse_arg(char *arg, std::deque<unsigned int>::iterator begin, std::deque<un
 }
 
 
+// insert renvois la nouvelle position de l'élément inséré!!!!!
 
 // microsecondes = secondes / 1000000 
 int main(int argc, char **argv)
