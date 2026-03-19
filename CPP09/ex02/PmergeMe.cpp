@@ -63,18 +63,18 @@ void	swap_elements(size_t blockSize, std::deque<unsigned int>::iterator it, std:
 	}
 }
 
-void	sortPairs(size_t blockSize, size_t iteration, std::deque<unsigned int> &main, std::deque<size_t> &mustSwap, std::deque<unsigned int>::iterator max_)
+void	sortPairs(size_t pairSize, size_t iteration, std::deque<unsigned int> &main, std::deque<size_t> &mustSwap, std::deque<unsigned int>::iterator max_)
 {
 	(void)iteration;
 	(void)mustSwap;
 	size_t	i = 0;
-	for (std::deque<unsigned int>::iterator it = main.begin(); it + blockSize / 2 < max_; it += blockSize)
+	for (std::deque<unsigned int>::iterator it = main.begin(); it + pairSize / 2 < max_; it += pairSize)
 	{
 		g_counter ++;
-		std::deque<unsigned int>::iterator ite = it + blockSize / 2;
-		if (*(it + blockSize / 2 - 1) > *(ite))
+		std::deque<unsigned int>::iterator ite = it + pairSize / 2;
+		if (*(it + pairSize / 2 - 1) > *(ite))
 		{
-			swap_elements(blockSize / 2, it, it + blockSize / 2);
+			swap_elements(pairSize / 2, it, it + pairSize / 2);
 			/*if (iteration > 0)
 			{
 				std::cout << "must swap = " << i << std::endl;
@@ -82,7 +82,7 @@ void	sortPairs(size_t blockSize, size_t iteration, std::deque<unsigned int> &mai
 			}*/
 				
 		}
-		i += blockSize;
+		i += pairSize;
 	}
 }
 
