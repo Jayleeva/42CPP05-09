@@ -63,12 +63,12 @@ void	swap_elements(size_t blockSize, std::deque<unsigned int>::iterator it, std:
 	}
 }
 
-void	sortPairs(size_t pairSize, size_t iteration, std::deque<unsigned int> &main, std::deque<size_t> &mustSwap, std::deque<unsigned int>::iterator max_)
+void	sortPairs(size_t pairSize, size_t iteration, std::deque<unsigned int> &current, std::deque<size_t> &mustSwap, std::deque<unsigned int>::iterator max_)
 {
 	(void)iteration;
 	(void)mustSwap;
 	size_t	i = 0;
-	for (std::deque<unsigned int>::iterator it = main.begin(); it + pairSize / 2 < max_; it += pairSize)
+	for (std::deque<unsigned int>::iterator it = current.begin(); it + pairSize / 2 < max_; it += pairSize)
 	{
 		g_counter ++;
 		std::deque<unsigned int>::iterator ite = it + pairSize / 2;
@@ -90,7 +90,10 @@ void	formMainAndPending(t_dataDeq *data, std::deque<unsigned int> &current, std:
 {
 	size_t	size = current.size();
 
-	//std::cout << "blocksize in FORM = " << blockSize << "size = " << size << std::endl;
+	std::cout << "blocksize in FORM = " << blockSize << std::endl;//<< " size = " << size << std::endl;
+
+	std::cout << "tmp = ";
+	printContainer(current);
 
 	if (size / blockSize < 2)
 	{
@@ -198,7 +201,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	if (dist > 2)
 	{
 		size_t	middle = dist / 2;
-		std::cout << "middle = " << *(container.begin() + middle) << std::endl;
+		//std::cout << "middle = " << *(container.begin() + middle) << std::endl;
 		it = min_ + middle;
 		g_counter ++;
 		if (*blockEnd > *it)
@@ -283,7 +286,7 @@ std::deque<unsigned int>	jacobsthalMerge(std::deque<size_t> &jacobsthal, t_dataD
 
 
 
-std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pairSize, size_t iteration, size_t size, std::deque<unsigned int> &main) //, std::deque<unsigned int> &pending)
+std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pairSize, size_t iteration, size_t size, std::deque<unsigned int> &current) //, std::deque<unsigned int> &pending)
 {
 	t_dataDeq					data;
 	std::deque<unsigned int>	tmp;
@@ -292,39 +295,37 @@ std::deque<unsigned int>	fordJohnson(std::deque<size_t> &jacobsthal, size_t pair
 
 	if (size / 2 < 2)
 	{
-		return (main);
+		return (current);
 	}
 
 	blockSize = getBlockSize(size);
 
-	size_t								nblocks = main.size() / blockSize;
-	size_t 								remaining = main.size() - nblocks * blockSize;
-	std::deque<unsigned int>::iterator	ite = main.end() - remaining;
+	size_t								nblocks = current.size() / blockSize;
+	size_t 								remaining = current.size() - nblocks * blockSize;
+	std::deque<unsigned int>::iterator	ite = current.end() - remaining;
 
-	sortPairs(pairSize, iteration, main, mustSwap, ite);
+	sortPairs(pairSize, iteration, current, mustSwap, ite);
 	std::cout << "sorted pairs = ";
-	printContainer(main);
+	printContainer(current);
 
 	/*if (!pending.empty())
 		sortPending(mustSwap, pending);
 	std::cout << "sorted pending = ";
 	printContainer(pending);*/
 	
-	tmp = fordJohnson(jacobsthal, pairSize * 2,	iteration + 1, size / 2, main); //, data.pending);
+	tmp = fordJohnson(jacobsthal, pairSize * 2,	iteration + 1, size / 2, current); //, data.pending);
 
+	std::cout << "******************************** ";// tmp = ";
+	//printContainer(tmp);
 
-
-	std::cout << "******************************** tmp = ";
-	printContainer(tmp);
-
-	formMainAndPending(&data, main, ite, pairSize);
+	formMainAndPending(&data, current, ite, pairSize);
 
 	/*data.main = tmp;
 	std::cout << "*** main = ";
 	printContainer(data.main);*/
 
-	tmp = jacobsthalMerge(jacobsthal, data, blockSize / 2);
-	return (tmp);
+	current = jacobsthalMerge(jacobsthal, data, blockSize / 2);
+	return (current);
 }
 
 void		PmergeMe::sortDequeue()
