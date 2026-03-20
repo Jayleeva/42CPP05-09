@@ -107,7 +107,7 @@ std::deque<size_t>	formMainAndPending(t_dataDeq *data, size_t blockSize, std::de
 {
 	std::deque<size_t>	indexes;
 	std::deque<unsigned int>::iterator	it = current.begin();
-	size_t				i = 1;
+	size_t				i = blockSize;
 
 	if (blockSize == 1)
 	{
@@ -157,6 +157,15 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	size_t								dist = (distance(min_, max_) + 1) / blockSize;
 	std::deque<unsigned int>::iterator	it;
 
+	std::cout << "blockSize = " << blockSize << " dist = " << dist << " min = " << *(min_ -1) << " max = " << *(max_ -1) << " head = " << *(head) << std::endl;
+	
+	if (dist == 0)
+	{
+		container.insert(container.begin(), head - blockSize + 1, head + 1);
+		updateIndexes(indexes, 1, blockSize);
+		return ;
+	}
+	
 	if (dist <= 2 )
 	{
 		if (*head < *(min_))
@@ -191,12 +200,16 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, size_t blockSize, std:
 	
 	(void)jacobsthal;
 
+	//data->main.insert(data->main.begin(), data->pending.begin(), data->pending.begin() + blockSize);
+
 	while (npendingBlocks > 0)
 	{
+		std::cout << "npendingBlocks = " << npendingBlocks << " ";
+		std::cout << "index = " << indexes[npendingBlocks -1] << " ";
 		std::deque<unsigned int>::iterator	head = data->pending.begin() + npendingBlocks * blockSize -1;
 		std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[npendingBlocks - 1];
 	
-		binaryInsert(data->main, head, blockSize, data->main.begin(), max_, indexes);
+		binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize, max_, indexes);
 		npendingBlocks --;
 	}
 	merged.insert(merged.end(), data->main.begin(), data->main.end());
@@ -214,7 +227,7 @@ void	merging(size_t pairSize, std::deque<unsigned int> &current, std::deque<size
 		indexes = formMainAndPending(&data, pairSize / 2, current, getIte(current, pairSize));
 		current = jacobsthalMerge(&data, pairSize / 2, jacobsthal, indexes);
 
-		std::cout << "merged = ";
+		std::cout << "*** merged = ";
 		printContainer(current, pairSize / 2);
 		pairSize /= 2;
 	}
@@ -227,7 +240,7 @@ void	PmergeMe::sortDequeue()
 	jacobsthal.push_back(1);
 
 	size_t	pairSize = swapping(2, this->deq.size(), this->deq);
-	std::cout << "sorted = ";
+	std::cout << "*** sorted = ";
 	printContainer(this->deq, pairSize / 2);
 	merging(pairSize, this->deq, &jacobsthal);
 }
