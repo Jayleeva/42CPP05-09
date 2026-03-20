@@ -112,15 +112,6 @@ std::deque<size_t>	formMainAndPending(t_dataDeq *data, size_t blockSize, std::de
 	std::deque<unsigned int>::iterator	it = current.begin();
 	size_t				i = blockSize;
 
-	if (blockSize == 1)
-	{
-		data->pending.push_back(*it);
-		it ++;
-		data->main.push_back(*it);
-		it ++;
-		indexes.push_back(i);
-	}
-
 	while (it != ite)
 	{
 		data->pending.insert(data->pending.end(), it, it + blockSize);
@@ -149,7 +140,7 @@ std::deque<size_t>	formMainAndPending(t_dataDeq *data, size_t blockSize, std::de
 
 void	updateIndexes(std::deque<size_t> &indexes, size_t i, size_t blockSize)
 {
-	for (std::deque<size_t>::iterator it = find(indexes.begin(), indexes.end(), i) + 1; it < indexes.end(); it ++)
+	for (std::deque<size_t>::iterator it = find(indexes.begin(), indexes.end(), i) + 0; it < indexes.end(); it ++)
 	{
 		*it += blockSize;
 	}
@@ -161,19 +152,18 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	std::deque<unsigned int>::iterator	it;
 
 	
-	std::cout << "blockSize = " << blockSize << " dist = " << dist << " min = " << *(min_) << " max = " << *(max_) << std::endl;
+	//std::cout << "blockSize = " << blockSize << " dist = " << dist << " min = " << *(min_) << " max = " << *(max_) << std::endl;
 	std::cout << "********** HEAD = " << *(head) << std::endl;
 
 	if (dist == 0)
 	{
 		container.insert(container.begin(), head - blockSize + 1, head + 1);
-		updateIndexes(indexes, 0, blockSize);
+		updateIndexes(indexes, 2, blockSize);
 		return ;
 	}
 	
 	if (dist <= 2 )
 	{
-		
 		if (*(head) < *(min_))
 		{
 			std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
@@ -200,16 +190,16 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	{
 		size_t	middle = dist / 2;
 		it = min_ + middle + blockSize / 2;
-		std::cout << "middle = " << *(it) << std::endl;
+		//std::cout << "middle = " << *(it) << std::endl;
 		g_counter ++;
 		if (*(head) > *(it))
 		{
-			std::cout << "head (" << *(head) << ") bigger than middle (" << *(it) << ")" << std::endl;
+			//std::cout << "head (" << *(head) << ") bigger than middle (" << *(it) << ")" << std::endl;
 			binaryInsert(container, head, blockSize, it, max_, indexes);
 		}
 		else if (*(head) < *(it))
 		{
-			std::cout << "head (" << *(head) << ") smaller than middle (" << *(it) << ")" << std::endl;
+			//std::cout << "head (" << *(head) << ") smaller than middle (" << *(it) << ")" << std::endl;
 			binaryInsert(container, head, blockSize, min_, it, indexes);
 		}
 			
@@ -233,10 +223,10 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, size_t blockSize, std:
 		std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[npendingBlocks - 1] -1;
 	
 		binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, indexes);
-		std::cout << "main after insertion = ";
-		printContainer(data->main, blockSize);
-		std::cout << "indexes after insertion = ";
-		printContainer(indexes, 1);
+		//std::cout << "main after insertion = ";
+		//printContainer(data->main, blockSize);
+		//std::cout << "indexes after insertion = ";
+		//printContainer(indexes, 1);
 		npendingBlocks --;
 	}
 	merged.insert(merged.end(), data->main.begin(), data->main.end());
@@ -246,14 +236,15 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, size_t blockSize, std:
 
 void	merging(size_t pairSize, std::deque<unsigned int> &current, std::deque<size_t>	*jacobsthal)
 {
-	while (pairSize / 2 >= 2)
+	while (pairSize / 2 >= 1)
 	{
 		t_dataDeq	data;
 		std::deque<size_t>	indexes;
 
+		std::cout << "-----------------------------" << std::endl;
 		indexes = formMainAndPending(&data, pairSize / 2, current, getIte(current, pairSize));
-		std::cout << "-----------------------------\nindexes BEFORE insertion = ";
-		printContainer(indexes, 1);
+		//std::cout << "-----------------------------\nindexes BEFORE insertion = ";
+		//printContainer(indexes, 1);
 
 		current = jacobsthalMerge(&data, pairSize / 2, jacobsthal, indexes);
 
@@ -273,4 +264,5 @@ void	PmergeMe::sortDequeue()
 	std::cout << "*** sorted = ";
 	printContainer(this->deq, pairSize / 2);
 	merging(pairSize / 2, this->deq, &jacobsthal);
+	std::cout << YELLOW << "Comparaisons : " << g_counter << DEFAULT << std::endl;
 }
