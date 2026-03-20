@@ -65,12 +65,15 @@ void	swap_elements(size_t blockSize, std::deque<unsigned int>::iterator it, std:
 
 void	sortPairs(size_t pairSize, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator max_)
 {
+	//std::cout << "pairSize = " << pairSize << " max = " << *(max_ -1) << std::endl;
 	size_t	i = 0;
 	for (std::deque<unsigned int>::iterator it = current.begin(); it + pairSize / 2 < max_; it += pairSize)
 	{
 		g_counter ++;
-		std::deque<unsigned int>::iterator ite = it + pairSize / 2;
-		if (*(it + pairSize / 2 - 1) > *(ite))
+		std::deque<unsigned int>::iterator a = it + pairSize / 2 -1;
+		std::deque<unsigned int>::iterator b = a + pairSize / 2;
+		//std::cout << "a = " << *a << " b = " << *b << std::endl;
+		if (*(a) > *(b))
 		{
 			swap_elements(pairSize / 2, it, it + pairSize / 2);				
 		}
@@ -92,11 +95,11 @@ std::deque<unsigned int>::iterator getIte(std::deque<unsigned int> &current, siz
 
 size_t	swapping(size_t pairSize, size_t size, std::deque<unsigned int> &current)
 {
-	while (size / pairSize >= 2)
+	while (size / pairSize >= 1)
 	{
 		sortPairs(pairSize, current, getIte(current, pairSize));
-		//std::cout << "sorted = ";
-		//printContainer(current, pairSize / 2);
+		std::cout << "sorted = ";
+		printContainer(current, pairSize / 2);
 		pairSize *= 2;
 	}
 	return (pairSize);
@@ -240,7 +243,7 @@ void	PmergeMe::sortDequeue()
 	jacobsthal.push_back(1);
 
 	size_t	pairSize = swapping(2, this->deq.size(), this->deq);
-	std::cout << "*** sorted = ";
-	printContainer(this->deq, pairSize / 2);
-	merging(pairSize, this->deq, &jacobsthal);
+	//std::cout << "*** sorted = ";
+	//printContainer(this->deq, pairSize / 2);
+	merging(pairSize / 2, this->deq, &jacobsthal);
 }
