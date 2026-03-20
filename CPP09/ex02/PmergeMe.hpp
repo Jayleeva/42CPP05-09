@@ -67,7 +67,7 @@ void	merging(size_t size, std::deque<unsigned int> &container, std::deque<size_t
 void	update_jacobsthal(std::deque<size_t> &jacobsthal);
 
 template<typename T>
-void	printContainer(T &container)
+void	printContainer(T &container, size_t n)
 {
 	size_t	max_ = 20;
 	size_t	size = container.size();
@@ -79,7 +79,11 @@ void	printContainer(T &container)
 			std:: cout << "[...]" << std::endl;
 			return ;
 		}
-		std::cout << container[i] << ' ';
+		std::cout << container[i];
+		if ((i + 1) % n == 0)
+			std::cout << " ; ";
+		else
+			std::cout << ' ';
 	}
 	std::cout << container[size -1] << std::endl;
 };
