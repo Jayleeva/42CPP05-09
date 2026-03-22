@@ -122,9 +122,16 @@ std::deque<size_t>	formMainAndPending(t_dataDeq *data, size_t blockSize, std::de
 		i += blockSize;
 	}
 
-	if (ite != current.end())
-		data->remaining.insert(data->remaining.end(), ite, current.end());
-
+	if (ite != current.end()) // ajouter dans pending si encore possible de faire un bloc; ajouter dernier main comme max dans les indexes
+	{
+		if ((size_t)distance(ite, current.end()) >= blockSize)
+		{
+			data->pending.insert(data->pending.end(), it, it + blockSize);
+			it += blockSize;
+			indexes.push_back(i);
+		} 
+		data->remaining.insert(data->remaining.end(), it, current.end());
+	}
 
 	std::cout << "[MAIN] ";
 	printContainer(data->main, blockSize);
@@ -148,11 +155,12 @@ void	updateIndexes(std::deque<size_t> &indexes, size_t i, size_t blockSize)
 
 void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator head, size_t blockSize, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, std::deque<size_t> &indexes)
 {
-	size_t								dist = (distance(min_, max_) + 1) / blockSize;
+	size_t								dist = (distance(min_, max_)) / blockSize;
 	std::deque<unsigned int>::iterator	it;
 
-	
 	//std::cout << "blockSize = " << blockSize << " dist = " << dist << " min = " << *(min_) << " max = " << *(max_) << std::endl;
+	
+	std::cout << " dist = " << dist << " min = " << *(min_) << " max = " << *(max_) << std::endl;
 	std::cout << "********** HEAD = " << *(head) << std::endl;
 
 	if (dist == 0)
@@ -162,7 +170,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		return ;
 	}
 	
-	if (dist <= 2 )
+	if (dist == 1)
 	{
 		if (*(head) < *(min_))
 		{
@@ -171,7 +179,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		}
 		else if (*(head) > *(min_) && *(head) < *(max_))
 		{
-			std::cout << "[INSERTED] head (" << *(head) << ") between min " << *(min_) << " and max (" << *(max_) << ")" << std::endl;
+			std::cout << "[INSERTED] head (" << *(head) << ") between min (" << *(min_) << ") and max (" << *(max_) << ")" << std::endl;
 			it = min_ + 1;
 		}
 		else if (*(head) > *(max_))
@@ -179,18 +187,17 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			std::cout << "[INSERTED] head (" << *(head) << ") bigger than max (" << *(max_) << ")" << std::endl;
 			it = max_ + 1;
 		}
-			
 		container.insert(it, head - blockSize + 1, head + 1);
 		updateIndexes(indexes, distance(container.begin(), it), blockSize);
 		g_counter ++;
 		return ;
 	}
 
-	if (dist > 2)
+	if (dist > 1)
 	{
 		size_t	middle = dist / 2;
-		it = min_ + middle + blockSize / 2;
-		//std::cout << "middle = " << *(it) << std::endl;
+		it = min_ + middle * blockSize;
+		std::cout << "middle = " << *(it) << std::endl;
 		g_counter ++;
 		if (*(head) > *(it))
 		{
@@ -201,15 +208,16 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		{
 			//std::cout << "head (" << *(head) << ") smaller than middle (" << *(it) << ")" << std::endl;
 			binaryInsert(container, head, blockSize, min_, it, indexes);
-		}
-			
+		}	
 	}
+
 }
 
 std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, size_t blockSize, std::deque<size_t> *jacobsthal, std::deque<size_t> &indexes)
 {
 	std::deque<unsigned int>			merged;
 	size_t								npendingBlocks = data->pending.size() / blockSize;
+	size_t								n = npendingBlocks;
 	
 	(void)jacobsthal;
 
@@ -221,7 +229,8 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, size_t blockSize, std:
 		//std::cout << "index = " << indexes[npendingBlocks -1] << " ";
 		std::deque<unsigned int>::iterator	head = data->pending.begin() + npendingBlocks * blockSize -1;
 		std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[npendingBlocks - 1] -1;
-	
+		if (npendingBlocks == n)
+			max_ = data->main.end() -1;
 		binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, indexes);
 		//std::cout << "main after insertion = ";
 		//printContainer(data->main, blockSize);

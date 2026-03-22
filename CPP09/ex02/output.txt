@@ -1,0 +1,177 @@
+[1;93m[PMERGEME] : Default constructor called[0;39m
+[1;35m[DEQ] Before : 14 ; 12 ; 8 ; 4 ; 2 ; 1 ; 7 ; 10 ; 13 ; 6 ; 9 ; 5 ; 11 ; 3 ; 16 ; 15 ; 17 ; 18 ; 19 ; 20
+[0;39m*** sorted = 1 2 7 10 4 8 12 14 5 9 6 13 3 11 15 16 ; 17 18 19 20
+-----------------------------
+[MAIN] 5 9 6 13 3 11 15 16
+[PENDING] 1 2 7 10 4 8 12 14
+[REMAINING] 17 ; 18 ; 19 ; 20
+npendingBlocks = 1  dist = 0 min = 16 max = 16
+********** HEAD = 14
+*** merged = 1 2 7 10 4 8 12 14 ; 5 9 6 13 3 11 15 16 ; 17 18 19 20
+-----------------------------
+[MAIN] 4 8 12 14 ; 3 11 15 16
+[PENDING] 1 2 7 10 ; 5 9 6 13 ; 17 18 19 20
+npendingBlocks = 3  dist = 1 min = 14 max = 16
+********** HEAD = 20
+[INSERTED] head (20) bigger than max (16)
+npendingBlocks = 2  dist = 2 min = 14 max = 20
+********** HEAD = 13
+middle = 16
+ dist = 1 min = 14 max = 16
+********** HEAD = 13
+[INSERTED] head (13) smaller than min (14)
+npendingBlocks = 1  dist = 1 min = 13 max = 14
+********** HEAD = 10
+[INSERTED] head (10) smaller than min (13)
+*** merged = 1 2 7 10 ; 5 9 6 13 ; 4 8 12 14 ; 3 11 15 16 ; 17 18 19 20
+-----------------------------
+[MAIN] 7 10 ; 6 13 ; 12 14 ; 15 16 ; 19 20
+[PENDING] 1 2 ; 5 9 ; 4 8 ; 3 11 ; 17 18
+npendingBlocks = 5  dist = 4 min = 10 max = 20
+********** HEAD = 18
+middle = 14
+ dist = 2 min = 14 max = 20
+********** HEAD = 18
+middle = 16
+ dist = 1 min = 16 max = 20
+********** HEAD = 18
+[INSERTED] head (18) between min (16) and max (20)
+npendingBlocks = 4  dist = 4 min = 10 max = 18
+********** HEAD = 11
+middle = 14
+ dist = 2 min = 10 max = 14
+********** HEAD = 11
+middle = 13
+ dist = 1 min = 10 max = 13
+********** HEAD = 11
+[INSERTED] head (11) between min (10) and max (13)
+npendingBlocks = 3  dist = 3 min = 10 max = 14
+********** HEAD = 8
+middle = 11
+ dist = 1 min = 10 max = 11
+********** HEAD = 8
+[INSERTED] head (8) smaller than min (10)
+npendingBlocks = 2  dist = 3 min = 8 max = 13
+********** HEAD = 9
+middle = 10
+ dist = 1 min = 8 max = 10
+********** HEAD = 9
+[INSERTED] head (9) between min (8) and max (10)
+npendingBlocks = 1  dist = 2 min = 8 max = 10
+********** HEAD = 2
+middle = 9
+ dist = 1 min = 8 max = 9
+********** HEAD = 2
+[INSERTED] head (2) smaller than min (8)
+*** merged = 1 2 ; 4 8 ; 5 9 ; 7 10 ; 3 11 ; 6 13 ; 12 14 ; 15 16 ; 17 18 ; 19 20
+-----------------------------
+[MAIN] 2 ; 8 ; 9 ; 10 ; 11 ; 13 ; 14 ; 16 ; 18 ; 20
+[PENDING] 1 ; 4 ; 5 ; 7 ; 3 ; 6 ; 12 ; 15 ; 17 ; 19
+npendingBlocks = 10  dist = 9 min = 2 max = 20
+********** HEAD = 19
+middle = 11
+ dist = 5 min = 11 max = 20
+********** HEAD = 19
+middle = 14
+ dist = 3 min = 14 max = 20
+********** HEAD = 19
+middle = 16
+ dist = 2 min = 16 max = 20
+********** HEAD = 19
+middle = 18
+ dist = 1 min = 18 max = 20
+********** HEAD = 19
+[INSERTED] head (19) between min (18) and max (20)
+npendingBlocks = 9  dist = 9 min = 2 max = 19
+********** HEAD = 17
+middle = 11
+ dist = 5 min = 11 max = 19
+********** HEAD = 17
+middle = 14
+ dist = 3 min = 14 max = 19
+********** HEAD = 17
+middle = 16
+ dist = 2 min = 16 max = 19
+********** HEAD = 17
+middle = 18
+ dist = 1 min = 16 max = 18
+********** HEAD = 17
+[INSERTED] head (17) between min (16) and max (18)
+npendingBlocks = 8  dist = 8 min = 2 max = 17
+********** HEAD = 15
+middle = 11
+ dist = 4 min = 11 max = 17
+********** HEAD = 15
+middle = 14
+ dist = 2 min = 14 max = 17
+********** HEAD = 15
+middle = 16
+ dist = 1 min = 14 max = 16
+********** HEAD = 15
+[INSERTED] head (15) between min (14) and max (16)
+npendingBlocks = 7  dist = 7 min = 2 max = 15
+********** HEAD = 12
+middle = 10
+ dist = 4 min = 10 max = 15
+********** HEAD = 12
+middle = 13
+ dist = 2 min = 10 max = 13
+********** HEAD = 12
+middle = 11
+ dist = 1 min = 11 max = 13
+********** HEAD = 12
+[INSERTED] head (12) between min (11) and max (13)
+npendingBlocks = 6  dist = 6 min = 2 max = 13
+********** HEAD = 6
+middle = 10
+ dist = 3 min = 2 max = 10
+********** HEAD = 6
+middle = 8
+ dist = 1 min = 2 max = 8
+********** HEAD = 6
+[INSERTED] head (6) between min (2) and max (8)
+npendingBlocks = 5  dist = 5 min = 2 max = 11
+********** HEAD = 3
+middle = 8
+ dist = 2 min = 2 max = 8
+********** HEAD = 3
+middle = 6
+ dist = 1 min = 2 max = 6
+********** HEAD = 3
+[INSERTED] head (3) between min (2) and max (6)
+npendingBlocks = 4  dist = 4 min = 2 max = 9
+********** HEAD = 7
+middle = 6
+ dist = 2 min = 6 max = 9
+********** HEAD = 7
+middle = 8
+ dist = 1 min = 6 max = 8
+********** HEAD = 7
+[INSERTED] head (7) between min (6) and max (8)
+npendingBlocks = 3  dist = 4 min = 2 max = 8
+********** HEAD = 5
+middle = 6
+ dist = 2 min = 2 max = 6
+********** HEAD = 5
+middle = 3
+ dist = 1 min = 3 max = 6
+********** HEAD = 5
+[INSERTED] head (5) between min (3) and max (6)
+npendingBlocks = 2  dist = 3 min = 2 max = 6
+********** HEAD = 4
+middle = 3
+ dist = 2 min = 3 max = 6
+********** HEAD = 4
+middle = 5
+ dist = 1 min = 3 max = 5
+********** HEAD = 4
+[INSERTED] head (4) between min (3) and max (5)
+npendingBlocks = 1  dist = 0 min = 2 max = 2
+********** HEAD = 1
+*** merged = 1 ; 2 ; 3 ; 4 ; 5 ; 6 ; 7 ; 8 ; 9 ; 10 ; 11 ; 12 ; 13 ; 14 ; 15 ; 16 ; 17 ; 18 ; 19 ; 20
+[1;93mComparaisons : 67[0;39m
+[1;35m[DEQ] After : 1 ; 2 ; 3 ; 4 ; 5 ; 6 ; 7 ; 8 ; 9 ; 10 ; 11 ; 12 ; 13 ; 14 ; 15 ; 16 ; 17 ; 18 ; 19 ; 20
+[DEQ] Time to process a range of 20 elements with std::deque : 1994 us
+[0;39m
+[1;32mcheck: OK.[0;39m
+[1;93m[PMERGEME] : Default destructor called[0;39m
