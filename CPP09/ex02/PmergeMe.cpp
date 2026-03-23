@@ -1,6 +1,6 @@
 #include "PmergeMe.hpp"
 
-size_t		g_counter;
+ssize_t		g_counter;
 
 PmergeMe::PmergeMe()
 {
@@ -40,19 +40,19 @@ void	PmergeMe::setDeq(std::deque<unsigned int>::iterator begin, std::deque<unsig
 	this->deq.insert(this->deq.end(), begin, end);
 }
 
-void	update_jacobsthal(std::deque<size_t> &jacobsthal)
+void	updateJacobsthal(std::deque<ssize_t> &jacobsthal)
 {
-	size_t tmp1 = jacobsthal[0];
-	size_t tmp2 = jacobsthal[1];
+	ssize_t tmp1 = jacobsthal[0];
+	ssize_t tmp2 = jacobsthal[1];
 	jacobsthal[0] = tmp2;
 	jacobsthal[1] = tmp1 * 2 + tmp2;
 }
 
-void	swap_elements(size_t blockSize, std::deque<unsigned int>::iterator it, std::deque<unsigned int>::iterator ite)
+void	swap_elements(ssize_t blockSize, std::deque<unsigned int>::iterator it, std::deque<unsigned int>::iterator ite)
 {
 	unsigned int	tmpui;
 
-	for (size_t i = 0; i < blockSize; i ++)
+	for (ssize_t i = 0; i < blockSize; i ++)
 	{	
 		tmpui = *it;
 		*it = *ite;
@@ -63,10 +63,10 @@ void	swap_elements(size_t blockSize, std::deque<unsigned int>::iterator it, std:
 	}
 }
 
-void	sortPairs(size_t pairSize, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator max_)
+void	sortPairs(ssize_t pairSize, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator max_)
 {
 	//std::cout << "pairSize = " << pairSize << " max = " << *(max_ -1) << std::endl;
-	size_t	i = 0;
+	ssize_t	i = 0;
 	for (std::deque<unsigned int>::iterator it = current.begin(); it + pairSize / 2 < max_; it += pairSize)
 	{
 		g_counter ++;
@@ -81,19 +81,19 @@ void	sortPairs(size_t pairSize, std::deque<unsigned int> &current, std::deque<un
 	}
 }
 
-std::deque<unsigned int>::iterator getIte(std::deque<unsigned int> &current, size_t pairSize)
+std::deque<unsigned int>::iterator getIte(std::deque<unsigned int> &current, ssize_t pairSize)
 {
 	std::deque<unsigned int>::iterator	ite;
 
-	size_t	npairs = current.size() / pairSize;
-	size_t	remaining = current.size() - npairs * pairSize;
+	ssize_t	npairs = current.size() / pairSize;
+	ssize_t	remaining = current.size() - npairs * pairSize;
 
 	ite = current.end() - remaining;
 	//std::cout << "ite = " << *(ite -1) << std::endl;
 	return (ite);
 }
 
-size_t	swapping(size_t pairSize, size_t size, std::deque<unsigned int> &current)
+ssize_t	swapping(ssize_t pairSize, ssize_t size, std::deque<unsigned int> &current)
 {
 	while (size / pairSize >= 1)
 	{
@@ -106,11 +106,11 @@ size_t	swapping(size_t pairSize, size_t size, std::deque<unsigned int> &current)
 }
 
 
-std::deque<size_t>	formMainAndPending(t_dataDeq *data, size_t blockSize, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator ite)
+std::deque<ssize_t>	formMainAndPending(t_dataDeq *data, ssize_t blockSize, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator ite)
 {
-	std::deque<size_t>	indexes;
+	std::deque<ssize_t>	indexes;
 	std::deque<unsigned int>::iterator	it = current.begin();
-	size_t				i = blockSize;
+	ssize_t				i = blockSize;
 
 	while (it != ite)
 	{
@@ -124,7 +124,7 @@ std::deque<size_t>	formMainAndPending(t_dataDeq *data, size_t blockSize, std::de
 
 	if (ite != current.end()) // ajouter dans pending si encore possible de faire un bloc; ajouter dernier main comme max dans les indexes
 	{
-		if ((size_t)distance(ite, current.end()) >= blockSize)
+		if ((ssize_t)distance(ite, current.end()) >= blockSize)
 		{
 			data->pending.insert(data->pending.end(), it, it + blockSize);
 			it += blockSize;
@@ -145,17 +145,18 @@ std::deque<size_t>	formMainAndPending(t_dataDeq *data, size_t blockSize, std::de
 	return (indexes);
 }
 
-void	updateIndexes(std::deque<size_t> &indexes, size_t i, size_t blockSize)
+void	updateIndexes(std::deque<ssize_t> &indexes, ssize_t i, ssize_t blockSize)
 {
-	for (std::deque<size_t>::iterator it = find(indexes.begin(), indexes.end(), i) + 0; it < indexes.end(); it ++)
+	for (std::deque<ssize_t>::iterator it = find(indexes.begin(), indexes.end(), i) + 0; it < indexes.end(); it ++)
 	{
-		*it += blockSize;
+		if (*it != -1)
+			*it += blockSize;
 	}
 }
 
-void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator head, size_t blockSize, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, std::deque<size_t> &indexes)
+void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator head, ssize_t blockSize, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, std::deque<ssize_t> &indexes)
 {
-	size_t								dist = (distance(min_, max_)) / blockSize;
+	ssize_t								dist = (distance(min_, max_)) / blockSize;
 	std::deque<unsigned int>::iterator	it;
 
 	//std::cout << "blockSize = " << blockSize << " dist = " << dist << " min = " << *(min_) << " max = " << *(max_) << std::endl;
@@ -195,7 +196,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 
 	if (dist > 1)
 	{
-		size_t	middle = dist / 2;
+		ssize_t	middle = dist / 2;
 		it = min_ + middle * blockSize;
 		std::cout << "middle = " << *(it) << std::endl;
 		g_counter ++;
@@ -213,19 +214,15 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 
 }
 
-std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, size_t blockSize, std::deque<size_t> *jacobsthal, std::deque<size_t> &indexes)
+std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, std::deque<ssize_t> &indexes)
 {
-	std::deque<unsigned int>			merged;
-	size_t								npendingBlocks = data->pending.size() / blockSize;
-	size_t								n = npendingBlocks;
-	
-	(void)jacobsthal;
-
-	//data->main.insert(data->main.begin(), data->pending.begin(), data->pending.begin() + blockSize);
+	std::deque<unsigned int>	merged;
+	ssize_t						npendingBlocks = data->pending.size() / blockSize;
+	ssize_t						n = npendingBlocks;
 
 	while (npendingBlocks > 0)
 	{
-		std::cout << "npendingBlocks = " << npendingBlocks << " ";
+		//std::cout << "npendingBlocks = " << npendingBlocks << " ";
 		//std::cout << "index = " << indexes[npendingBlocks -1] << " ";
 		std::deque<unsigned int>::iterator	head = data->pending.begin() + npendingBlocks * blockSize -1;
 		std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[npendingBlocks - 1] -1;
@@ -243,12 +240,68 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, size_t blockSize, std:
 	return (merged);
 }
 
-void	merging(size_t pairSize, std::deque<unsigned int> &current, std::deque<size_t>	*jacobsthal)
+std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std::deque<ssize_t> &jacobsthal, std::deque<ssize_t> &indexes)
+{
+	std::deque<unsigned int>			merged;
+	ssize_t								npendingBlocks = data->pending.size() / blockSize;
+	ssize_t								n = npendingBlocks;
+	ssize_t								diffjac;
+	ssize_t								remaining;
+	
+	//data->main.insert(data->main.begin(), data->pending.begin(), data->pending.begin() + blockSize);
+
+	jacobsthal[0] = 1;
+	jacobsthal[1] = 3;
+	diffjac = jacobsthal[1] - jacobsthal[0];
+
+
+	if (npendingBlocks < jacobsthal[1])
+		return (normalMerge(data, blockSize, indexes));
+
+	while (npendingBlocks >= diffjac)
+	{
+		remaining = npendingBlocks - diffjac;
+		if (npendingBlocks < jacobsthal[1])
+			break;
+		std::cout << "remaining = " << remaining << " diffjac = " << diffjac << " jacobsthal = " << jacobsthal[1] << std::endl;
+		ssize_t	i = 0;
+		while (diffjac > 0)
+		{
+			std::deque<unsigned int>::iterator	head = data->pending.begin() + (jacobsthal[1] -i) * blockSize -1;
+			std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[jacobsthal[1] -i -1] -1;
+			binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, indexes);
+			indexes[jacobsthal[1] -i -1] = -1;
+			i ++;
+			npendingBlocks --;
+			diffjac --;
+		}
+		updateJacobsthal(jacobsthal);
+		diffjac = jacobsthal[1] - jacobsthal[0];
+	}
+
+	//return (normalMerge(data, blockSize, indexes));
+	while (n > 0)
+	{
+		std::cout << "n = " << n << " indexes[n -1] = " << indexes[n -1] << std::endl;
+		if (indexes[n -1] != -1)
+		{
+			std::deque<unsigned int>::iterator	head = data->pending.begin() + n * blockSize -1;
+			std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[n - 1] -1;
+			binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, indexes);
+		}
+		n --;
+	}
+	merged.insert(merged.end(), data->main.begin(), data->main.end());
+	merged.insert(merged.end(), data->remaining.begin(), data->remaining.end());
+	return (merged);
+}
+
+void	merging(ssize_t pairSize, std::deque<unsigned int> &current, std::deque<ssize_t>	&jacobsthal)
 {
 	while (pairSize / 2 >= 1)
 	{
 		t_dataDeq	data;
-		std::deque<size_t>	indexes;
+		std::deque<ssize_t>	indexes;
 
 		std::cout << "-----------------------------" << std::endl;
 		indexes = formMainAndPending(&data, pairSize / 2, current, getIte(current, pairSize));
@@ -265,13 +318,13 @@ void	merging(size_t pairSize, std::deque<unsigned int> &current, std::deque<size
 
 void	PmergeMe::sortDequeue()
 {
-	std::deque<size_t>	jacobsthal;
-	jacobsthal.push_back(0);
+	std::deque<ssize_t>	jacobsthal;
 	jacobsthal.push_back(1);
+	jacobsthal.push_back(3);
 
-	size_t	pairSize = swapping(2, this->deq.size(), this->deq);
+	ssize_t	pairSize = swapping(2, this->deq.size(), this->deq);
 	std::cout << "*** sorted = ";
 	printContainer(this->deq, pairSize / 2);
-	merging(pairSize / 2, this->deq, &jacobsthal);
+	merging(pairSize / 2, this->deq, jacobsthal);
 	std::cout << YELLOW << "Comparaisons : " << g_counter << DEFAULT << std::endl;
 }
