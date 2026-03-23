@@ -214,26 +214,24 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 
 }
 
-std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, std::deque<ssize_t> &indexes)
+std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, ssize_t n, std::deque<ssize_t> &indexes)
 {
 	std::deque<unsigned int>	merged;
-	ssize_t						npendingBlocks = data->pending.size() / blockSize;
-	ssize_t						n = npendingBlocks;
+	ssize_t						i = n;
 
-	while (npendingBlocks > 0)
+	while (n > 0)
 	{
-		//std::cout << "npendingBlocks = " << npendingBlocks << " ";
-		//std::cout << "index = " << indexes[npendingBlocks -1] << " ";
-		std::deque<unsigned int>::iterator	head = data->pending.begin() + npendingBlocks * blockSize -1;
-		std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[npendingBlocks - 1] -1;
-		if (npendingBlocks == n)
-			max_ = data->main.end() -1;
-		binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, indexes);
-		//std::cout << "main after insertion = ";
-		//printContainer(data->main, blockSize);
-		//std::cout << "indexes after insertion = ";
-		//printContainer(indexes, 1);
-		npendingBlocks --;
+		if (indexes[n -1] >= 0)
+		{
+			std::deque<unsigned int>::iterator	head = data->pending.begin() + n * blockSize -1;
+			std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[n - 1] -1;
+			if (i == n)
+				max_ = data->main.end() -1;
+			binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, indexes);
+		}
+		else
+			std::cout << "!!!!! already inserted !!!!" << std::endl;
+		n --;
 	}
 	merged.insert(merged.end(), data->main.begin(), data->main.end());
 	merged.insert(merged.end(), data->remaining.begin(), data->remaining.end());
@@ -242,35 +240,31 @@ std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, std::de
 
 std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std::deque<ssize_t> &jacobsthal, std::deque<ssize_t> &indexes)
 {
-	std::deque<unsigned int>			merged;
 	ssize_t								npendingBlocks = data->pending.size() / blockSize;
 	ssize_t								n = npendingBlocks;
 	ssize_t								diffjac;
-	ssize_t								remaining;
-	
+
 	//data->main.insert(data->main.begin(), data->pending.begin(), data->pending.begin() + blockSize);
 
 	jacobsthal[0] = 1;
 	jacobsthal[1] = 3;
 	diffjac = jacobsthal[1] - jacobsthal[0];
 
-
-	if (npendingBlocks < jacobsthal[1])
-		return (normalMerge(data, blockSize, indexes));
+	if (n < jacobsthal[1])
+		return (normalMerge(data, blockSize, n, indexes));
 
 	while (npendingBlocks >= diffjac)
 	{
-		remaining = npendingBlocks - diffjac;
 		if (npendingBlocks < jacobsthal[1])
 			break;
-		std::cout << "remaining = " << remaining << " diffjac = " << diffjac << " jacobsthal = " << jacobsthal[1] << std::endl;
+		std::cout << "diffjac = " << diffjac << " jacobsthal = " << jacobsthal[1] << std::endl;
 		ssize_t	i = 0;
 		while (diffjac > 0)
 		{
 			std::deque<unsigned int>::iterator	head = data->pending.begin() + (jacobsthal[1] -i) * blockSize -1;
 			std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[jacobsthal[1] -i -1] -1;
 			binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, indexes);
-			indexes[jacobsthal[1] -i -1] = -1;
+			indexes[jacobsthal[1] -i -1] = -2 * data->pending.size();
 			i ++;
 			npendingBlocks --;
 			diffjac --;
@@ -278,22 +272,7 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std
 		updateJacobsthal(jacobsthal);
 		diffjac = jacobsthal[1] - jacobsthal[0];
 	}
-
-	//return (normalMerge(data, blockSize, indexes));
-	while (n > 0)
-	{
-		std::cout << "n = " << n << " indexes[n -1] = " << indexes[n -1] << std::endl;
-		if (indexes[n -1] != -1)
-		{
-			std::deque<unsigned int>::iterator	head = data->pending.begin() + n * blockSize -1;
-			std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[n - 1] -1;
-			binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, indexes);
-		}
-		n --;
-	}
-	merged.insert(merged.end(), data->main.begin(), data->main.end());
-	merged.insert(merged.end(), data->remaining.begin(), data->remaining.end());
-	return (merged);
+	return (normalMerge(data, blockSize, n, indexes));
 }
 
 void	merging(ssize_t pairSize, std::deque<unsigned int> &current, std::deque<ssize_t>	&jacobsthal)
