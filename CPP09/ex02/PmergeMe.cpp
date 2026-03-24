@@ -253,7 +253,7 @@ std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, ssize_t
 	{
 		while (n > 0)
 		{
-			if (used[n -1] == false)
+			if (used[n -1] == false) // if n * blockSize -1 > jacobsthal[1]
 			{
 				std::deque<unsigned int>::iterator	head = data->pending.begin() + n * blockSize -1;
 				std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[n - 1] -1;
