@@ -150,12 +150,24 @@ void	updateIndexes(std::deque<ssize_t> &indexes, ssize_t i, ssize_t blockSize)//
 {
 	std::cout << "entered updateIndexes with i = " << i << std::endl;
 
-	//for (std::deque<ssize_t>::iterator it = find(indexes.begin(), indexes.end(), i); it < indexes.end(); it ++)
-	for (std::deque<ssize_t>::iterator it = indexes.begin() + i; it < indexes.end(); it ++)
+	//if (i == blockSize) : a été placé en tout premier
+
+	std::cout << "-----------------------------\nindexes BEFORE UPDATE = ";
+	printContainer(indexes, 1);
+
+	std::deque<ssize_t>::iterator it;
+	for (it = indexes.begin() + i / blockSize -1; it < indexes.end(); it ++)
 	{
 		if (*it >= 0)
 			*it += blockSize;
 	}
+	/*if (it == indexes.end())
+	{
+		*(it -1) += blockSize;
+	}*/
+	std::cout << "indexes AFTER UPDATE = ";
+	printContainer(indexes, 1);
+	std::cout << "-----------------------------\n";
 }
 
 void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator head, ssize_t blockSize, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, int type, std::deque<ssize_t> &indexes)
@@ -176,8 +188,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			it = min_ + 1; //après min
 		g_counter ++;
 		container.insert(it, head - blockSize + 1, head + 1);
-		updateIndexes(indexes, 2, blockSize); // NOPE
-		//updateIndexes(indexes, indexes.begin(), blockSize);
+		updateIndexes(indexes, distance(container.begin(), it), blockSize);
 		return ;
 	}
 	
@@ -185,23 +196,11 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	{
 		if (type == 0)
 		{
-			if (*(head) < *(min_))
-			{
-				std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
-				it = min_ - blockSize + 1;
-				g_counter ++;
-			}
-			else if (*(head) > *(min_) && *(head) < *(max_))
-			{
-				std::cout << "[INSERTED] head (" << *(head) << ") between min (" << *(min_) << ") and max (" << *(max_) << ")" << std::endl;
-				it = min_ + 1;
-				g_counter += 3;
-			}
+			if (*(head) > *(min_))
+				type = 1;
 			else
-			{
-				std::cout << "[INSERTED] head (" << *(head) << ") bigger than max (" << *(max_) << ")" << std::endl;
-				it = max_ + 1;
-			}
+				type = -1;
+			g_counter ++;
 		}
 		if (type == 1)	//  (> min)
 		{
@@ -232,8 +231,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			g_counter ++;
 		}
 		container.insert(it, head - blockSize + 1, head + 1);
-		updateIndexes(indexes, distance(container.begin(), it), blockSize); // distance ne donne pas le bon
-		//updateIndexes(indexes, it -1, blockSize);
+		updateIndexes(indexes, distance(container.begin(), it), blockSize);
 		return ;
 	}
 
@@ -254,7 +252,6 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			binaryInsert(container, head, blockSize, min_, it, -1, indexes);
 		}	
 	}
-
 }
 
 std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, ssize_t n, ssize_t remaining, std::deque<ssize_t> &indexes)
@@ -297,20 +294,14 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std
 	jacobsthal[1] = 3;
 	diffjac = jacobsthal[1] - jacobsthal[0];
 
-	if (n < jacobsthal[1])
-		return (normalMerge(data, blockSize, n, npendingBlocks, indexes));
-
 	while (npendingBlocks >= diffjac)
 	{
-		if (npendingBlocks < jacobsthal[1])
+		if (n < jacobsthal[1])
 			break;
 		std::cout << "diffjac = " << diffjac << " jacobsthal = " << jacobsthal[1] << std::endl;
 		ssize_t	i = 0;
 		while (diffjac > 0)
 		{
-			std::cout << "indexes = ";
-			printContainer(indexes, 1);
-	
 			std::deque<unsigned int>::iterator	head = data->pending.begin() + (jacobsthal[1] -i) * blockSize -1;
 			std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[jacobsthal[1] -i -1] -1;
 			if (head == data->pending.end() -1)
@@ -336,8 +327,7 @@ void	merging(ssize_t pairSize, std::deque<unsigned int> &current, std::deque<ssi
 
 		std::cout << "-----------------------------" << std::endl;
 		indexes = formMainAndPending(&data, pairSize / 2, current, getIte(current, pairSize));
-		//std::cout << "-----------------------------\nindexes BEFORE insertion = ";
-		//printContainer(indexes, 1);
+
 
 		current = jacobsthalMerge(&data, pairSize / 2, jacobsthal, indexes);
 
