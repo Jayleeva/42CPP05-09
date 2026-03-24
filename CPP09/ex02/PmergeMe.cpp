@@ -154,7 +154,7 @@ void	updateIndexes(std::deque<ssize_t> &indexes, ssize_t i, ssize_t blockSize)
 		tmp = indexes.begin();
 	else
 		tmp = find(indexes.begin(), indexes.end(), i);
-	for (std::deque<ssize_t>::iterator it = tmp; it < indexes.end(); it ++)
+	for (std::deque<ssize_t>::iterator it = tmp; it < indexes.end(); it ++) // ne doit pas incrémenter le dernier si était un sans main
 		*it += blockSize;
 
 	std::cout << "indexes AFTER UPDATE = ";
@@ -261,10 +261,13 @@ std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, ssize_t
 					max_ = data->main.end() -1;
 				binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, 0, indexes);
 				std::cout << "main after new insertion = ";
-				printContainer(data->main, blockSize * 2);
+				printContainer(data->main, blockSize);
 			}
 			else
+			{
 				std::cout << "!!!!! already inserted !!!!" << std::endl;
+				break;
+			}
 			n --;
 		}
 	}
