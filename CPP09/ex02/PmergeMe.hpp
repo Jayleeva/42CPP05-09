@@ -80,7 +80,7 @@ void	printContainer(T &container, size_t n)
 			return ;
 		}
 		std::cout << container[i];
-		if ((i + 1) % n == 0)
+		if (n && (i + 1) % n == 0)
 			std::cout << " ; ";
 		else
 			std::cout << ' ';

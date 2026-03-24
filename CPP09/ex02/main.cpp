@@ -95,7 +95,7 @@ int main(int argc, char **argv)
 	}
 	p.setDeq(deq.begin(), deq.end());
 	std::cout << MAG << "[DEQ] Before : ";
-	printContainer(deq, 1);
+	printContainer(deq, 0);
 	std::cout << DEFAULT;
 
 	p.sortDequeue();
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 
 	std::cout << MAG << "[DEQ] After : ";
 	deq = p.getDeq();
-	printContainer(deq, 1);
+	printContainer(deq, 0);
 	std::cout << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << std::endl;
 	std::cout << DEFAULT << std::endl;
 
