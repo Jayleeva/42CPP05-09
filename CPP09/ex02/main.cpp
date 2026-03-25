@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 	}
 
 	p.setDeq(deq.begin(), deq.end());
-	std::cout << MAG << "/n[DEQ] Before : ";
+	std::cout << MAG << "\n[DEQ] Before : ";
 	printContainer(deq, 0);
 	std::cout << DEFAULT;
 
