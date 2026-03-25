@@ -107,16 +107,16 @@ int main(int argc, char **argv)
 	}
 
 	p.setDeq(deq.begin(), deq.end());
-	/*std::cout << MAG << "[DEQ] Before : ";
+	std::cout << MAG << "/n[DEQ] Before : ";
 	printContainer(deq, 0);
-	std::cout << DEFAULT;*/
+	std::cout << DEFAULT;
 
 	ssize_t counterDeq = p.sortDequeue();
     endDeq = clock();
 
 	deq = p.getDeq();
-	/*std::cout << MAG << "[DEQ] After : ";
-	printContainer(deq, 0);*/
+	std::cout << MAG << "[DEQ] After : ";
+	printContainer(deq, 0);
 	std::cout << MAG << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << DEFAULT << std::endl;
 
 	if (!is_sorted(size, p.getVec()))

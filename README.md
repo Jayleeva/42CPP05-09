@@ -1,3 +1,32 @@
+# Comment utiliser
+Cloner le git localement.
+
+Acceder a l'exercice 02 du CPP09 dans le terminal 
+```
+cd 42CPP05-09/CPP09/ex02
+```
+
+Compiler:
+```
+make
+```
+
+Lancer le programme avec une suite de nombres entiers positifs (sans duplicat). Vous pouvez faire votre propre liste manuellement:
+```
+./PmergeMe 3 7 1 9
+```
+
+Ou utiliser un shuffle:
+```
+./PmergeMe `shuf -i 1-100000 -n 21 | tr "\n" " "`
+```
+Les chiffres apres le i sont la range des chiffres que vous voulez.
+
+Le chiffre apres le n est le nombre de chiffres que vous voulez.
+
+Lisez la sortie! :D
+
+
 # Exceptions
 Désormais, on a accès à un outil bien utile, à savoir les exceptions. 
 Plutôt que de faire un if(!test_function() return 1), on peut utiliser un "try catch" et "throw" des exceptions.
