@@ -248,7 +248,7 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 			{
 				if (VERBIOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") between min (" << *(min_) << ") and max (" << *(max_) << ")" << std::endl;
-				it = min_ + 1;
+				it = min_ + 1; // haha parfois faux aussi JPPPPPP
 			}
 			else
 			{
@@ -264,19 +264,20 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 			{
 				if (VERBIOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") between min (" << *(min_) << ") and max (" << *(max_) << ")" << std::endl;
-				it = min_ + 1;
+				it = min_ + 1; // haha parfois faux aussi JPPPPPP genre il trouve pas l'iterateur OU ALORS il trouve le bon iterateur mais il calcule une distance negative ahahahahahah
 			}
 			else
 			{
 				if (VERBIOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
-				it = min_ - blockSize + 1;
+				it = min_ - blockSize + 1; // devrait tomber sur le premier mais ne le trouve pas toujours
 			}
 			g_counterVec ++;
 		}
 		container.insert(it, head - blockSize + 1, head + 1);
-		std::cout << "distance begin (" << *(container.begin()) << ") it (" << *(it) << ")\n";  
-		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch); // distance donne des resultats craaaazyyy avec vector
+		std::cout << "distance begin (" << *(container.begin()) << ") it (" << *(it) << ")" << std::endl;
+		ssize_t	dist2 = distance(container.begin(), it); // se sent craaazyyy par moment et invente des trucs youpie on est chez les fous
+		updateIndexes(indexes, dist2, blockSize, nomatch); 
 		return ;
 	}
 
@@ -646,7 +647,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			g_counterDeq ++;
 		}
 		container.insert(it, head - blockSize + 1, head + 1);
-		std::cout << "distance begin (" << *(container.begin()) << ") it (" << *(it) << ")\n";  
+		std::cout << "distance begin (" << *(container.begin()) << ") it (" << *(it) << ")" << std::endl;
 		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch);
 		return ;
 	}
