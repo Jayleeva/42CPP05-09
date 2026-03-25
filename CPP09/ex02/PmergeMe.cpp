@@ -414,12 +414,14 @@ void	merging(ssize_t pairSize, std::vector<unsigned int> &current)
 	}
 }
 
-void	PmergeMe::sortVector()
+ssize_t	PmergeMe::sortVector()
 {
+	g_counterVec = 0;
 	ssize_t	pairSize = swapping(2, this->vec.size(), this->vec);
 	merging(pairSize / 2, this->vec);
-	if (VERBIOSE)
-		std::cout << YELLOW << "Comparaisons : " << g_counterVec << DEFAULT << std::endl;
+	return (g_counterVec);
+	//if (VERBIOSE)
+	//	std::cout << YELLOW << "Comparaisons : " << g_counterVec << DEFAULT << std::endl;
 }
 
 //--------------------------DEQUEUE----------------------------------------
@@ -782,10 +784,12 @@ void	merging(ssize_t pairSize, std::deque<unsigned int> &current)
 	}
 }
 
-void	PmergeMe::sortDequeue()
+ssize_t	PmergeMe::sortDequeue()
 {
+	g_counterDeq = 0;
 	ssize_t	pairSize = swapping(2, this->deq.size(), this->deq);
 	merging(pairSize / 2, this->deq);
-	if (VERBIOSE)
-		std::cout << YELLOW << "Comparaisons : " << g_counterDeq << DEFAULT << std::endl;
+	return (g_counterDeq);
+	//if (VERBIOSE)
+	//	std::cout << YELLOW << "Comparaisons : " << g_counterDeq << DEFAULT << std::endl;
 }

@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 	printContainer(vec, 0);
 	std::cout << DEFAULT;
 
-	p.sortVector();
+	ssize_t counterVec = p.sortVector();
 	endVec = clock();
 
 	std::cout << MAG << "[VEC] After : ";
@@ -111,7 +111,7 @@ int main(int argc, char **argv)
 	printContainer(deq, 0);
 	std::cout << DEFAULT;*/
 
-	p.sortDequeue();
+	ssize_t counterDeq = p.sortDequeue();
     endDeq = clock();
 
 	deq = p.getDeq();
@@ -127,5 +127,11 @@ int main(int argc, char **argv)
 		std::cout << RED << "check: [DEQ] KO." << DEFAULT << std::endl;
 	else
 		std::cout << GREEN << "check: [DEQ] OK." << DEFAULT << std::endl;
+
+	//if (VERBIOSE)
+	//{
+		std::cout << YELLOW << "Comparaisons [VEC] : " << counterVec << DEFAULT << std::endl;
+		std::cout << YELLOW << "Comparaisons [DEQ] : " << counterDeq << DEFAULT << std::endl;
+	//}
 	return (1);
 }

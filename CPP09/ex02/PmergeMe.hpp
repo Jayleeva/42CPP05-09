@@ -48,8 +48,8 @@ class	PmergeMe
 		std::deque<unsigned int>	getDeq() const;
 		void						setDeq(std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end);
 
-		void						sortVector();
-		void						sortDequeue();
+		ssize_t						sortVector();
+		ssize_t						sortDequeue();
 
 	private:
 		std::vector<unsigned int>	vec;
