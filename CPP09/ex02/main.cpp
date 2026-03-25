@@ -94,8 +94,7 @@ int main(int argc, char **argv)
 	std::cout << MAG << "[VEC] After : ";
 	vec = p.getVec();
 	printContainer(vec, 0);
-	std::cout << "[VEC] Time to process a range of " << p.getVec().size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) * 1.0 << " us" << std::endl;
-	std::cout << DEFAULT << std::endl;
+	std::cout << "[VEC] Time to process a range of " << p.getVec().size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) * 1.0 << " us" << DEFAULT << std::endl;
 
 	startDeq = clock();
 	for (size_t i = 0; i < size; i++)
@@ -118,8 +117,7 @@ int main(int argc, char **argv)
 	deq = p.getDeq();
 	/*std::cout << MAG << "[DEQ] After : ";
 	printContainer(deq, 0);*/
-	std::cout << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << std::endl;
-	std::cout << DEFAULT << std::endl;
+	std::cout << MAG << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << DEFAULT << std::endl;
 
 	if (!is_sorted(size, p.getVec()))
 		std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;

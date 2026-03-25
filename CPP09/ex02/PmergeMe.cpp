@@ -1,6 +1,6 @@
 #include "PmergeMe.hpp"
 
-ssize_t		g_counter;
+ssize_t		g_counterDeq;
 
 PmergeMe::PmergeMe()
 {
@@ -49,6 +49,11 @@ void	PmergeMe::setDeq(std::deque<unsigned int>::iterator begin, std::deque<unsig
 	this->deq.insert(this->deq.end(), begin, end);
 }
 
+
+//------------------------ VECTOR ----------------------------------------
+
+ssize_t		g_counterVec;
+
 void	updateJacobsthal(std::vector<ssize_t> &jacobsthal)
 {
 	ssize_t tmp1 = jacobsthal[0];
@@ -77,7 +82,7 @@ void	sortPairs(ssize_t pairSize, std::vector<unsigned int> &current, std::vector
 	ssize_t	i = 0;
 	for (std::vector<unsigned int>::iterator it = current.begin(); it + pairSize / 2 < max_; it += pairSize)
 	{
-		g_counter ++;
+		g_counterVec ++;
 		std::vector<unsigned int>::iterator a = it + pairSize / 2 -1;
 		std::vector<unsigned int>::iterator b = a + pairSize / 2;
 		if (*(a) > *(b))
@@ -223,7 +228,7 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 			it = min_ - blockSize + 1; // avant min
 		else
 			it = min_ + 1; // après min
-		g_counter ++;
+		g_counterVec ++;
 		container.insert(it, head - blockSize + 1, head + 1);
 		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch);
 		return ;
@@ -237,7 +242,7 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 				type = 1;
 			else
 				type = -1;
-			g_counter ++;
+			g_counterVec ++;
 		}
 		if (type == 1)	//  (> min)
 		{
@@ -253,7 +258,7 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 					std::cout << "[INSERTED] head (" << *(head) << ") bigger than max (" << *(max_) << ")" << std::endl;
 				it = max_ + 1;
 			}
-			g_counter ++;
+			g_counterVec ++;
 		}
 		else if (type == -1)	// ( < max)
 		{
@@ -269,11 +274,10 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 					std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
 				it = min_ - blockSize + 1;
 			}
-			g_counter ++;
+			g_counterVec ++;
 		}
 		container.insert(it, head - blockSize + 1, head + 1);
-		ssize_t	dist2 = distance(container.begin(), it);
-		updateIndexes(indexes, dist2, blockSize, nomatch);
+		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch);
 		return ;
 	}
 
@@ -283,7 +287,7 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 		it = min_ + middle * blockSize;
 		if (VERBIOSE)
 			std::cout << " middle = " << *(it) << std::endl;
-		g_counter ++;
+		g_counterVec ++;
 		if (*(head) > *(it))
 			binaryInsert(container, head, blockSize, it, max_, 1, indexes, nomatch);
 		else
@@ -291,17 +295,16 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 	}
 }
 
-std::vector<unsigned int>	normalMerge(t_dataVec *data, ssize_t blockSize, ssize_t n, std::vector<ssize_t> &indexes, std::vector<ssize_t> jacobsthal, bool nomatch)
+std::vector<unsigned int>	normalMerge(t_dataVec *data, ssize_t blockSize, ssize_t n, ssize_t remaining, std::vector<ssize_t> &indexes, std::vector<bool> used, bool nomatch)
 {
 	std::vector<unsigned int>	merged;
 	ssize_t						i = n;
 
-	//if (remaining)
-	//{
+	if (remaining)
+	{
 		while (n > 0)
 		{
-			//if (used[n -1] == false) // if n * blockSize -1 > jacobsthal[1]
-			if (n == 1 || n * blockSize > jacobsthal[1])
+			if (used[n -1] == false) // if n * blockSize -1 > jacobsthal[1]
 			{
 				std::vector<unsigned int>::iterator	head = data->pending.begin() + n * blockSize -1;
 				std::vector<unsigned int>::iterator	max_ = data->main.begin() + indexes[n - 1] -1;
@@ -322,7 +325,7 @@ std::vector<unsigned int>	normalMerge(t_dataVec *data, ssize_t blockSize, ssize_
 			}
 			n --;
 		}
-	//}
+	}
 	merged.insert(merged.end(), data->main.begin(), data->main.end());
 	merged.insert(merged.end(), data->remaining.begin(), data->remaining.end());
 	return (merged);
@@ -342,15 +345,17 @@ std::vector<unsigned int>	jacobsthalMerge(t_dataVec *data, ssize_t blockSize, st
 
 	data->main.insert(data->main.begin(), data->pending.begin(), data->pending.begin() + blockSize);
 	updateIndexes(indexes, blockSize, blockSize, nomatch);
+
 	used[0] = true;
 	npendingBlocks --;
 
-	jacobsthal[0] = 1;
-	jacobsthal[1] = 3;
+	jacobsthal.push_back(1);
+	jacobsthal.push_back(3);
 	diffjac = jacobsthal[1] - jacobsthal[0];
 
 	while (npendingBlocks >= diffjac)
 	{
+		
 		if (n < jacobsthal[1])
 			break;
 		if (VERBIOSE)
@@ -376,7 +381,7 @@ std::vector<unsigned int>	jacobsthalMerge(t_dataVec *data, ssize_t blockSize, st
 		updateJacobsthal(jacobsthal);
 		diffjac = jacobsthal[1] - jacobsthal[0];
 	}
-	return (normalMerge(data, blockSize, n -1, indexes, jacobsthal, nomatch));
+	return (normalMerge(data, blockSize, n, npendingBlocks, indexes, used, nomatch));
 }
 
 bool	hasNomatch(std::vector<ssize_t>	indexes)
@@ -414,8 +419,10 @@ void	PmergeMe::sortVector()
 	ssize_t	pairSize = swapping(2, this->vec.size(), this->vec);
 	merging(pairSize / 2, this->vec);
 	if (VERBIOSE)
-		std::cout << YELLOW << "Comparaisons : " << g_counter << DEFAULT << std::endl;
+		std::cout << YELLOW << "Comparaisons : " << g_counterVec << DEFAULT << std::endl;
 }
+
+//--------------------------DEQUEUE----------------------------------------
 
 void	updateJacobsthal(std::deque<ssize_t> &jacobsthal)
 {
@@ -445,7 +452,7 @@ void	sortPairs(ssize_t pairSize, std::deque<unsigned int> &current, std::deque<u
 	ssize_t	i = 0;
 	for (std::deque<unsigned int>::iterator it = current.begin(); it + pairSize / 2 < max_; it += pairSize)
 	{
-		g_counter ++;
+		g_counterDeq ++;
 		std::deque<unsigned int>::iterator a = it + pairSize / 2 -1;
 		std::deque<unsigned int>::iterator b = a + pairSize / 2;
 		if (*(a) > *(b))
@@ -591,7 +598,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			it = min_ - blockSize + 1; // avant min
 		else
 			it = min_ + 1; // après min
-		g_counter ++;
+		g_counterDeq ++;
 		container.insert(it, head - blockSize + 1, head + 1);
 		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch);
 		return ;
@@ -605,7 +612,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 				type = 1;
 			else
 				type = -1;
-			g_counter ++;
+			g_counterDeq ++;
 		}
 		if (type == 1)	//  (> min)
 		{
@@ -621,7 +628,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 					std::cout << "[INSERTED] head (" << *(head) << ") bigger than max (" << *(max_) << ")" << std::endl;
 				it = max_ + 1;
 			}
-			g_counter ++;
+			g_counterDeq ++;
 		}
 		else if (type == -1)	// ( < max)
 		{
@@ -637,11 +644,10 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 					std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
 				it = min_ - blockSize + 1;
 			}
-			g_counter ++;
+			g_counterDeq ++;
 		}
 		container.insert(it, head - blockSize + 1, head + 1);
-		ssize_t	dist2 = distance(container.begin(), it);
-		updateIndexes(indexes, dist2, blockSize, nomatch);
+		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch);
 		return ;
 	}
 
@@ -651,7 +657,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		it = min_ + middle * blockSize;
 		if (VERBIOSE)
 			std::cout << " middle = " << *(it) << std::endl;
-		g_counter ++;
+		g_counterDeq ++;
 		if (*(head) > *(it))
 			binaryInsert(container, head, blockSize, it, max_, 1, indexes, nomatch);
 		else
@@ -712,8 +718,8 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std
 	used[0] = true;
 	npendingBlocks --;
 
-	jacobsthal[0] = 1;
-	jacobsthal[1] = 3;
+	jacobsthal.push_back(1);
+	jacobsthal.push_back(3);
 	diffjac = jacobsthal[1] - jacobsthal[0];
 
 	while (npendingBlocks >= diffjac)
@@ -781,5 +787,5 @@ void	PmergeMe::sortDequeue()
 	ssize_t	pairSize = swapping(2, this->deq.size(), this->deq);
 	merging(pairSize / 2, this->deq);
 	if (VERBIOSE)
-		std::cout << YELLOW << "Comparaisons : " << g_counter << DEFAULT << std::endl;
+		std::cout << YELLOW << "Comparaisons : " << g_counterDeq << DEFAULT << std::endl;
 }
