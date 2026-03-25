@@ -22,7 +22,7 @@ Ou utiliser un shuffle:
 ```
 Les chiffres apres le i sont la range des chiffres que vous voulez.
 
-Le chiffre apres le n est le nombre de chiffres que vous voulez. Si vous depassez 21, seuls les 21 premiers chiffres seront imprimes dans la sortie pour ne pas trop la surcharger, mais tous seront traites. Pour annuler cette limite, commentez les lignes 99 puis 104 a 108 dans le fichier PmergeMe.hpp et recompilez:
+Le chiffre apres le n est le nombre de chiffres que vous voulez. Si vous depassez 21, seuls les 21 premiers chiffres seront imprimes dans la sortie pour ne pas trop la surcharger, mais tous seront traites. Pour changer cette limite, changez la valeur de la variable max_ a la ligne 99 du fichier PmergeMe.hpp et recompilez. Pour annuler completement cette limite, commentez les lignes 99 puis 104 a 108 dans le fichier PmergeMe.hpp et recompilez:
 ```
 make re
 ```
