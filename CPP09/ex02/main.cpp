@@ -51,6 +51,7 @@ int main(int argc, char **argv)
 	size_t						size;
 
 
+	//TEST: ./PmergeMe `shuf -i 1-100000 -n 3000 | tr "\n" " "`
 	// TEST: ./PmergeMe 14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
 	// after whole swapping, should be : 1 2 7 10 4 8 12 14 5 9 6 13 3 11 15 16
 	if (argc < 3)
