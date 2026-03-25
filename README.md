@@ -22,9 +22,15 @@ Ou utiliser un shuffle:
 ```
 Les chiffres apres le i sont la range des chiffres que vous voulez.
 
-Le chiffre apres le n est le nombre de chiffres que vous voulez.
+Le chiffre apres le n est le nombre de chiffres que vous voulez. Si vous depassez 21, seuls les 21 premiers chiffres seront imprimes dans la sortie pour ne pas trop la surcharger, mais tous seront traites. Pour annuler cette limite, commentez les lignes 99 puis 104 a 108 dans le fichier PmergeMe.hpp et recompilez:
+```
+make re
+```
+Vous pouvez egalement avoir une sortie plus verbeuse qui detaille les differentes etapes de l'algo en passant la macro VERBIOSE a true dans PmergeMe.hpp (ligne 14) et en recompilant.
 
 Lisez la sortie! :D
+
+Le but de l'exercice etant de nous faire comparer les temps d'execution d'un meme algo par deux containers differents, la sortie vous montre le resultat de l'algo d'abord quand il travaille avec un vector [VEC], puis quand il travaille avec un dequeue [DEQ].
 
 
 # Exceptions

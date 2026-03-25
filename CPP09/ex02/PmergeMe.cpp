@@ -4,12 +4,12 @@ ssize_t		g_counterDeq;
 
 PmergeMe::PmergeMe()
 {
-	std::cout << YELLOW << "[PMERGEME] : Default constructor called" << DEFAULT << std::endl;
+	//std::cout << YELLOW << "[PMERGEME] : Default constructor called" << DEFAULT << std::endl;
 }
 
 PmergeMe::PmergeMe(PmergeMe const &original)
 {
-	std::cout << YELLOW << "[PMERGEME] : Copy constructor called" << DEFAULT << std::endl;
+	//std::cout << YELLOW << "[PMERGEME] : Copy constructor called" << DEFAULT << std::endl;
 	*this = original;
 }
 
@@ -20,13 +20,13 @@ PmergeMe &PmergeMe::operator=(PmergeMe const &original)
 		this->vec = original.vec;
 		this->deq = original.deq;
 	}
-	std::cout << YELLOW << "[PMERGEME] : Assignment operator overload called" << DEFAULT << std::endl;
+	//std::cout << YELLOW << "[PMERGEME] : Assignment operator overload called" << DEFAULT << std::endl;
 	return (*this);
 }
 
 PmergeMe::~PmergeMe()
 {
-	std::cout << YELLOW << "[PMERGEME] : Default destructor called" << DEFAULT << std::endl;
+	//std::cout << YELLOW << "[PMERGEME] : Default destructor called" << DEFAULT << std::endl;
 }
 
 std::vector<unsigned int>	PmergeMe::getVec() const
