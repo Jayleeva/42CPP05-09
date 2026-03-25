@@ -79,7 +79,7 @@ void	swapElements(ssize_t blockSize, std::vector<unsigned int>::iterator it, std
 
 void	sortPairs(ssize_t pairSize, std::vector<unsigned int> &current, std::vector<unsigned int>::iterator max_)
 {
-	ssize_t	i = 0;
+	//ssize_t	i = 0;
 	for (std::vector<unsigned int>::iterator it = current.begin(); it + pairSize / 2 < max_; it += pairSize)
 	{
 		g_counterVec ++;
@@ -89,7 +89,7 @@ void	sortPairs(ssize_t pairSize, std::vector<unsigned int> &current, std::vector
 		{
 			swapElements(pairSize / 2, it, it + pairSize / 2);				
 		}
-		i += pairSize;
+		//i += pairSize;
 	}
 }
 
@@ -451,7 +451,7 @@ void	swapElements(ssize_t blockSize, std::deque<unsigned int>::iterator it, std:
 
 void	sortPairs(ssize_t pairSize, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator max_)
 {
-	ssize_t	i = 0;
+	//ssize_t	i = 0;
 	for (std::deque<unsigned int>::iterator it = current.begin(); it + pairSize / 2 < max_; it += pairSize)
 	{
 		g_counterDeq ++;
@@ -461,7 +461,7 @@ void	sortPairs(ssize_t pairSize, std::deque<unsigned int> &current, std::deque<u
 		{
 			swapElements(pairSize / 2, it, it + pairSize / 2);				
 		}
-		i += pairSize;
+		//i += pairSize;
 	}
 }
 
