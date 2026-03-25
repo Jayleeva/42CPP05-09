@@ -19,8 +19,7 @@ int	is_sorted(size_t size, T container)
 	return (1);
 }
 
-
-int	parse_arg(char *arg, std::deque<unsigned int>::iterator begin, std::deque<unsigned int>::iterator end)
+int	parse_argVec(char *arg, std::vector<unsigned int> vec)
 {
 	long int	tmpl = atoi(arg);
 	if (tmpl > MAX_INT || tmpl < 0)
@@ -29,7 +28,7 @@ int	parse_arg(char *arg, std::deque<unsigned int>::iterator begin, std::deque<un
 		return (-1);
 	}
 	unsigned int tmp = static_cast<unsigned int>(tmpl);
-	if (find(begin, end, tmp) != end)
+	if (find(vec.begin(), vec.end(), tmp) != vec.end())
 	{
 		std::cerr << "Error: duplicate." << std::endl;
 		return (-1);
@@ -37,19 +36,32 @@ int	parse_arg(char *arg, std::deque<unsigned int>::iterator begin, std::deque<un
 	return ((int)tmp);
 }
 
-
-// insert renvois la nouvelle position de l'élément inséré!!!!!
+int	parse_argDeq(char *arg, std::deque<unsigned int> deq)
+{
+	long int	tmpl = atoi(arg);
+	if (tmpl > MAX_INT || tmpl < 0)
+	{
+		std::cerr << "Error: not an unsigned int." << std::endl;
+		return (-1);
+	}
+	unsigned int tmp = static_cast<unsigned int>(tmpl);
+	if (find(deq.begin(), deq.end(), tmp) != deq.end())
+	{
+		std::cerr << "Error: duplicate." << std::endl;
+		return (-1);
+	}
+	return ((int)tmp);
+}
 
 // microsecondes = secondes / 1000000 
 int main(int argc, char **argv)
 {
-	//std::vector<unsigned int>	vec;
+	std::vector<unsigned int>	vec;
 	std::deque<unsigned int>	deq;
-    //clock_t						startVec, endVec;
+    clock_t						startVec, endVec;
     clock_t 					startDeq, endDeq;
 	PmergeMe					p;
 	size_t						size;
-
 
 	//TEST: ./PmergeMe `shuf -i 1-100000 -n 3000 | tr "\n" " "`
 	// TEST: ./PmergeMe 14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
@@ -62,58 +74,60 @@ int main(int argc, char **argv)
 
 	size = argc -1;
 
-	/*startVec = clock();
+	startVec = clock();
 	for (size_t i = 0; i < size; i++)
 	{
-		int tmp = parse_arg(argv[i + 1], vec.begin(), vec.end());
+		int tmp = parse_argVec(argv[i + 1], vec);
 		if (tmp == -1)
 			return (0);
-		unsigned int ui = static_cast<unsigned int>(tmp)
+		unsigned int ui = static_cast<unsigned int>(tmp);
 		vec.push_back(ui);
 	}
 	p.setVec(vec.begin(), vec.end());
-	std::cout << MAG << << "[VEC] Before : ";
-	printContainer(vec);
+	std::cout << MAG << "[VEC] Before : ";
+	printContainer(vec, 0);
 	std::cout << DEFAULT;
 
 	p.sortVector();
 	endVec = clock();
 
 	std::cout << MAG << "[VEC] After : ";
-	vec = p.getDeq();
-	printContainer(vec);
-	std::cout << "[VEC] Time to process a range of " << dataVec.container.size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) * 1.0 << " us" << std::endl;
-	std::cout << DEFAULT << std::endl;*/
+	vec = p.getVec();
+	printContainer(vec, 0);
+	std::cout << "[VEC] Time to process a range of " << p.getVec().size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) * 1.0 << " us" << std::endl;
+	std::cout << DEFAULT << std::endl;
 
 	startDeq = clock();
 	for (size_t i = 0; i < size; i++)
 	{
-		int tmp = parse_arg(argv[i + 1], deq.begin(), deq.end());
+		int tmp = parse_argDeq(argv[i + 1], deq);
 		if (tmp == -1)
 			return (0);
 		unsigned int ui = static_cast<unsigned int>(tmp);
 		deq.push_back(ui);
 	}
+
 	p.setDeq(deq.begin(), deq.end());
-	std::cout << MAG << "[DEQ] Before : ";
+	/*std::cout << MAG << "[DEQ] Before : ";
 	printContainer(deq, 0);
-	std::cout << DEFAULT;
+	std::cout << DEFAULT;*/
 
 	p.sortDequeue();
     endDeq = clock();
 
-	std::cout << MAG << "[DEQ] After : ";
 	deq = p.getDeq();
-	printContainer(deq, 0);
+	/*std::cout << MAG << "[DEQ] After : ";
+	printContainer(deq, 0);*/
 	std::cout << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << std::endl;
 	std::cout << DEFAULT << std::endl;
 
-	//if (!is_sorted(size, dataVec.container))
-	//	std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
+	if (!is_sorted(size, p.getVec()))
+		std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
+	else
+		std::cout << GREEN << "check: [VEC] OK." << DEFAULT << std::endl;
 	if (!is_sorted(size, p.getDeq()))
 		std::cout << RED << "check: [DEQ] KO." << DEFAULT << std::endl;
-	//if (is_sorted(size, dataVec.container) && is_sorted(size, dataDeq.container))
 	else
-		std::cout << GREEN << "check: OK." << DEFAULT << std::endl;
+		std::cout << GREEN << "check: [DEQ] OK." << DEFAULT << std::endl;
 	return (1);
 }
