@@ -275,7 +275,8 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 			g_counterVec ++;
 		}
 		container.insert(it, head - blockSize + 1, head + 1);
-		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch);
+		std::cout << "distance begin (" << *(container.begin()) << ") it (" << *(it) << ")\n";  
+		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch); // distance donne des resultats craaaazyyy avec vector
 		return ;
 	}
 
@@ -645,6 +646,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			g_counterDeq ++;
 		}
 		container.insert(it, head - blockSize + 1, head + 1);
+		std::cout << "distance begin (" << *(container.begin()) << ") it (" << *(it) << ")\n";  
 		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch);
 		return ;
 	}
