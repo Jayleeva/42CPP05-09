@@ -34,34 +34,78 @@ void	RPN::setQueue(std::string arg)
     std::stringstream 	ss(arg);
 	int					countdigit = 0;
 	int					countop = 0;
+	size_t				n = 0;
+	//bool				check = false;
 
 	for (int i = 0; arg[i]; i++)
 	{
 		if (isdigit(arg[i]))
+		{
 			countdigit ++;
+		}
 		else if (arg[i] == '+' || arg[i] == '-'
 			|| arg[i] == '/' || arg[i] == '*')
+		{
 			countop ++;
+		}
 		else if (arg[i] != ' ')
+		{
+			std::cout << "oops\n";
+			throw InvalidArgumentException();
+		}
+		n ++;
+	}
+
+	for (int i = 0; arg[i]; i++)
+	{
+		if (i % 2 != 0 && arg[i] != ' ')
 			throw InvalidArgumentException();
 	}
 
-	int	checkdigit = 0;
-	int	checkop = 0;
-	for (int i = 0; arg[i]; i ++)
+	countdigit = 0;
+	countop = 0;
+	for (int i = 0; arg[i]; i+= 2)
 	{
-		if (!isdigit(arg[i]) && arg[i] != ' ')
-			checkop ++;
-		else
-			checkdigit ++;
-		///if (i == && checkdigit == 3 && )
-
+		if (i <= 2 && !isdigit(arg[i]) && arg[i] != ' ')
+		{
+			std::cout << "here\n";
+			throw InvalidArgumentException();
+		}
+		else if (i > 2 && isdigit(arg[i]))
+		{
+			countdigit ++;
+			if (countdigit > 2)
+			{
+				std::cout << "there\n";
+				throw InvalidArgumentException();
+			}
+			countop = 0;
+		}
+		else if (i > 2 && !isdigit(arg[i]) && arg[i] != ' ')
+		{
+			countop ++;
+			if (countop > 2)
+			{
+				std::cout << "countop = " << countop << std::endl;
+				throw InvalidArgumentException();
+			}
+			else if (countdigit == 2 && countop < 2)
+			{
+				std::cout << "bah countdigit = " << countdigit << " countop = " << countop << std::endl;
+				throw InvalidArgumentException();
+			}
+			countdigit = 0;
+		}
+		std::cout << "countdigit = " << countdigit << " countop = " << countop << std::endl;
 	}
 
-	std::cout << "countdigit = " << countdigit << " countop = " << countop << std::endl;
+	if (isdigit(arg[n -1]))
+		throw InvalidArgumentException();
+
+	/*std::cout << "countdigit = " << countdigit << " countop = " << countop << std::endl;
 	if ((countdigit % 2 == 0 && countop % 2 == 0)  
 		|| (countdigit % 2 != 0 && countop % 2 != 0))
-		throw InvalidArgumentException();
+		throw InvalidArgumentException();*/
 
     while (getline(ss, element, ' '))
 		this->expression.push(element);        
