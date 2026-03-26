@@ -32,22 +32,36 @@ void	RPN::setQueue(std::string arg)
 {
 	std::string			element;
     std::stringstream 	ss(arg);
-	int					needOp = 0;
+	int					countdigit = 0;
+	int					countop = 0;
+	//bool				check = true;
 
 	for (int i = 0; arg[i]; i++)
 	{
 		if (isdigit(arg[i]))
-			needOp ++;
-		if (!isdigit(arg[i])
-			&& arg[i] != '+' && arg[i] != '-'
-			&& arg[i] != '/' && arg[i] != '*'
-			&& arg[i] != ' ')
+			countdigit ++;
+		else if (arg[i] == '+' || arg[i] == '-'
+			|| arg[i] == '/' || arg[i] == '*')
+			countop ++;
+		else if (arg[i] != ' ')
 			throw InvalidArgumentException();
-		else
-			needOp --;
 	}
 
-	if (needOp != 0)
+	int	checkdigit = 0;
+	int	checkop = 0;
+	for (int i = 0; arg[i]; i ++)
+	{
+		if (!isdigit(arg[i]) && arg[i] != ' ')
+			checkop ++;
+		else
+			checkdigit ++;
+		if (checkdigit == 3 && )
+
+	}
+
+	std::cout << "countdigit = " << countdigit << " countop = " << countop << std::endl;
+	if ((countdigit % 2 == 0 && countop % 2 == 0)  
+		|| (countdigit % 2 != 0 && countop % 2 != 0))
 		throw InvalidArgumentException();
 
     while (getline(ss, element, ' '))
