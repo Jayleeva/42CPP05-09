@@ -32,37 +32,31 @@ void	RPN::setQueue(std::string arg)
 {
 	std::string			element;
     std::stringstream 	ss(arg);
+	int					needOp = 0;
 
 	for (int i = 0; arg[i]; i++)
 	{
+		if (isdigit(arg[i]))
+			needOp ++;
 		if (!isdigit(arg[i])
 			&& arg[i] != '+' && arg[i] != '-'
 			&& arg[i] != '/' && arg[i] != '*'
 			&& arg[i] != ' ')
-			std::cout << "Error" << std::endl;
+			throw InvalidArgumentException();
+		else
+			needOp --;
 	}
 
+	if (needOp != 0)
+		throw InvalidArgumentException();
+
     while (getline(ss, element, ' '))
-	{
-		//std::cout << "element = " << element << std::endl;
-		this->expression.push(element);
-	}
-        
+		this->expression.push(element);        
 }
 
 std::queue<std::string>	RPN::getQueue() const
 {
 	return (this->expression);
-}
-
-bool	is_expression_complete(t_data *data)
-{
-	if (data->operand.full &&
-		data->operated.full &&
-		data->op != ' ')
-		return (true);
-	else
-		return (false);
 }
 
 void	fill_number(t_number *n, long value)
@@ -76,7 +70,8 @@ long	operate(t_data *data)
 {
 	long	res = data->operand.value;
 
-	std::cout << data->operand.value << data->op << data->operated.value;
+	if (VERBIOSE)
+		std::cout << data->operand.value << data->op << data->operated.value;
 
 	if (data->op == '+')
 		res += data->operated.value;
@@ -91,10 +86,10 @@ long	operate(t_data *data)
 	else if (data->op == '*')
 		res *= data->operated.value;
 
-	std::cout << " = " << res << std::endl;
+	if (VERBIOSE)
+		std::cout << " = " << res << std::endl;
 	return (res);
 }
-
 
 char	nextExpression(t_data *data, std::queue<std::string> &container)
 {
@@ -107,17 +102,12 @@ char	nextExpression(t_data *data, std::queue<std::string> &container)
 	while (i < 3)
 	{
 		c = *container.front().c_str();
-		//std::cout << "i = " << i << ", c = " << c << std::endl;
 		if (i == 0 && isdigit(c))
 			fill_number(&data->operand, static_cast<long>(c - '0'));
 		else if (i == 1 && isdigit(c))
 			fill_number(&data->operated, static_cast<long>(c - '0'));
 		else if (i == 2 && !isdigit(c))
-			data->op = c;
-		//else if (i == 2 && isdigit(c))
-		//	return (c);
-		//else ERROR?
-		
+			data->op = c;		
 		container.pop();
 		i ++;
 	}
@@ -129,7 +119,7 @@ void	initialize_data(t_data *data)
 	data->operand.full = false;
 	data->operated.full = false;
 }
-// si de nouveau 2 chiffres equivalent de parentheses. On fait d'abord l'operation entre les deux chiffres puis l'operation entre le resultat et le dernier resultat avant toute cette merde.
+
 void	RPN::printRes()
 {
 	t_data		data;
@@ -137,6 +127,22 @@ void	RPN::printRes()
 	char		c;
 
 	initialize_data(&data);
+
+	if (this->expression.size() == 1)
+	{
+		c = *this->expression.front().c_str();
+		if (isdigit(c))
+		{
+			std::cout << c << std::endl;
+			return ;
+		}
+		else
+			throw InvalidArgumentException();
+	}
+		
+	if (this->expression.size() == 2)
+		throw InvalidArgumentException();
+
 	while (this->expression.size())
 	{
 		c = nextExpression(&data, this->expression);

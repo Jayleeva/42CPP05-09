@@ -7,6 +7,7 @@
 # include <bits/stdc++.h>
 # include <queue>
 
+# define VERBIOSE false
 # define DEFAULT "\001\033[0;39m\002"
 # define YELLOW "\001\033[1;93m\002"
 
@@ -44,6 +45,15 @@ class RPN
 };
 
 double	operate_front(double res, std::string element);
+
+class InvalidArgumentException : public std::exception
+{
+    public:
+    	virtual const char *what() const throw()
+        {
+            return ("Exception : invalid argument.");
+        }
+};
 
 class DivisionByZeroException : public std::exception
 {
