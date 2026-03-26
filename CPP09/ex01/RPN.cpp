@@ -43,7 +43,11 @@ void	RPN::setQueue(std::string arg)
 	}
 
     while (getline(ss, element, ' '))
-        this->expression.push(element);
+	{
+		//std::cout << "element = " << element << std::endl;
+		this->expression.push(element);
+	}
+        
 }
 
 std::queue<std::string>	RPN::getQueue() const
@@ -51,22 +55,30 @@ std::queue<std::string>	RPN::getQueue() const
 	return (this->expression);
 }
 
+// si de nouveau 2 chiffres equivalent de parentheses. On fait d'abord l'operation entre les deux chiffres puis l'operation entre le resultat et le dernier resultat avant toute cette merde.
 void	RPN::printRes()
 {
 	long		res;
 	char		tmp;
-	long		operated;
+	long		operated = -1;
+	//int			full = 0;
+	long		tmpop;
 
 	tmp = *this->expression.front().c_str();
-	res = atol(&tmp);
+	res = static_cast<long>(tmp - '0');
 	this->expression.pop();
+	//full ++;
 
 	while (this->expression.size())
 	{
-		tmp = *this->expression.front().c_str();
+		//std::cout << "front = " << this->expression.front() << std::endl;
+		tmp = *this->expression.front().c_str(); 
+		//std::cout << "tmp   = " << *this->expression.front().c_str() << std::endl;
 		if (isdigit(tmp))
 		{
-			operated = atol(&tmp);
+			operated = static_cast<long>(tmp - '0');
+			tmpop = static_cast<long>(tmp - '0');
+			//std::cout << "operated = " << operated << std::endl;
 		}
 		else
 		{
@@ -76,12 +88,18 @@ void	RPN::printRes()
 			else if (tmp == '-')
 				res -= operated;
 			else if (tmp == '/')
+			{
+				if (operated == 0)
+					throw DivisionByZeroException();
 				res /= operated;
+			}
+				
 			else if (tmp == '*')
 				res *= operated;
 			std::cout << " = " << res << std::endl;
+			operated = -1;
 		}
 		this->expression.pop();
 	}
-	std::cout << res << std::endl;
+	std::cout << res << std::endl; 
 }

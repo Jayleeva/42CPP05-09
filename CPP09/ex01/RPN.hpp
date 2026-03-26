@@ -21,10 +21,23 @@ class RPN
 		void					setQueue(std::string arg);
 		std::queue<std::string>	getQueue() const;
 		void					printRes();
+
 	private:
 		std::queue<std::string>	expression;
+
+        class DivisionByZeroException : public std::exception
+        {
+            public:
+                virtual const char *what() const throw()
+                {
+                    return ("Exception : division by zero.");
+                }
+        };
 
 };
 
 double	operate_front(double res, std::string element);
+
+
+
 #endif

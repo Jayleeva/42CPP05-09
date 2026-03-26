@@ -53,7 +53,7 @@ int	parse_argDeq(char *arg, std::deque<unsigned int> deq)
 	return ((int)tmp);
 }
 
-// microsecondes = secondes / 1000000 
+// us = microsecondes = secondes / 1000000 
 int main(int argc, char **argv)
 {
 	std::vector<unsigned int>	vec;
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 	std::cout << MAG << "[VEC] After : ";
 	vec = p.getVec();
 	printContainer(vec, 0);
-	std::cout << "[VEC] Time to process a range of " << p.getVec().size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) * 1.0 << " us" << DEFAULT << std::endl;
+	std::cout << "[VEC] Time to process a range of " << p.getVec().size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) / 1000000.0 << " s" << DEFAULT << std::endl;
 
 	startDeq = clock();
 	for (size_t i = 0; i < size; i++)
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 	deq = p.getDeq();
 	std::cout << MAG << "[DEQ] After : ";
 	printContainer(deq, 0);
-	std::cout << MAG << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) * 1.0 << " us" << DEFAULT << std::endl;
+	std::cout << MAG << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) / 1000000.0 << " s" << DEFAULT << std::endl;
 
 	if (!is_sorted(size, p.getVec()))
 		std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
@@ -128,10 +128,10 @@ int main(int argc, char **argv)
 	else
 		std::cout << GREEN << "check: [DEQ] OK." << DEFAULT << std::endl;
 
-	//if (VERBIOSE)
-	//{
+	if (VERBIOSE)
+	{
 		std::cout << YELLOW << "Comparaisons [VEC] : " << counterVec << DEFAULT << std::endl;
 		std::cout << YELLOW << "Comparaisons [DEQ] : " << counterDeq << DEFAULT << std::endl;
-	//}
+	}
 	return (1);
 }
