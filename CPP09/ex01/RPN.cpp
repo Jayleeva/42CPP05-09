@@ -55,51 +55,81 @@ std::queue<std::string>	RPN::getQueue() const
 	return (this->expression);
 }
 
+bool	is_expression_complete(t_data *data)
+{
+	if (data->operand.full &&
+		data->operated.full &&
+		data->op != ' ')
+		return (true);
+	else
+		return (false);
+}
+
+void	fill_number(t_number *n, long value)
+{
+	n->value = value;
+	n->full = true;
+}
+
+
+long	operate(t_data *data)
+{
+	long	res = data->operand.value;
+
+	std::cout << data->operand.value << data->op << data->operated.value;
+
+	if (data->op == '+')
+		res += data->operated.value;
+	else if (data->op == '-')
+		res -= data->operated.value;
+	else if (data->op == '/')
+	{
+		if (data->operated.value == 0)
+			throw DivisionByZeroException();
+		res /= data->operated.value;
+	}
+	else if (data->op == '*')
+		res *= data->operated.value;
+
+	std::cout << " = " << res << std::endl;
+	return (res);
+}
+
 // si de nouveau 2 chiffres equivalent de parentheses. On fait d'abord l'operation entre les deux chiffres puis l'operation entre le resultat et le dernier resultat avant toute cette merde.
 void	RPN::printRes()
 {
+	t_data		data;
 	long		res;
-	char		tmp;
-	long		operated = -1;
-	//int			full = 0;
-	long		tmpop;
-
-	tmp = *this->expression.front().c_str();
-	res = static_cast<long>(tmp - '0');
-	this->expression.pop();
-	//full ++;
+	char		c;
 
 	while (this->expression.size())
 	{
-		//std::cout << "front = " << this->expression.front() << std::endl;
-		tmp = *this->expression.front().c_str(); 
-		//std::cout << "tmp   = " << *this->expression.front().c_str() << std::endl;
-		if (isdigit(tmp))
-		{
-			operated = static_cast<long>(tmp - '0');
-			tmpop = static_cast<long>(tmp - '0');
-			//std::cout << "operated = " << operated << std::endl;
-		}
-		else
-		{
-			std::cout << res << tmp << operated;
-			if (tmp == '+')
-				res += operated;
-			else if (tmp == '-')
-				res -= operated;
-			else if (tmp == '/')
+		data.op = ' ';
+		//while (!is_expression_complete(&data))
+		//{
+			c = *this->expression.front().c_str();
+			
+			if (isdigit(c))
 			{
-				if (operated == 0)
-					throw DivisionByZeroException();
-				res /= operated;
+				if (!data.operand.full)
+					fill_number(&data.operand, static_cast<long>(c - '0'));
+				else if (data.operand.full && data.op != ' ') // && !data.operated.full )
+					fill_number(&data.operated, static_cast<long>(c - '0'));
 			}
-				
-			else if (tmp == '*')
-				res *= operated;
-			std::cout << " = " << res << std::endl;
-			operated = -1;
+			else
+			{
+				data.op = c;
+			}
+			this->expression.pop();
+		//}
+
+		if (is_expression_complete(&data))
+		{
+			res = operate(&data);
+			fill_number(&data.operand, res);
+			data.operated.full = false;
 		}
-		this->expression.pop();
+		//this->expression.pop();
 	}
 	std::cout << res << std::endl; 
 }
