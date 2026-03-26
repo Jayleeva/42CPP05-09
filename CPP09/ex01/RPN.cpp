@@ -34,7 +34,6 @@ void	RPN::setQueue(std::string arg)
     std::stringstream 	ss(arg);
 	int					countdigit = 0;
 	int					countop = 0;
-	//bool				check = true;
 
 	for (int i = 0; arg[i]; i++)
 	{
@@ -55,7 +54,7 @@ void	RPN::setQueue(std::string arg)
 			checkop ++;
 		else
 			checkdigit ++;
-		if (checkdigit == 3 && )
+		///if (i == && checkdigit == 3 && )
 
 	}
 

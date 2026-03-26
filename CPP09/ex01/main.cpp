@@ -1,5 +1,7 @@
 #include "RPN.hpp"
 
+
+// TEST: ./RPN "1 2 - + 4"
 int main(int argc, char **argv)
 {
 	RPN	container;
