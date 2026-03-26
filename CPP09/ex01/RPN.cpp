@@ -95,6 +95,40 @@ long	operate(t_data *data)
 	return (res);
 }
 
+
+char	nextExpression(t_data *data, std::queue<std::string> &container)
+{
+	char	c;
+	int		i = 0;
+	
+	if (data->operand.full)
+		i ++;
+
+	while (i < 3)
+	{
+		c = *container.front().c_str();
+		//std::cout << "i = " << i << ", c = " << c << std::endl;
+		if (i == 0 && isdigit(c))
+			fill_number(&data->operand, static_cast<long>(c - '0'));
+		else if (i == 1 && isdigit(c))
+			fill_number(&data->operated, static_cast<long>(c - '0'));
+		else if (i == 2 && !isdigit(c))
+			data->op = c;
+		//else if (i == 2 && isdigit(c))
+		//	return (c);
+		//else ERROR?
+		
+		container.pop();
+		i ++;
+	}
+	return (c);
+}
+
+void	initialize_data(t_data *data)
+{
+	data->operand.full = false;
+	data->operated.full = false;
+}
 // si de nouveau 2 chiffres equivalent de parentheses. On fait d'abord l'operation entre les deux chiffres puis l'operation entre le resultat et le dernier resultat avant toute cette merde.
 void	RPN::printRes()
 {
@@ -102,34 +136,33 @@ void	RPN::printRes()
 	long		res;
 	char		c;
 
+	initialize_data(&data);
 	while (this->expression.size())
 	{
-		data.op = ' ';
-		//while (!is_expression_complete(&data))
-		//{
-			c = *this->expression.front().c_str();
-			
-			if (isdigit(c))
-			{
-				if (!data.operand.full)
-					fill_number(&data.operand, static_cast<long>(c - '0'));
-				else if (data.operand.full && data.op != ' ') // && !data.operated.full )
-					fill_number(&data.operated, static_cast<long>(c - '0'));
-			}
-			else
-			{
-				data.op = c;
-			}
-			this->expression.pop();
-		//}
-
-		if (is_expression_complete(&data))
+		c = nextExpression(&data, this->expression);
+		
+		if (isdigit(c))
 		{
+			t_data	newdata;
+
+			fill_number(&newdata.operand, data.operated.value);
+			fill_number(&newdata.operated, static_cast<long>(c - '0'));
+			c = *this->expression.front().c_str();
+			this->expression.pop();
+			newdata.op = c;
+
+			long tmp = operate(&newdata);
+			fill_number(&data.operated, tmp);
+
+			c = *this->expression.front().c_str();
+			this->expression.pop();
+			data.op = c;
 			res = operate(&data);
-			fill_number(&data.operand, res);
-			data.operated.full = false;
 		}
-		//this->expression.pop();
+		else
+			res = operate(&data);
+		fill_number(&data.operand, res);
+		data.operated.full = false;
 	}
 	std::cout << res << std::endl; 
 }
