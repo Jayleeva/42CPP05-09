@@ -27,32 +27,22 @@ RPN::~RPN()
 
 }
 
-
 void	RPN::setQueue(std::string arg)
 {
 	std::string			element;
     std::stringstream 	ss(arg);
 	int					countdigit = 0;
 	int					countop = 0;
-	size_t				n = 0;
-	//bool				check = false;
+	int					n = 0;
+	bool				check = false;
 
 	for (int i = 0; arg[i]; i++)
 	{
-		if (isdigit(arg[i]))
-		{
-			countdigit ++;
-		}
-		else if (arg[i] == '+' || arg[i] == '-'
-			|| arg[i] == '/' || arg[i] == '*')
-		{
-			countop ++;
-		}
-		else if (arg[i] != ' ')
-		{
-			std::cout << "oops\n";
+		if (!isdigit(arg[i])
+			&& arg[i] != '+' && arg[i] != '-'
+			&& arg[i] != '/' && arg[i] != '*'
+			&& arg[i] != ' ')
 			throw InvalidArgumentException();
-		}
 		n ++;
 	}
 
@@ -64,9 +54,10 @@ void	RPN::setQueue(std::string arg)
 
 	countdigit = 0;
 	countop = 0;
-	for (int i = 0; arg[i]; i+= 2)
+	for (int i = 0; i < n; i+= 2)
 	{
-		if (i <= 2 && !isdigit(arg[i]) && arg[i] != ' ')
+		//std::cout << "arg[i] = " << arg[i] << std::endl;
+		if (i <= 2 && !isdigit(arg[i]))
 		{
 			std::cout << "here\n";
 			throw InvalidArgumentException();
@@ -74,38 +65,59 @@ void	RPN::setQueue(std::string arg)
 		else if (i > 2 && isdigit(arg[i]))
 		{
 			countdigit ++;
+			//std::cout << "coundigit = " << countdigit << std::endl;
 			if (countdigit > 2)
 			{
 				std::cout << "there\n";
 				throw InvalidArgumentException();
 			}
 			countop = 0;
+			check = false;
 		}
-		else if (i > 2 && !isdigit(arg[i]) && arg[i] != ' ')
+		else if (i > 2 && !isdigit(arg[i]))
 		{
 			countop ++;
+			//std::cout << "countop = " << countop << std::endl;
 			if (countop > 2)
 			{
-				std::cout << "countop = " << countop << std::endl;
+				std::cout << "countop > 2 " << std::endl;
+				throw InvalidArgumentException();
+			}
+			else if (check && countop < 2)
+			{
+				std::cout << "too few countop " << std::endl;
 				throw InvalidArgumentException();
 			}
 			else if (countdigit == 2 && countop < 2)
 			{
-				std::cout << "bah countdigit = " << countdigit << " countop = " << countop << std::endl;
-				throw InvalidArgumentException();
+				check = true;
 			}
+			else
+				check = false;
 			countdigit = 0;
 		}
-		std::cout << "countdigit = " << countdigit << " countop = " << countop << std::endl;
+		//std::cout << "countdigit = " << countdigit << " countop = " << countop << std::endl;
 	}
 
+	//std::cout << " countop = " << countop << " check = " << check << " arg[n -1] = " << arg[n-1] << std::endl;
+	if (arg[n -1] == ' ')
+		n --;
 	if (isdigit(arg[n -1]))
+	{
+		std::cout << "finish with digit (" << arg[n-1] << ")" << std::endl;
 		throw InvalidArgumentException();
+	}
 
-	/*std::cout << "countdigit = " << countdigit << " countop = " << countop << std::endl;
-	if ((countdigit % 2 == 0 && countop % 2 == 0)  
-		|| (countdigit % 2 != 0 && countop % 2 != 0))
-		throw InvalidArgumentException();*/
+	if (!isdigit(arg[n -1]) && countop < 2 && check)
+	{
+		std::cout << "too few countop " << std::endl;
+		throw InvalidArgumentException();
+	}
+	else if (!isdigit(arg[n -1]) && countop == 2 && !check)
+	{
+		std::cout << "too many countop " << std::endl;
+		throw InvalidArgumentException();
+	}
 
     while (getline(ss, element, ' '))
 		this->expression.push(element);        
