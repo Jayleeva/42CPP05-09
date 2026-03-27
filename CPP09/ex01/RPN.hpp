@@ -7,7 +7,7 @@
 # include <bits/stdc++.h>
 # include <queue>
 
-# define VERBIOSE false
+# define VERBIOSE true
 # define DEFAULT "\001\033[0;39m\002"
 # define YELLOW "\001\033[1;93m\002"
 

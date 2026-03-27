@@ -107,10 +107,10 @@ void	RPN::setQueue(std::string arg)
 		throw InvalidArgumentException();
 	}
 
-	if (n > 4)
+	if (n > 2)
 	{
 		countdigit = 0;
-		for (int i = 4; i < n; i+= 2)
+		for (int i = 2; i < n; i+= 2)
 		{
 			if (!arg[i])
 			{
@@ -118,11 +118,11 @@ void	RPN::setQueue(std::string arg)
 			}
 			if (!isdigit(arg[i]))
 			{
-				if (countdigit > 1 && countdigit % 2 != 0)
+				/*if (countdigit > 1 && countdigit % 2 != 0)
 				{
 					//std::cout << "expected a digit " << std::endl;
 					throw InvalidArgumentException();
-				}
+				}*/
 				int j;
 				for (j = 2; j < countdigit * 2; j += 2)
 				{
@@ -137,18 +137,16 @@ void	RPN::setQueue(std::string arg)
 			}
 			else
 			{
-				if (i == 4)
+				/*if (i == 4)
 				{
 					//std::cout << "expected an operator for first operation " << std::endl;
 					throw InvalidArgumentException();
-				}
+				}*/
 				countdigit ++;
 			}
 		}
 	}
 
-	if (arg[n -1] == ' ')
-		n --;
 	if (n > 1 && isdigit(arg[n -1]))
 	{
 		//std::cout << "finish with digit (" << arg[n-1] << ")" << std::endl;
@@ -252,7 +250,7 @@ void	RPN::printRes()
 	while (this->expression.size())
 	{
 		c = nextExpression(&data, this->expression);
-		if (isdigit(c))
+		if (isdigit(c))	// ne gère pas les cas comme "1 3 - 2 4 5 - - +"
 		{
 			t_data	newdata;
 
