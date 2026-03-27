@@ -171,7 +171,6 @@ En C++98, on utilise les memes array qu'en C. C'est a partir du C++11 qu'elles e
 
 ## list
 
-### Proprietes
 Fonctionne en liste chainee.
 
 Les iterateurs de type list ne beneficient pas du random access: il est plus couteux d'arriver a un certain element.
@@ -187,7 +186,6 @@ Raisons du non-choix:
 
 ## vector
 
-### Proprietes
 Les iterateurs de type vector beneficient du random access: il est moins couteux d'arriver a un certain element.
 
 Les iterateurs ne sont plus valides apres insertion/suppression d'elements.
@@ -202,7 +200,6 @@ Raisons du choix:
 
 ## dequeue
 
-### Proprietes
 Les iterateurs de type dequeue beneficient du random access: il est moins couteux d'arriver a un certain element.
 
 Les iterateurs ne sont plus valides apres insertion/suppression d'elements.
@@ -215,7 +212,6 @@ Raisons du choix:
 
 ## stack
 
-### Proprietes
 On ajoute et on enleve des elements depuis le "fond" de la stack (LIFO : dernier a rentrer est le premier a sortir).
 
 Raisons du non-choix:
@@ -223,7 +219,6 @@ Raisons du non-choix:
 
 ## queue
 
-### Proprietes
 On ajoute et on enleve des elements depuis la "surface" de la stack (FIFO : premier a rentrer est le premier a sortir).
 
 Raisons du choix:
@@ -231,7 +226,6 @@ Raisons du choix:
 
 ## map
 
-### Proprietes
 Type associatif.
 
 Utilise le "Red Black Tree" pour stocker ses elements, ce qui permet de rentrer les elements dans n'importe quel ordre et tout de meme les stocker de maniere triee, rendant leur recherche plus facile.
@@ -242,7 +236,6 @@ Raisons du choix:
 
 ## set
 
-### Proprietes
 Utilise le "Red Black Tree" pour stocker ses elements.
 
 Raisons du non-choix:
