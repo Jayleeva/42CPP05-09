@@ -166,9 +166,11 @@ Certains sont dit "associatifs" car ils associent des valeurs ensemble (typiquem
 Les particularites de chacun les rendent plus ou moins adaptes a ce qu'on veut faire.
 
 ## array
+
 En C++98, on utilise les memes array qu'en C. C'est a partir du C++11 qu'elles existent avec le meme "format" (std::array<>) que les autres containers. On ne va donc pas les utiliser en tant que containers dans les presents modules.
 
 ## list
+
 ### Proprietes
 Fonctionne en liste chainee.
 
@@ -184,6 +186,7 @@ Raisons du non-choix:
 - Les fonctions ne sont pas exactement les memes qu'avec vector et dequeue.
 
 ## vector
+
 ### Proprietes
 Les iterateurs de type vector beneficient du random access: il est moins couteux d'arriver a un certain element.
 
@@ -198,6 +201,7 @@ Raisons du choix:
 - memes fonctions que le dequeue.
 
 ## dequeue
+
 ### Proprietes
 Les iterateurs de type dequeue beneficient du random access: il est moins couteux d'arriver a un certain element.
 
@@ -210,6 +214,7 @@ Raisons du choix:
 - memes fonctions que le vector.
 
 ## stack
+
 ### Proprietes
 On ajoute et on enleve des elements depuis le "fond" de la stack (LIFO : dernier a rentrer est le premier a sortir).
 
@@ -217,6 +222,7 @@ Raisons du non-choix:
 - Acces dans le mauvais sens: j'avais besoin de lire le tout premier rentre, puis le suivant, etc et non l'inverse.
 
 ## queue
+
 ### Proprietes
 On ajoute et on enleve des elements depuis la "surface" de la stack (FIFO : premier a rentrer est le premier a sortir).
 
@@ -224,6 +230,7 @@ Raisons du choix:
 - Optimise si l'ordre de rentree des elements est important.
 
 ## map
+
 ### Proprietes
 Type associatif.
 
@@ -234,6 +241,7 @@ Raisons du choix:
 - association de la key avec la value permet de retrouver l'un ou l'autre facilement.
 
 ## set
+
 ### Proprietes
 Utilise le "Red Black Tree" pour stocker ses elements.
 
