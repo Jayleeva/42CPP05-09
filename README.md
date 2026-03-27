@@ -172,7 +172,7 @@ La liste alloue la memoire pour ses elements de facon segmentee, ce qui evite d'
 
 La liste n'a pas d'array "en-dessous", ce qui rend plus difficile de convertir la liste en array.
 
-Raisons du non-choix:
+### Raisons du non-choix:
 - Les fonctions ne sont pas exactement les memes qu'avec vector et dequeue.
 
 ## vector
@@ -185,7 +185,7 @@ Le vector alloue la memoire pour ses elements de facon contigue, ce qui augmente
 
 Le vector a un array "en-dessous", ce qui rend plus facile de convertir la liste en array.
 
-Raisons du choix:
+### Raisons du choix:
 - possibilite d'acceder et inserer ailleurs que juste "au fond" ou "a la surface", grace aux iterateurs et aux indexes.
 - memes fonctions que le dequeue.
 
@@ -197,7 +197,7 @@ Les iterateurs ne sont plus valides apres insertion/suppression d'elements.
 
 Le vecteur alloue la memoire pour ses elements de facon segmentee, ce qui reduit le besoin de reallocation/copies quand la taille change, mais diminue la vitesse d'acces.
 
-Raisons du choix:
+### Raisons du choix:
 - possibilite d'acceder et inserer ailleurs que juste "au fond" ou "a la surface", grace aux iterateurs et aux indexes.
 - memes fonctions que le vector.
 
@@ -205,14 +205,14 @@ Raisons du choix:
 
 On ajoute et on enleve des elements depuis le "fond" de la stack (LIFO : dernier a rentrer est le premier a sortir).
 
-Raisons du non-choix:
+### Raisons du non-choix:
 - Acces dans le mauvais sens: j'avais besoin de lire le tout premier rentre, puis le suivant, etc et non l'inverse.
 
 ## queue
 
 On ajoute et on enleve des elements depuis la "surface" de la stack (FIFO : premier a rentrer est le premier a sortir).
 
-Raisons du choix:
+### Raisons du choix:
 - Optimise si l'ordre de rentree des elements est important.
 
 ## map
@@ -221,7 +221,7 @@ Type associatif.
 
 Utilise le "Red Black Tree" pour stocker ses elements, ce qui permet de rentrer les elements dans n'importe quel ordre et tout de meme les stocker de maniere triee, rendant leur recherche plus facile.
 
-Raisons du choix:
+### Raisons du choix:
 - grace au "Red Black Tree", acces au upperbound ("le plus proche") si jamais la key cherchee n'existe pas.
 - association de la key avec la value permet de retrouver l'un ou l'autre facilement.
 
@@ -229,7 +229,7 @@ Raisons du choix:
 
 Utilise le "Red Black Tree" pour stocker ses elements.
 
-Raisons du non-choix:
+### Raisons du non-choix:
 - pas de stock de la value.
 
 # Itérateurs
