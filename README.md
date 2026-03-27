@@ -152,15 +152,6 @@ void	yourFunction(T)
 # Containers
 Type de variable qui permet de contenir plusieurs valeurs.
 
-- array
-- list
-- vector
-- dequeue
-- stack
-- queue
-- map
-- set
-
 Certains sont dit "associatifs" car ils associent des valeurs ensemble (typiquement, la map associe une cle avec une valeur, par ex: un nom associe a un numero de telephone).
 
 Les particularites de chacun les rendent plus ou moins adaptes a ce qu'on veut faire.
