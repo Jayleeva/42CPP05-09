@@ -2,12 +2,12 @@
 
 RPN::RPN()
 {
-	std::cout << YELLOW << "[RPN] : Default constructor called." << DEFAULT << std::endl;
+	//std::cout << YELLOW << "[RPN] : Default constructor called." << DEFAULT << std::endl;
 }
 
 RPN::RPN(RPN const &original)
 {
-	std::cout << YELLOW << "[RPN] : Copy constructor called." << DEFAULT << std::endl;
+	//std::cout << YELLOW << "[RPN] : Copy constructor called." << DEFAULT << std::endl;
 	*this = original;
 }
 
@@ -17,23 +17,51 @@ RPN &RPN::operator=(RPN const &original)
 	{
 		this->expression = original.expression;
 	}
-	std::cout << YELLOW << "[RPN] : Assignment operator overload called." << DEFAULT << std::endl;
+	//std::cout << YELLOW << "[RPN] : Assignment operator overload called." << DEFAULT << std::endl;
 	return (*this);
 }
 
 RPN::~RPN()
 {
-	std::cout << YELLOW << "[RPN] : Default destructor called." << DEFAULT << std::endl;
-
+	//std::cout << YELLOW << "[RPN] : Default destructor called." << DEFAULT << std::endl;
 }
 
+
+std::string	trimSpaces(std::string arg)
+{
+	int	i = 0;
+	while (arg[i] == ' ')
+		i ++;
+	arg = arg.substr(i, arg.size());
+
+	int j = 0;
+	while (arg[j])
+	{
+		int k = 0;
+		while (arg[j + k] == ' ')
+			k ++;
+		if (k > 1)
+		{
+			k --;
+			while (k)
+			{
+				arg.erase(j + k, 1);
+				k --;
+			}
+		}
+		j ++;
+	}
+	return (arg);
+}
 void	RPN::setQueue(std::string arg)
 {
+	arg = trimSpaces(arg);
+
 	std::string			element;
     std::stringstream 	ss(arg);
 	int					countdigit;
 	int					n = 0;
-
+		
 	for (int i = 0; arg[i]; i++)
 	{
 		if (!isdigit(arg[i])
@@ -50,24 +78,34 @@ void	RPN::setQueue(std::string arg)
 			throw InvalidArgumentException();
 	}
 
-	if (n > 2 && n < 4)
+	if (n == 3)
 	{
 		//std::cout << "not enough args\n";
 		throw InvalidArgumentException();
 	}
 
-	if (n > 2)
+	if (n == 0)
+	{
+		return;
+	}
+
+	/*if (n > 2)
 	{
 		for (int i = 0; i <= 2; i+= 2)
 		{
 			if (i <= 2 && !isdigit(arg[i]))
 			{
-				//std::cout << "2 first not digits\n";
+				//std::cout << "first not digits\n";
 				throw InvalidArgumentException();
 			}
 		}
-	}
+	}*/
 
+	if (!isdigit(arg[0]))
+	{
+		//std::cout << "first not digit\n";
+		throw InvalidArgumentException();
+	}
 
 	if (n > 4)
 	{
