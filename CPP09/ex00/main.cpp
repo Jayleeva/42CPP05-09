@@ -1,7 +1,5 @@
 #include "BitcoinExchange.hpp"
 
-
-
 int	is_valid(int date, int min, int max)
 {
 	if (date < min || date > max)
@@ -58,7 +56,7 @@ int	is_month_valid(std::string month, int year)
 		//std::cout << "not a month" << std::endl;
 		return (0);
 	}
-	if (year == 2026 && date > 2)
+	if (year == 2026 && date > 4)
 	{
 		//std::cout << "in the futuuure" << std::endl;
 		return (0);
@@ -137,7 +135,7 @@ int	is_key_valid(std::string key)
 	return (1);
 }
 
-int	unexpectedchar(int sign, std::string value)
+int	has_dot(int sign, std::string value)
 {
 	int	dot = 0;
 
@@ -172,7 +170,13 @@ int	is_value_valid(std::string value)
 	if (value[0] == '+')
 		sign = 1;
 
-	dot = unexpectedchar(sign, value);
+	if (sign == 1 && !value[1])
+	{
+		std::cout << "Error: unexpected char." << std::endl;
+		return (0);
+	}
+
+	dot = has_dot(sign, value);
 	if (dot == -1)
 	{
 		std::cout << "Error: unexpected char." << std::endl;
@@ -223,15 +227,9 @@ std::string getValue(std::string line)
 {
 	std::string	value;
 
-	try
-	{
-		value = line.substr(13, line.size());
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl;
+	if (line.size() < 13)
 		return (NULL);
-	}
+	value = line.substr(13, line.size());
 	return (value);
 }
 

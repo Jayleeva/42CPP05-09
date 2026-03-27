@@ -4,12 +4,8 @@
 # include <iostream>
 # include <fstream>
 # include <string>
-//# include <bits/stdc++.h>
-//# include <ctime>
-# include <utility>
 # include <algorithm>
 # include <map>
-//# include <vector>
 
 # define DEFAULT "\001\033[0;39m\002"
 # define YELLOW "\001\033[1;93m\002"
@@ -36,9 +32,8 @@ class	BitcoinExchange
 float		getRate(std::string key, std::map<std::string, float> data);
 std::string	getKey(std::string line);
 std::string	getValue(std::string line);
-//int			is_line_valid(std::string line);
 int			is_value_valid(std::string value);
-int			unexpectedchar(int sign, std::string value);
+int			has_dot(int sign, std::string value);
 int			is_key_valid(std::string key);
 int			is_day_valid(std::string day, int month, int year);
 int			is_month_valid(std::string month, int year);

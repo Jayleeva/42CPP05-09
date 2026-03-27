@@ -39,9 +39,6 @@ class RPN
 
 	private:
 		std::queue<std::string>	expression;
-
-
-
 };
 
 double	operate_front(double res, std::string element);

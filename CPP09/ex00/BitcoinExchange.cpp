@@ -39,12 +39,12 @@ int	BitcoinExchange::setMap(std::string dataFile)
 	if (data.fail())
 	{
 		std::cout << "Error: could not open file." << std::endl;
-		return ;
+		return (0);
 	}
 	std::string firstline;
 	std::getline(data, firstline);
 	if (firstline.empty())
-		return;
+		return (0);
     for (std::string line; std::getline(data, line);)
 	{
 		std::string		key;
@@ -84,16 +84,17 @@ void	BitcoinExchange::printRes(char *inputFile)
 	}
 	std::string firstline;
 	std::getline(file, firstline);
-	if (firstline.empty() || firstline != "date | value")
+	if (firstline.empty() || !firstline.compare("date | value\n"))
 	{
 		std::cout << "Error: wrong format." << std::endl;
 		return ;
 	}
     for (std::string line; std::getline(file, line);)
 	{
+		//std::cout << "[LINE] = " << line << std::endl;
 		if (line.empty())
 			continue;
-		if (!line[11] || line[11] != '|' || !line[13])
+		if (!line[10] || !line[11] || line[11] != '|' || !line[13])
 		{
 			std::cout << "Error: wrong format." << std::endl;
 			continue;
