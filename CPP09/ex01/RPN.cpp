@@ -34,7 +34,9 @@ void	RPN::setQueue(std::string arg)
 	int					countdigit = 0;
 	int					countop = 0;
 	int					n = 0;
-	bool				check = false;
+	//bool				check = false;
+	//bool				waitdigit = false;
+	int				waitop = 0;
 
 	for (int i = 0; arg[i]; i++)
 	{
@@ -52,17 +54,87 @@ void	RPN::setQueue(std::string arg)
 			throw InvalidArgumentException();
 	}
 
-	countdigit = 0;
-	countop = 0;
-	for (int i = 0; i < n; i+= 2)
+
+
+	for (int i = 0; i <= 2; i+= 2)
 	{
 		//std::cout << "arg[i] = " << arg[i] << std::endl;
-		if (i <= 2 && !isdigit(arg[i]))
+		if (i <= 2 && arg[i] && !isdigit(arg[i]))
 		{
 			std::cout << "here\n";
 			throw InvalidArgumentException();
 		}
-		else if (i > 2 && isdigit(arg[i]))
+	}
+
+	countdigit = 0;
+	countop = 0;
+
+	for (int i = 4; i < n; i+= 2)
+	{
+		std::cout << "arg[i] = " << arg[i] << std::endl;
+
+		if (!isdigit(arg[i]))
+		{
+			countop ++;
+			countdigit = 0;
+		}
+		else
+		{
+			countdigit ++;
+			if (countdigit >= 2)
+			{
+				waitop = countdigit;
+			}
+			countop = 0;
+			
+		/*if (countop > 2)
+		{
+			std::cout << "countop > 2 " << std::endl;
+			throw InvalidArgumentException();
+		}*/
+		if (countdigit >= 2)
+		{
+			waitop = countdigit;
+			if (countdigit % 2 != 0)
+			for (int j = 2; j <= 2 + countdigit; j += 2)
+			{
+				if (isdigit(arg[i + j]))
+				{
+					std::cout << "expected an operator " << std::endl;
+					throw InvalidArgumentException();
+				}
+			}
+			
+		}
+		if (i == 4)
+		{
+			if (isdigit(arg[4]))
+
+		}
+		if (i == 6)
+		{
+			if (!isdigit(arg[i]))
+			{
+				if (isdigit(arg[4]))
+				{
+					std::cout << "expected a digit\n";
+					throw InvalidArgumentException();
+				}
+			}
+			else
+				waitop = true;
+		}
+		if (i > 6)
+		{
+			if (waitop && isdigit(arg[i]))
+			{
+				std::cout << "expected an operator\n";
+				throw InvalidArgumentException();
+			}
+			else
+				waitop = false;
+		}
+		/*else if (isdigit(arg[i]))
 		{
 			countdigit ++;
 			//std::cout << "coundigit = " << countdigit << std::endl;
@@ -71,10 +143,15 @@ void	RPN::setQueue(std::string arg)
 				std::cout << "there\n";
 				throw InvalidArgumentException();
 			}
+			if (check)
+			{
+				std::cout << "missing op\n";
+				throw InvalidArgumentException();
+			}
 			countop = 0;
 			check = false;
 		}
-		else if (i > 2 && !isdigit(arg[i]))
+		else if (!isdigit(arg[i]))
 		{
 			countop ++;
 			//std::cout << "countop = " << countop << std::endl;
@@ -88,18 +165,24 @@ void	RPN::setQueue(std::string arg)
 				std::cout << "too few countop " << std::endl;
 				throw InvalidArgumentException();
 			}
+			else if (!check && countop == 2)
+			{
+				std::cout << "too many countop " << std::endl;
+				throw InvalidArgumentException();
+			}
 			else if (countdigit == 2 && countop < 2)
 			{
 				check = true;
 			}
 			else
 				check = false;
+
 			countdigit = 0;
-		}
+		}*/
 		//std::cout << "countdigit = " << countdigit << " countop = " << countop << std::endl;
 	}
 
-	//std::cout << " countop = " << countop << " check = " << check << " arg[n -1] = " << arg[n-1] << std::endl;
+	std::cout << " countop = " << countop << " check = " << waitop << " arg[n -1] = " << arg[n-1] << std::endl;
 	if (arg[n -1] == ' ')
 		n --;
 	if (isdigit(arg[n -1]))
@@ -108,14 +191,9 @@ void	RPN::setQueue(std::string arg)
 		throw InvalidArgumentException();
 	}
 
-	if (!isdigit(arg[n -1]) && countop < 2 && check)
+	if (!isdigit(arg[n -1]) && countop < 2 && waitop)
 	{
 		std::cout << "too few countop " << std::endl;
-		throw InvalidArgumentException();
-	}
-	else if (!isdigit(arg[n -1]) && countop == 2 && !check)
-	{
-		std::cout << "too many countop " << std::endl;
 		throw InvalidArgumentException();
 	}
 
