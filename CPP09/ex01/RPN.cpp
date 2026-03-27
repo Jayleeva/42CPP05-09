@@ -50,52 +50,71 @@ void	RPN::setQueue(std::string arg)
 			throw InvalidArgumentException();
 	}
 
-	if (n > 1 && n < 4)
+	if (n > 2 && n < 4)
 	{
 		//std::cout << "not enough args\n";
 		throw InvalidArgumentException();
 	}
 
-	for (int i = 0; i <= 2; i+= 2)
+	if (n > 2)
 	{
-		if (i <= 2 && !isdigit(arg[i]))
+		for (int i = 0; i <= 2; i+= 2)
 		{
-			//std::cout << "2 first not digits\n";
-			throw InvalidArgumentException();
+			if (i <= 2 && !isdigit(arg[i]))
+			{
+				//std::cout << "2 first not digits\n";
+				throw InvalidArgumentException();
+			}
 		}
 	}
 
-	countdigit = 0;
-	for (int i = 4; i < n; i+= 2)
+
+	if (n > 4)
 	{
-		if (!isdigit(arg[i]))
+		countdigit = 0;
+		for (int i = 4; i < n; i+= 2)
 		{
-			if (countdigit > 1 && countdigit % 2 != 0)
+			if (!arg[i])
 			{
-				//std::cout << "expected a digit " << std::endl;
 				throw InvalidArgumentException();
 			}
-			int j;
-			for (j = 2; j < countdigit * 2; j += 2)
+			if (!isdigit(arg[i]))
 			{
-				if (isdigit(arg[i + j]))
+				if (countdigit > 1 && countdigit % 2 != 0)
 				{
-					//std::cout << "expected an operator " << std::endl;
+					//std::cout << "expected a digit " << std::endl;
 					throw InvalidArgumentException();
 				}
+				int j;
+				for (j = 2; j < countdigit * 2; j += 2)
+				{
+					if (!arg[i + j] || (arg[i + j] && isdigit(arg[i + j])))
+					{
+						//std::cout << "expected an operator " << std::endl;
+						throw InvalidArgumentException();
+					}
+				}
+				countdigit = 0;
+				i += j - 2;
 			}
-			countdigit = 0;
-			i += j - 2;
-		}
-		else
-		{
-			if (i == 4)
+			else
 			{
-				//std::cout << "expected an operator for first operation " << std::endl;
-				throw InvalidArgumentException();
+				if (i == 4)
+				{
+					//std::cout << "expected an operator for first operation " << std::endl;
+					throw InvalidArgumentException();
+				}
+				countdigit ++;
 			}
-			countdigit ++;
 		}
+	}
+
+	if (arg[n -1] == ' ')
+		n --;
+	if (n > 1 && isdigit(arg[n -1]))
+	{
+		//std::cout << "finish with digit (" << arg[n-1] << ")" << std::endl;
+		throw InvalidArgumentException();
 	}
 
     while (getline(ss, element, ' '))
