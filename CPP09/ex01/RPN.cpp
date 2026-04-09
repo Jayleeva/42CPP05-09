@@ -51,6 +51,8 @@ std::string	trimSpaces(std::string arg)
 		}
 		j ++;
 	}
+	if (arg[j -1] != ' ')
+		arg.push_back(' ');
 	return (arg);
 }
 void	RPN::setQueue(std::string arg)
@@ -61,7 +63,8 @@ void	RPN::setQueue(std::string arg)
     std::stringstream 	ss(arg);
 	int					countdigit;
 	int					n = 0;
-		
+	
+	std::cout << arg << std::endl;
 	for (int i = 0; arg[i]; i++)
 	{
 		if (!isdigit(arg[i])
@@ -78,80 +81,45 @@ void	RPN::setQueue(std::string arg)
 			throw InvalidArgumentException();
 	}
 
-	if (n == 3)
-	{
-		//std::cout << "not enough args\n";
-		throw InvalidArgumentException();
-	}
-
-	if (n == 0)
-	{
+	if (n < 2)
 		return;
-	}
 
-	/*if (n > 2)
-	{
-		for (int i = 0; i <= 2; i+= 2)
-		{
-			if (i <= 2 && !isdigit(arg[i]))
-			{
-				//std::cout << "first not digits\n";
-				throw InvalidArgumentException();
-			}
-		}
-	}*/
+	if (n > 2 && n < 6)
+		throw InvalidArgumentException();
 
 	if (!isdigit(arg[0]))
-	{
-		//std::cout << "first not digit\n";
 		throw InvalidArgumentException();
-	}
 
 	if (n > 2)
 	{
 		countdigit = 0;
 		for (int i = 2; i < n; i+= 2)
 		{
-			if (!arg[i])
+			if (arg[i] && !isdigit(arg[i]))
 			{
-				throw InvalidArgumentException();
-			}
-			if (!isdigit(arg[i]))
-			{
-				/*if (countdigit > 1 && countdigit % 2 != 0)
+				int countop = 0;
+				int j = 0;
+				while (arg[i + j] && (!isdigit(arg[i + j])))
 				{
-					//std::cout << "expected a digit " << std::endl;
+					countop ++;
+					j += 2;
+				}
+				if (countdigit != countop)
+				{
 					throw InvalidArgumentException();
-				}*/
-				int j;
-				for (j = 2; j < countdigit * 2; j += 2)
-				{
-					if (!arg[i + j] || (arg[i + j] && isdigit(arg[i + j])))
-					{
-						//std::cout << "expected an operator " << std::endl;
-						throw InvalidArgumentException();
-					}
 				}
 				countdigit = 0;
 				i += j - 2;
 			}
 			else
 			{
-				/*if (i == 4)
-				{
-					//std::cout << "expected an operator for first operation " << std::endl;
-					throw InvalidArgumentException();
-				}*/
 				countdigit ++;
 			}
 		}
 	}
 
-	if (n > 1 && isdigit(arg[n -1]))
-	{
-		//std::cout << "finish with digit (" << arg[n-1] << ")" << std::endl;
+	if (n > 2 && isdigit(arg[n -1]))
 		throw InvalidArgumentException();
-	}
 
     while (getline(ss, element, ' '))
 		this->expression.push(element);
@@ -226,6 +194,7 @@ void	initialize_data(t_data *data)
 void	RPN::printRes()
 {
 	t_data		data;
+	std::queue<std::string>	tmp;
 	long		res;
 	char		c;
 
@@ -242,36 +211,63 @@ void	RPN::printRes()
 		else
 			throw InvalidArgumentException();
 	}
-		
-	//if (this->expression.size() == 2)
-	//	throw InvalidArgumentException();
+
+	if (this->expression.size() < 3)
+		throw InvalidArgumentException();
 
 	int	i = 0;
+	int countdigit = 0;
+	int countop = 0;
 	while (this->expression.size())
 	{
-		c = nextExpression(&data, this->expression);
-		if (isdigit(c))	// ne gère pas les cas comme "1 3 - 2 4 5 - - +"
+		c = *this->expression.front().c_str();
+
+		if ((i == 0 || i == 1) && !isdigit(c))
+			throw InvalidArgumentException();
+
+		if (isdigit(c))
 		{
-			t_data	newdata;
+			countdigit = 0;
+			while (isdigit(c))
+			{
+				tmp.push(this->expression.front());
+				countdigit ++;
+				i ++;
+				this->expression.pop();
+				c = *this->expression.front().c_str();
+			}
+			
+			if (countdigit == 1)
+			{
+				if (i > 1)
+				{
+					fill_number(&data.operand, res);
+					fill_number(&data.operated, static_cast<long>(*tmp.front().c_str() - '0'));
+					tmp.pop();
+					data.op = c;
+					this->expression.pop();
+					res = operate(&data);
+				}
+				else
+					throw InvalidArgumentException();
+			}
 
-			fill_number(&newdata.operand, data.operated.value);
-			fill_number(&newdata.operated, static_cast<long>(c - '0'));
-			c = *this->expression.front().c_str();
-			this->expression.pop();
-			newdata.op = c;
-
-			long tmp = operate(&newdata);
-			fill_number(&data.operated, tmp);
-
-			c = *this->expression.front().c_str();
-			this->expression.pop();
-			data.op = c;
-			res = operate(&data);
+			if (countdigit >= 2 && countop >= 1) // reecrit le res sans faire la derniere operation
+			{
+				fill_number(&data.operand, static_cast<long>(*tmp.front().c_str() - '0'));
+				tmp.pop();
+				fill_number(&data.operated, static_cast<long>(*tmp.front().c_str() - '0'));
+				tmp.pop();
+				data.op = c;
+				this->expression.pop();
+				res = operate(&data);
+			}
 		}
 		else
-			res = operate(&data);
-		fill_number(&data.operand, res);
-		data.operated.full = false;
+		{
+			countop ++;
+
+		}
 		i ++;
 	}
 	std::cout << res << std::endl; 
