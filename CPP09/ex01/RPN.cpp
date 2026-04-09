@@ -191,12 +191,35 @@ void	initialize_data(t_data *data)
 	data->operated.full = false;
 }
 
+void	solveTmp(std::queue<std::string> *tmp, t_data *data, long *res, char c)
+{
+	t_data	newdata;
+	long	tmpres;
+
+	std::cout << "front = " << tmp->front().c_str() - '0' << std::endl;
+
+	fill_number(&newdata.operand, static_cast<long>(*(tmp->front().c_str() - '0')));
+	tmp->pop();
+	fill_number(&newdata.operated, static_cast<long>(*(tmp->front().c_str() - '0')));
+	tmp->pop();
+	newdata.op = c;
+	tmpres = operate(&newdata);
+	if (!data->operand.full)
+	{
+		fill_number(&(data->operand), tmpres);
+		*res = tmpres;
+	}
+	else if (data->operand.full && !data->operated.full)
+		fill_number(&(data->operated), tmpres);
+}
+
+
 void	RPN::printRes()
 {
 	t_data		data;
 	std::queue<std::string>	tmp;
 	long		res;
-	long		tmpres;
+
 	char		c;
 
 	initialize_data(&data);
@@ -259,26 +282,18 @@ void	RPN::printRes()
 			if (countdigit == 2) //&& countop >= 1) faudra gerer les plus de deux
 			{
 				std::cout << "   2 digits no matter where\n";
-
-				t_data	newdata;
-				std::cout << "front = " << *tmp.front().c_str() - '0' << std::endl;
-				fill_number(&newdata.operand, static_cast<long>(*tmp.front().c_str() - '0'));
-				tmp.pop();
-				fill_number(&newdata.operated, static_cast<long>(*tmp.front().c_str() - '0'));
-				tmp.pop();
-				newdata.op = c;
+				solveTmp(&tmp, &data, &res, c);
 				this->expression.pop();
-				tmpres = operate(&newdata);
-				if (!data.operand.full)
-				{
-					fill_number(&data.operand, tmpres);
-					res = tmpres;
-				}
-				else if (data.operand.full && !data.operated.full)
-					fill_number(&data.operated, tmpres);
 			}
 			else if (countdigit > 2)
 			{
+				/*while (countdigit > 2)
+				{
+
+					countdigit --;
+				}
+				solveTmp(&tmp, &data, &res, c);
+				this->expression.pop();*/
 				std::cout << "not handled for now\n";
 				return ;
 			}
