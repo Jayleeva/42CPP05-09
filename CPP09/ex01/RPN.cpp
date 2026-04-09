@@ -75,19 +75,13 @@ void	RPN::setQueue(std::string arg)
 		n ++;
 	}
 
-	for (int i = 0; arg[i]; i++)
-	{
-		if (i % 2 != 0 && arg[i] != ' ')
-			throw InvalidArgumentException();
-	}
-
 	if (n < 2)
 		return;
 
 	if (n > 2 && n < 6)
 		throw InvalidArgumentException();
 
-	if (!isdigit(arg[0]))
+	if (!isdigit(arg[0]) || !isdigit(arg[2]))
 		throw InvalidArgumentException();
 
 	if (n > 2)
@@ -118,7 +112,7 @@ void	RPN::setQueue(std::string arg)
 		}
 	}
 
-	if (n > 2 && isdigit(arg[n -1]))
+	if (n > 2 && isdigit(arg[n -2]))
 		throw InvalidArgumentException();
 
     while (getline(ss, element, ' '))
@@ -162,29 +156,6 @@ long	operate(t_data *data)
 	return (res);
 }
 
-char	nextExpression(t_data *data, std::queue<std::string> &container)
-{
-	char	c;
-	int		i = 0;
-	
-	if (data->operand.full)
-		i ++;
-
-	while (i < 3)
-	{
-		c = *container.front().c_str();
-		if (i == 0 && isdigit(c))
-			fill_number(&data->operand, static_cast<long>(c - '0'));
-		else if (i == 1 && isdigit(c))
-			fill_number(&data->operated, static_cast<long>(c - '0'));
-		else if (i == 2 && !isdigit(c))
-			data->op = c;		
-		container.pop();
-		i ++;
-	}
-	return (c);
-}
-
 void	initialize_data(t_data *data)
 {
 	data->operand.full = false;
@@ -194,7 +165,7 @@ void	initialize_data(t_data *data)
 void	RPN::printRes()
 {
 	t_data		data;
-	std::string	tmpstr;
+	std::string	str;
 	long		res;
 	long		tmpres;
 	char		c;
@@ -230,7 +201,7 @@ void	RPN::printRes()
 			countdigit = 0;
 			while (isdigit(c))
 			{
-				tmpstr.push_back(*this->expression.front().c_str());
+				str.push_back(*this->expression.front().c_str());
 				countdigit ++;
 				i ++;
 				this->expression.pop();
@@ -241,10 +212,9 @@ void	RPN::printRes()
 			{
 				if (i > 1)
 				{
-					std::cout << "   one digit after start\n";
 					fill_number(&data.operand, res);
-					fill_number(&data.operated, static_cast<long>(*(tmpstr.end() -1) - '0'));
-					tmpstr.erase(tmpstr.end() -1);
+					fill_number(&data.operated, static_cast<long>(*(str.end() -1) - '0'));
+					str.erase(str.end() -1);
 					data.op = c;
 					this->expression.pop();
 					res = operate(&data);
@@ -260,10 +230,10 @@ void	RPN::printRes()
 				while (countdigit >= 2)
 				{
 					t_data	newdata;
-					fill_number(&newdata.operated, static_cast<long>(*(tmpstr.end() -1) - '0'));
-					tmpstr.erase(tmpstr.end() -1);
-					fill_number(&newdata.operand, static_cast<long>(*(tmpstr.end() -1) - '0'));
-					tmpstr.erase(tmpstr.end() -1);
+					fill_number(&newdata.operated, static_cast<long>(*(str.end() -1) - '0'));
+					str.erase(str.end() -1);
+					fill_number(&newdata.operand, static_cast<long>(*(str.end() -1) - '0'));
+					str.erase(str.end() -1);
 					newdata.op = c;
 					this->expression.pop();
 					tmpres = operate(&newdata);
@@ -278,11 +248,8 @@ void	RPN::printRes()
 					else if (countdigit >= 1)
 					{
 						fill_number(&data.operated, tmpres);
-						fill_number(&data.operand, static_cast<long>(*(tmpstr.end() -1) - '0'));
-						tmpstr.erase(tmpstr.end() -1);
-						
-						//std::cout << " operand = " << data.operand.value << " operated = " << data.operated.value << std::endl;
-						
+						fill_number(&data.operand, static_cast<long>(*(str.end() -1) - '0'));
+						str.erase(str.end() -1);						
 						break;
 					}
 				}
@@ -292,10 +259,8 @@ void	RPN::printRes()
 		{			
 			if (!data.operand.full || !data.operated.full)
 			{
-				fill_number(&data.operand, static_cast<long>(*(tmpstr.end() -1) - '0'));
-				tmpstr.erase(tmpstr.end() -1);
-
-				//std::cout << " operand = " << data.operand.value << " operated = " << data.operated.value << std::endl;
+				fill_number(&data.operand, static_cast<long>(*(str.end() -1) - '0'));
+				str.erase(str.end() -1);
 			}
 			data.op = c;
 			this->expression.pop();
