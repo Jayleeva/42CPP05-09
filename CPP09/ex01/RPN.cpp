@@ -64,7 +64,8 @@ void	RPN::setQueue(std::string arg)
 	int					countdigit;
 	int					n = 0;
 	
-	std::cout << arg << std::endl;
+	if (VERBIOSE)
+		std::cout << arg << std::endl;
 	for (int i = 0; arg[i]; i++)
 	{
 		if (!isdigit(arg[i])
@@ -79,9 +80,6 @@ void	RPN::setQueue(std::string arg)
 		return;
 
 	if (n > 2 && n < 6)
-		throw InvalidArgumentException();
-
-	if (!isdigit(arg[0]) || !isdigit(arg[2]))
 		throw InvalidArgumentException();
 
 	if (n > 2)
@@ -172,7 +170,7 @@ void	RPN::printRes()
 
 	initialize_data(&data);
 
-	if (this->expression.size() == 1)
+	if (this->expression.size() <= 1)
 	{
 		c = *this->expression.front().c_str();
 		if (isdigit(c))
@@ -255,7 +253,7 @@ void	RPN::printRes()
 				}
 			}
 		}
-		else
+		else // NOPE
 		{			
 			if (!data.operand.full || !data.operated.full)
 			{
