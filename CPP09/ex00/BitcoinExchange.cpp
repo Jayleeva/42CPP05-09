@@ -38,7 +38,7 @@ int	BitcoinExchange::setMap(std::string dataFile)
 	data.open(dataFile.c_str());
 	if (data.fail())
 	{
-		std::cout << "Error: could not open file." << std::endl;
+		std::cerr << "Error: could not open file." << std::endl;
 		return (0);
 	}
 	std::string firstline;
@@ -61,7 +61,7 @@ int	BitcoinExchange::setMap(std::string dataFile)
 		}
 		catch (std::exception &e)
 		{
-			std::cout << e.what() << std::endl;
+			std::cerr << e.what() << std::endl;
 			return (0);
 		}
 	}
@@ -79,24 +79,23 @@ void	BitcoinExchange::printRes(char *inputFile)
 	file.open(inputFile);
 	if (file.fail())
 	{
-		std::cout << "Error: could not open file." << std::endl;
+		std::cerr << "Error: could not open file." << std::endl;
 		return ;
 	}
 	std::string firstline;
 	std::getline(file, firstline);
 	if (firstline.empty() || !firstline.compare("date | value\n"))
 	{
-		std::cout << "Error: wrong format." << std::endl;
+		std::cerr << "Error: wrong format." << std::endl;
 		return ;
 	}
     for (std::string line; std::getline(file, line);)
 	{
-		//std::cout << "[LINE] = " << line << std::endl;
 		if (line.empty())
 			continue;
 		if (!line[10] || !line[11] || line[11] != '|' || !line[13])
 		{
-			std::cout << "Error: wrong format." << std::endl;
+			std::cout << "Error: bad input => " << line << std::endl;
 			continue;
 		}
 		key = getKey(line);

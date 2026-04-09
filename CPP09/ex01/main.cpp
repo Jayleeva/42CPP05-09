@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		std::cout << "Error : please enter a reverse polish expression in one string." << std::endl;
+		std::cerr << "Error : please enter a reverse polish expression in one string." << std::endl;
 		return (1);
 	}
 
@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 	}
 	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 		return (1);
 	}
 	return (0);

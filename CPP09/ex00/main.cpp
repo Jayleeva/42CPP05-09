@@ -38,24 +38,15 @@ int	is_month_valid(std::string month, int year)
 	int	date;
 
 	if (month.empty())
-	{
-		//std::cout << "month empty" << std::endl;
 		return (0);
-	}
 	for (int i = 0; month[i]; i ++)
 	{
 		if (!isdigit(month[i]))
-		{
-			//std::cout << month[i] << " is not a digit" << std::endl;
 			return (0);
-		}
 	}
 	date = atoi(month.c_str());
 	if (!is_valid(date, 1, 12))
-	{
-		//std::cout << "not a month" << std::endl;
 		return (0);
-	}
 	if (year == 2026 && date > 4)
 	{
 		//std::cout << "in the futuuure" << std::endl;
@@ -106,8 +97,12 @@ int	is_day_valid(std::string day, int month, int year)
 		return (0);
 	if (year == 2009 && month == 1 && date < 2)
 		return (0);
-	if (year == 2026 && month == 2 && date > 26)
+	if (year == 2026 && month == 4 && date > 20)
+	{
+		//std::cout << "in the futuuure" << std::endl;
 		return (0);
+	}
+		
 	return (1);
 }
 
@@ -217,7 +212,7 @@ std::string	getKey(std::string line)
 	}
 	catch (std::exception &e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 		return (NULL);
 	}
 	return (key);
@@ -254,7 +249,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		std::cout << "Error: no file submitted." << std::endl;
+		std::cerr << "Error: no file submitted." << std::endl;
 		return (1);
 	}
 	if (btc.setMap("data.csv"))
