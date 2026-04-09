@@ -205,7 +205,7 @@ void	RPN::printRes()
 				this->expression.pop();
 				c = *this->expression.front().c_str();
 			}
-			
+			//std::cout << "str = " << str << std::endl;
 			if (countdigit == 1)
 			{
 				if (i > 1)
@@ -213,6 +213,7 @@ void	RPN::printRes()
 					fill_number(&data.operand, res);
 					fill_number(&data.operated, static_cast<long>(*(str.end() -1) - '0'));
 					str.erase(str.end() -1);
+					//std::cout << "str = " << str << std::endl;
 					data.op = c;
 					this->expression.pop();
 					res = operate(&data);
@@ -230,8 +231,10 @@ void	RPN::printRes()
 					t_data	newdata;
 					fill_number(&newdata.operated, static_cast<long>(*(str.end() -1) - '0'));
 					str.erase(str.end() -1);
+					//std::cout << "str = " << str << std::endl;
 					fill_number(&newdata.operand, static_cast<long>(*(str.end() -1) - '0'));
 					str.erase(str.end() -1);
+					//std::cout << "str = " << str << std::endl;
 					newdata.op = c;
 					this->expression.pop();
 					tmpres = operate(&newdata);
@@ -247,7 +250,8 @@ void	RPN::printRes()
 					{
 						fill_number(&data.operated, tmpres);
 						fill_number(&data.operand, static_cast<long>(*(str.end() -1) - '0'));
-						str.erase(str.end() -1);						
+						str.erase(str.end() -1);
+						//std::cout << "str = " << str << std::endl;					
 						break;
 					}
 				}
@@ -255,11 +259,28 @@ void	RPN::printRes()
 		}
 		else // NOPE
 		{			
-			if (!data.operand.full || !data.operated.full)
+			std::cout << "str = " << *(str.end() -1) - '0' << " operand = " << data.operand.value << " operated = " << data.operated.value << std::endl;
+			if (data.operand.full) // && !data.operated.full)
 			{
+				std::cout << "here\n";
+				long	tmpval = data.operand.value;
+				fill_number(&data.operated, tmpval);
+			}
+			if (!str.empty())
+			{
+				std::cout << "not empty\n";
 				fill_number(&data.operand, static_cast<long>(*(str.end() -1) - '0'));
 				str.erase(str.end() -1);
 			}
+			else
+			{
+				std::cout << "empty\n";
+				fill_number(&data.operand, data.operated.value);
+			}
+
+
+			std::cout << "operand = " << data.operand.value << " operated = " << data.operated.value << std::endl;
+			
 			data.op = c;
 			this->expression.pop();
 			res = operate(&data);
