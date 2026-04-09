@@ -196,6 +196,7 @@ void	RPN::printRes()
 	t_data		data;
 	std::queue<std::string>	tmp;
 	long		res;
+	long		tmpres;
 	char		c;
 
 	initialize_data(&data);
@@ -217,7 +218,7 @@ void	RPN::printRes()
 
 	int	i = 0;
 	int countdigit = 0;
-	int countop = 0;
+	//int countop = 0;
 	while (this->expression.size())
 	{
 		c = *this->expression.front().c_str();
@@ -241,34 +242,64 @@ void	RPN::printRes()
 			{
 				if (i > 1)
 				{
+					std::cout << "   one digit after start\n";
 					fill_number(&data.operand, res);
 					fill_number(&data.operated, static_cast<long>(*tmp.front().c_str() - '0'));
 					tmp.pop();
 					data.op = c;
 					this->expression.pop();
 					res = operate(&data);
+					fill_number(&data.operand, res);
+					data.operated.full = false;
 				}
 				else
 					throw InvalidArgumentException();
 			}
 
-			if (countdigit >= 2 && countop >= 1) // reecrit le res sans faire la derniere operation
+			if (countdigit == 2) //&& countop >= 1) faudra gerer les plus de deux
 			{
-				fill_number(&data.operand, static_cast<long>(*tmp.front().c_str() - '0'));
+				std::cout << "   2 digits no matter where\n";
+
+				t_data	newdata;
+				std::cout << "front = " << *tmp.front().c_str() - '0' << std::endl;
+				fill_number(&newdata.operand, static_cast<long>(*tmp.front().c_str() - '0'));
 				tmp.pop();
-				fill_number(&data.operated, static_cast<long>(*tmp.front().c_str() - '0'));
+				fill_number(&newdata.operated, static_cast<long>(*tmp.front().c_str() - '0'));
 				tmp.pop();
-				data.op = c;
+				newdata.op = c;
 				this->expression.pop();
-				res = operate(&data);
+				tmpres = operate(&newdata);
+				if (!data.operand.full)
+				{
+					fill_number(&data.operand, tmpres);
+					res = tmpres;
+				}
+				else if (data.operand.full && !data.operated.full)
+					fill_number(&data.operated, tmpres);
+			}
+			else if (countdigit > 2)
+			{
+				std::cout << "not handled for now\n";
+				return ;
 			}
 		}
 		else
 		{
-			countop ++;
-
+			std::cout << "   operator\n";
+			if (data.operand.full && data.operated.full)
+			{
+				data.op = c;
+				this->expression.pop();
+				res = operate(&data);
+				initialize_data(&data);
+			}
+			else
+				throw InvalidArgumentException();
+			i ++;
 		}
-		i ++;
 	}
+
+	//std::cout << "operand full = " << data.operand.full << " operated full = " << data.operated.full << std::endl;
+
 	std::cout << res << std::endl; 
 }
