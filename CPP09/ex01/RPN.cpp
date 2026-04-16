@@ -63,9 +63,6 @@ long	operate(t_data *data)
 {
 	long	res = data->operand.value;
 
-	if (VERBIOSE)
-		std::cout << data->operand.value << " " << data->op << " " << data->operated.value;
-
 	if (data->op == '+')
 		res += data->operated.value;
 	else if (data->op == '-')
@@ -80,7 +77,7 @@ long	operate(t_data *data)
 		res *= data->operated.value;
 
 	if (VERBIOSE)
-		std::cout << " = " << res << std::endl;
+		std::cout << data->operand.value << " " << data->op << " " << data->operated.value << " = " << res << std::endl;
 	return (res);
 }
 
