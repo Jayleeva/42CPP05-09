@@ -2,6 +2,7 @@
 
 
 // TEST: ./RPN "3 2 4 8 + - + 1 5 - 4 3 1 2 - + + + -"
+// 3 1 2 4 - - 3
 int main(int argc, char **argv)
 {
 	RPN	container;

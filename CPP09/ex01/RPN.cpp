@@ -26,46 +26,13 @@ RPN::~RPN()
 	//std::cout << YELLOW << "[RPN] : Default destructor called." << DEFAULT << std::endl;
 }
 
-
-std::string	trimSpaces(std::string arg)
-{
-	int	i = 0;
-	while (arg[i] == ' ')
-		i ++;
-	arg = arg.substr(i, arg.size());
-
-	int j = 0;
-	while (arg[j])
-	{
-		int k = 0;
-		while (arg[j + k] == ' ')
-			k ++;
-		if (k > 1)
-		{
-			k --;
-			while (k)
-			{
-				arg.erase(j + k, 1);
-				k --;
-			}
-		}
-		j ++;
-	}
-	if (arg[j -1] != ' ')
-		arg.push_back(' ');
-	return (arg);
-}
 void	RPN::setQueue(std::string arg)
 {
-	arg = trimSpaces(arg);
 
 	std::string			element;
     std::stringstream 	ss(arg);
 	int					n = 0;
 	
-	if (VERBIOSE)
-		std::cout << YELLOW << "Cleaned expression : "<< DEFAULT << arg << std::endl;
-
 	for (int i = 0; arg[i]; i++)
 	{
 		if (!isdigit(arg[i])
@@ -157,9 +124,6 @@ void	RPN::printRes()
 	{
 		c = *this->expression.front().c_str();
 
-		if ((i == 0 || i == 1) && !isdigit(c))
-			throw InvalidArgumentException();
-
 		if (isdigit(c))
 		{
 			countdigit = 0;
@@ -212,6 +176,8 @@ void	RPN::printRes()
 				long tmpoperand = data.operand.value;
 
 				t_data	newdata;
+				initialize_data(&newdata);
+
 				fill_number(&newdata.operated, static_cast<long>(*(str.end() -1) - '0'));
 				str.erase(str.end() -1);
 				fill_number(&newdata.operand, static_cast<long>(*(str.end() -1) - '0'));
@@ -237,9 +203,8 @@ void	RPN::printRes()
 								throw InvalidArgumentException();
 							opstr.push_back(*this->expression.front().c_str());
 							this->expression.pop();
-							if (this->expression.empty())
-								throw InvalidArgumentException();
-							c = *this->expression.front().c_str();
+							if (!this->expression.empty())
+								c = *this->expression.front().c_str();
 							tmpcount --;
 						}
 					}
