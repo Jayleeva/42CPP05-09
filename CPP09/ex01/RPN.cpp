@@ -61,11 +61,11 @@ void	RPN::setQueue(std::string arg)
 
 	std::string			element;
     std::stringstream 	ss(arg);
-	int					countdigit;
 	int					n = 0;
 	
 	if (VERBIOSE)
 		std::cout << YELLOW << "Cleaned expression : "<< DEFAULT << arg << std::endl;
+
 	for (int i = 0; arg[i]; i++)
 	{
 		if (!isdigit(arg[i])
@@ -75,43 +75,6 @@ void	RPN::setQueue(std::string arg)
 			throw InvalidArgumentException();
 		n ++;
 	}
-
-	if (n < 2)
-		return;
-
-	if (n > 2 && n < 6)
-		throw InvalidArgumentException();
-
-	if (n > 2)
-	{
-		countdigit = 0;
-		for (int i = 2; i < n; i+= 2)
-		{
-			if (arg[i] && !isdigit(arg[i]))
-			{
-				int countop = 0;
-				int j = 0;
-				while (arg[i + j] && (!isdigit(arg[i + j])))
-				{
-					countop ++;
-					j += 2;
-				}
-				if (countdigit != countop)
-				{
-					throw InvalidArgumentException();
-				}
-				countdigit = 0;
-				i += j - 2;
-			}
-			else
-			{
-				countdigit ++;
-			}
-		}
-	}
-
-	if (n > 2 && isdigit(arg[n -2]))
-		throw InvalidArgumentException();
 
     while (getline(ss, element, ' '))
 		this->expression.push(element);
@@ -190,7 +153,6 @@ void	RPN::printRes()
 
 	int	i = 0;
 	int countdigit = 0;
-	//int countop = 0;
 	while (this->expression.size())
 	{
 		c = *this->expression.front().c_str();
@@ -207,20 +169,39 @@ void	RPN::printRes()
 				countdigit ++;
 				i ++;
 				this->expression.pop();
+				if (this->expression.empty())
+					throw InvalidArgumentException();
 				c = *this->expression.front().c_str();
 			}
 			if (countdigit == 1)
 			{
 				if (i > 1)
 				{
-					fill_number(&data.operand, res);
-					fill_number(&data.operated, static_cast<long>(*(str.end() -1) - '0'));
-					str.erase(str.end() -1);
-					data.op = c;
-					this->expression.pop();
-					res = operate(&data);
-					fill_number(&data.operand, res);
-					data.operated.full = false;
+					if (data.operand.full && data.operated.full)
+					{
+						long tmp = data.operand.value;
+						fill_number(&data.operand, data.operated.value);
+						fill_number(&data.operated, static_cast<long>(*(str.end() -1) - '0'));
+						str.erase(str.end() -1);
+						data.op = c;
+						this->expression.pop();
+						res = operate(&data);
+						fill_number(&data.operand, tmp);
+						fill_number(&data.operated, res);
+					}
+					else
+					{
+						fill_number(&data.operand, res);
+						fill_number(&data.operated, static_cast<long>(*(str.end() -1) - '0'));
+						str.erase(str.end() -1);
+						data.op = c;
+						this->expression.pop();
+						res = operate(&data);
+						if (!data.operand.full)
+							fill_number(&data.operand, res);
+						else if (data.operand.full && !data.operated.full)
+							fill_number(&data.operated, res);
+					}
 				}
 				else
 					throw InvalidArgumentException();
@@ -228,6 +209,8 @@ void	RPN::printRes()
 
 			if (countdigit >= 2)
 			{
+				long tmpoperand = data.operand.value;
+
 				t_data	newdata;
 				fill_number(&newdata.operated, static_cast<long>(*(str.end() -1) - '0'));
 				str.erase(str.end() -1);
@@ -241,20 +224,30 @@ void	RPN::printRes()
 				countdigit -= 2;
 
 				std::string opstr;
+				int	tmpcount = countdigit;
 				while (countdigit)
 				{
-					while (!isdigit(c) )
+					if (tmpcount == countdigit)
 					{
-						opstr.push_back(*this->expression.front().c_str());
-						this->expression.pop();
-						c = *this->expression.front().c_str();
+						while (tmpcount)
+						{
+							if (isdigit(c))
+								throw InvalidArgumentException();
+							if (this->expression.empty())
+								throw InvalidArgumentException();
+							opstr.push_back(*this->expression.front().c_str());
+							this->expression.pop();
+							if (this->expression.empty())
+								throw InvalidArgumentException();
+							c = *this->expression.front().c_str();
+							tmpcount --;
+						}
 					}
 					fill_number(&newdata.operated, tmpres);
 					fill_number(&newdata.operand, static_cast<long>(*(str.end() -1) - '0'));
 					newdata.op = *(opstr.begin());
 					str.erase(str.end() -1);
 					opstr.erase(opstr.begin());
-					//this->expression.pop();
 					tmpres = operate(&newdata);
 					initialize_data(&newdata);
 
@@ -263,9 +256,21 @@ void	RPN::printRes()
 				if (!data.operand.full)
 					fill_number(&data.operand, tmpres);
 				else if (data.operand.full && !data.operated.full)
+				{
 					fill_number(&data.operated, tmpres);
-
-				std::cout << "data.operand = " << data.operand.value << " data.operated = " << data.operated.value << std::endl;
+					res = tmpres;
+				}
+				else
+				{
+					fill_number(&newdata.operand, data.operated.value);
+					fill_number(&newdata.operated, tmpres);
+					newdata.op = c;
+					this->expression.pop();
+					tmpres = operate(&newdata);
+					fill_number(&data.operand, tmpoperand);
+					fill_number(&data.operated, tmpres);
+				}
+				res = tmpres;
 			}
 		}
 		else
@@ -283,8 +288,6 @@ void	RPN::printRes()
 				throw InvalidArgumentException();
 		}
 	}
-	if (data.operand.full && !data.operated.full)
-		res = tmpres;
 	if (VERBIOSE)
 		std::cout << YELLOW << "Result : " << DEFAULT;
 	std::cout << res << std::endl; 
