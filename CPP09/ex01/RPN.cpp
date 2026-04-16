@@ -65,7 +65,7 @@ void	RPN::setQueue(std::string arg)
 	int					n = 0;
 	
 	if (VERBIOSE)
-		std::cout << arg << std::endl;
+		std::cout << YELLOW << "Cleaned expression : "<< DEFAULT << arg << std::endl;
 	for (int i = 0; arg[i]; i++)
 	{
 		if (!isdigit(arg[i])
@@ -134,7 +134,7 @@ long	operate(t_data *data)
 	long	res = data->operand.value;
 
 	if (VERBIOSE)
-		std::cout << data->operand.value << data->op << data->operated.value;
+		std::cout << data->operand.value << " " << data->op << " " << data->operated.value;
 
 	if (data->op == '+')
 		res += data->operated.value;
@@ -156,8 +156,11 @@ long	operate(t_data *data)
 
 void	initialize_data(t_data *data)
 {
+	data->operand.value = 0;
+	data->operated.value = 0;
 	data->operand.full = false;
 	data->operated.full = false;
+	data->op = ' ';
 }
 
 void	RPN::printRes()
@@ -187,6 +190,7 @@ void	RPN::printRes()
 
 	int	i = 0;
 	int countdigit = 0;
+	//int countop = 0;
 	while (this->expression.size())
 	{
 		c = *this->expression.front().c_str();
@@ -205,7 +209,6 @@ void	RPN::printRes()
 				this->expression.pop();
 				c = *this->expression.front().c_str();
 			}
-			//std::cout << "str = " << str << std::endl;
 			if (countdigit == 1)
 			{
 				if (i > 1)
@@ -213,7 +216,6 @@ void	RPN::printRes()
 					fill_number(&data.operand, res);
 					fill_number(&data.operated, static_cast<long>(*(str.end() -1) - '0'));
 					str.erase(str.end() -1);
-					//std::cout << "str = " << str << std::endl;
 					data.op = c;
 					this->expression.pop();
 					res = operate(&data);
@@ -226,68 +228,64 @@ void	RPN::printRes()
 
 			if (countdigit >= 2)
 			{
-				while (countdigit >= 2)
+				t_data	newdata;
+				fill_number(&newdata.operated, static_cast<long>(*(str.end() -1) - '0'));
+				str.erase(str.end() -1);
+				fill_number(&newdata.operand, static_cast<long>(*(str.end() -1) - '0'));
+				str.erase(str.end() -1);
+				newdata.op = c;
+				this->expression.pop();
+				tmpres = operate(&newdata);
+				initialize_data(&newdata);
+
+				countdigit -= 2;
+
+				std::string opstr;
+				while (countdigit)
 				{
-					t_data	newdata;
-					fill_number(&newdata.operated, static_cast<long>(*(str.end() -1) - '0'));
-					str.erase(str.end() -1);
-					//std::cout << "str = " << str << std::endl;
+					while (!isdigit(c) )
+					{
+						opstr.push_back(*this->expression.front().c_str());
+						this->expression.pop();
+						c = *this->expression.front().c_str();
+					}
+					fill_number(&newdata.operated, tmpres);
 					fill_number(&newdata.operand, static_cast<long>(*(str.end() -1) - '0'));
+					newdata.op = *(opstr.begin());
 					str.erase(str.end() -1);
-					//std::cout << "str = " << str << std::endl;
-					newdata.op = c;
-					this->expression.pop();
+					opstr.erase(opstr.begin());
+					//this->expression.pop();
 					tmpres = operate(&newdata);
+					initialize_data(&newdata);
 
-					countdigit -= 2;
-
-					if (countdigit == 0)
-					{
-						fill_number(&data.operand, tmpres);
-						res = tmpres;
-					}
-					else if (countdigit >= 1)
-					{
-						fill_number(&data.operated, tmpres);
-						fill_number(&data.operand, static_cast<long>(*(str.end() -1) - '0'));
-						str.erase(str.end() -1);
-						//std::cout << "str = " << str << std::endl;					
-						break;
-					}
+					countdigit--;
 				}
+				if (!data.operand.full)
+					fill_number(&data.operand, tmpres);
+				else if (data.operand.full && !data.operated.full)
+					fill_number(&data.operated, tmpres);
+
+				std::cout << "data.operand = " << data.operand.value << " data.operated = " << data.operated.value << std::endl;
 			}
 		}
-		else // NOPE
+		else
 		{			
-			std::cout << "str = " << *(str.end() -1) - '0' << " operand = " << data.operand.value << " operated = " << data.operated.value << std::endl;
-			if (data.operand.full) // && !data.operated.full)
+			if (data.operand.full && data.operated.full)
 			{
-				std::cout << "here\n";
-				long	tmpval = data.operand.value;
-				fill_number(&data.operated, tmpval);
-			}
-			if (!str.empty())
-			{
-				std::cout << "not empty\n";
-				fill_number(&data.operand, static_cast<long>(*(str.end() -1) - '0'));
-				str.erase(str.end() -1);
+				data.op = c;
+				this->expression.pop();
+				res = operate(&data);
+				initialize_data(&data);
+				fill_number(&data.operated, res);
+				i ++;
 			}
 			else
-			{
-				std::cout << "empty\n";
-				fill_number(&data.operand, data.operated.value);
-			}
-
-
-			std::cout << "operand = " << data.operand.value << " operated = " << data.operated.value << std::endl;
-			
-			data.op = c;
-			this->expression.pop();
-			res = operate(&data);
-			initialize_data(&data);
-			fill_number(&data.operated, res);
-			i ++;
+				throw InvalidArgumentException();
 		}
 	}
+	if (data.operand.full && !data.operated.full)
+		res = tmpres;
+	if (VERBIOSE)
+		std::cout << YELLOW << "Result : " << DEFAULT;
 	std::cout << res << std::endl; 
 }
