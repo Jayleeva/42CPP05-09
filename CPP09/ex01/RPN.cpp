@@ -26,8 +26,38 @@ RPN::~RPN()
 	//std::cout << YELLOW << "[RPN] : Default destructor called." << DEFAULT << std::endl;
 }
 
+std::string	trimSpaces(std::string arg)
+{
+	int	i = 0;
+	while (arg[i] == ' ')
+		i ++;
+	arg = arg.substr(i, arg.size());
+
+	int j = 0;
+	while (arg[j])
+	{
+		int k = 0;
+		while (arg[j + k] == ' ')
+			k ++;
+		if (k > 1)
+		{
+			k --;
+			while (k)
+			{
+				arg.erase(j + k, 1);
+				k --;
+			}
+		}
+		j ++;
+	}
+	if (arg[j -1] != ' ')
+		arg.push_back(' ');
+	return (arg);
+}
+
 void	RPN::setQueue(std::string arg)
 {
+	arg = trimSpaces(arg);
 
 	std::string			element;
     std::stringstream 	ss(arg);
@@ -57,7 +87,6 @@ void	fill_number(t_number *n, long value)
 	n->value = value;
 	n->full = true;
 }
-
 
 long	operate(t_data *data)
 {
@@ -142,32 +171,17 @@ void	RPN::printRes()
 			{
 				if (i > 1)
 				{
-					if (data.operand.full && data.operated.full)
-					{
-						long tmp = data.operand.value;
-						fill_number(&data.operand, data.operated.value);
-						fill_number(&data.operated, static_cast<long>(*(str.end() -1) - '0'));
-						str.erase(str.end() -1);
-						data.op = c;
-						this->expression.pop();
-						res = operate(&data);
-						initialize_data(&data);
-						fill_number(&data.operand, tmp);
-						fill_number(&data.operated, res);
-					}
-					else
-					{
-						fill_number(&data.operand, res);
-						fill_number(&data.operated, static_cast<long>(*(str.end() -1) - '0'));
-						str.erase(str.end() -1);
-						data.op = c;
-						this->expression.pop();
-						res = operate(&data);
-						if (!data.operand.full)
-							fill_number(&data.operand, res);
-						else if (data.operand.full && !data.operated.full)
-							fill_number(&data.operated, res);
-					}
+					t_data	newdata;
+					initialize_data(&newdata);
+					fill_number(&newdata.operand, res);
+					fill_number(&newdata.operated, static_cast<long>(*(str.end() -1) - '0'));
+					str.erase(str.end() -1);
+					newdata.op = c;
+					this->expression.pop();
+					res = operate(&newdata);
+					initialize_data(&newdata);
+					initialize_data(&data);
+					fill_number(&data.operand, res);
 				}
 				else
 					throw InvalidArgumentException();
@@ -212,7 +226,7 @@ void	RPN::printRes()
 				{
 					fill_number(&newdata.operand, data.operated.value);
 					fill_number(&newdata.operated, tmpres);
-					newdata.op = c;
+					newdata.op = *this->expression.front().c_str();
 					if (!this->expression.empty())
 						this->expression.pop();
 					tmpres = operate(&newdata);
@@ -230,7 +244,7 @@ void	RPN::printRes()
 				this->expression.pop();
 				res = operate(&data);
 				initialize_data(&data);
-				//fill_number(&data.operated, res);
+				fill_number(&data.operated, res);
 				i ++;
 			}
 			else
@@ -239,6 +253,7 @@ void	RPN::printRes()
 	}
 	if (data.operand.full && data.operated.full && data.op == ' ')
 		throw InvalidArgumentException();
+
 	if (VERBIOSE)
 		std::cout << YELLOW << "Result : " << DEFAULT;
 	std::cout << res << std::endl; 
