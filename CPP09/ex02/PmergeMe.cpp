@@ -550,7 +550,8 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			{
 				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
-				it = min_ - blockSize + 1;
+				it = min_ - blockSize;
+				it ++; // WTF
 			}
 			g_counterDeq ++;
 		}
@@ -591,7 +592,7 @@ std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, ssize_t
 				std::deque<unsigned int>::iterator	max_ = data->main.begin() + indexes[n - 1] -1;
 				if (i == n)
 					max_ = data->main.end() -1;
-				binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, 0, indexes, nomatch);
+				binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, 0, indexes, nomatch); // min pas initialisé
 				if (VERBOSE)
 				{
 					std::cout << "main after new insertion = ";
