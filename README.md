@@ -466,4 +466,14 @@ On peut faire jusqu'6 insertions: d'abord l'élément b11, puis le b10, etc.
 On laisse tomber la suite de Jacobsthal et on insère les éléments sans elle, en partant de la fin du pending.
 
 ### Binary insert
+Pour trouver où insérer le prochain unsigned int dans notre séquence, on utilise le binary insert. Qu'est-ce que ça veut dire?
 
+Tout d'abord, on définit une zone de recherche: pour commencer, cette zone couvre l'entierté de la séquence, de son début à sa fin. 
+
+Ensuite, on établit le milieu de cette zone de recherche: sur une séquence de 8 chiffres, les 4 premiers sont dans la moitié gauche, et les 4 suivants dans la moitié droite. Pour les séquences d'une longueur impaire (ex. 9 chiffres), on considère que le 5ème chiffre fait partie de la moitié gauche.
+
+Une fois ce milieu identifié, on le compare à notre valeur à insérer: si le milieu est plus grand, on restreint la zone de recherche du début de la zone actuelle à son milieu; si le milieu est plus petit, on restreint la zone de recherche du milieu de la zone actuelle à sa fin. En gros, si la valeur à insérer est plus grande que le milieu, c'est qu'il faut la mettre quelque part après ce milieu, et si elle est plus petite, c'est à l'inverse qu'il faut la mettre quelque part avant.
+
+On recommence jusqu'à ce que la zone ne soit composée que de 2 chiffres, ce qui laisse 3 emplacements possibles: plus petit que le premier, plus grand que le premier ET plus petit que le dernier, ou plus grand que le dernier.
+
+A nouveau, ce système permet de limiter le nombre de compairaisons: au lieu de vérifier chaque chiffre un par un, on ne compare qu'avec des milieux jusqu'à ce qu'il ne reste que 2 chiffres à vérifier.
