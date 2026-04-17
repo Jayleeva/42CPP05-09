@@ -73,8 +73,8 @@ void	updateJacobsthal(std::deque<size_t> &jacobsthal);
 std::vector<unsigned int>	jacobsthalMerge(t_dataVec *data, ssize_t blockSize, std::vector<ssize_t> &indexes, bool nomatch);
 std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std::deque<ssize_t> &indexes, bool nomatch);
 
-bool	hasNomatch(std::vector<ssize_t>	indexes);
-bool	hasNomatch(std::deque<ssize_t>	indexes);
+bool	hasNomatch(std::vector<ssize_t>	&indexes);
+bool	hasNomatch(std::deque<ssize_t>	&indexes);
 
 std::vector<ssize_t>	formMainAndPending(t_dataVec *data, ssize_t blockSize, std::vector<unsigned int> &current, std::vector<unsigned int>::iterator ite);
 std::deque<ssize_t>		formMainAndPending(t_dataDeq *data, ssize_t blockSize, std::deque<unsigned int> &current, std::deque<unsigned int>::iterator ite);

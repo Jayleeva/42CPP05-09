@@ -102,7 +102,7 @@ void	updateIndexes(std::vector<ssize_t> &indexes, ssize_t i, ssize_t blockSize, 
 	for (std::vector<ssize_t>::iterator it = tmpit; it < indexes.end(); it ++)
 			*it += blockSize;
 	if (nomatch)
-		*(indexes.end()) = *(indexes.end() -1);
+		*(indexes.end() -1) = *(indexes.end() -2);
 
 	if (VERBOSE)
 	{
@@ -297,9 +297,9 @@ std::vector<unsigned int>	jacobsthalMerge(t_dataVec *data, ssize_t blockSize, st
 	return (normalMerge(data, blockSize, n, npendingBlocks, indexes, used, nomatch));
 }
 
-bool	hasNomatch(std::vector<ssize_t>	indexes)
+bool	hasNomatch(std::vector<ssize_t>	&indexes)
 {
-	if (*(indexes.end()) == *(indexes.end() -1))
+	if (*(indexes.end() -1) == *(indexes.end() -2))
 		return (true);
 	else
 		return (false);
@@ -355,12 +355,17 @@ void	merging(ssize_t pairSize, std::vector<unsigned int> &current)
 	{
 		t_dataVec	data;
 		std::vector<ssize_t>	indexes;
+		bool		nomatch;
 
 		if (VERBOSE)
 			std::cout << "-----------------------------" << std::endl;
 
 		indexes = formMainAndPending(&data, pairSize / 2, current, getIte(current, pairSize));
-		current = jacobsthalMerge(&data, pairSize / 2, indexes, hasNomatch(indexes));
+		if (indexes.size() < 2)
+			nomatch = false;
+		else
+			nomatch = hasNomatch(indexes);
+		current = jacobsthalMerge(&data, pairSize / 2, indexes, nomatch);
 
 		if (VERBOSE)
 		{
@@ -474,7 +479,7 @@ void	updateIndexes(std::deque<ssize_t> &indexes, ssize_t i, ssize_t blockSize, b
 	for (std::deque<ssize_t>::iterator it = tmpit; it < indexes.end(); it ++)
 			*it += blockSize;
 	if (nomatch)
-		*(indexes.end()) = *(indexes.end() -1);
+		*(indexes.end() -1) = *(indexes.end() -2);
 
 	if (VERBOSE)
 	{
@@ -667,9 +672,9 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std
 }
 
 
-bool	hasNomatch(std::deque<ssize_t>	indexes)
+bool	hasNomatch(std::deque<ssize_t>	&indexes)
 {
-	if (*(indexes.end()) == *(indexes.end() -1))
+	if (*(indexes.end() -1) == *(indexes.end() -2))
 		return (true);
 	else
 		return (false);
@@ -725,12 +730,17 @@ void	merging(ssize_t pairSize, std::deque<unsigned int> &current)
 	{
 		t_dataDeq	data;
 		std::deque<ssize_t>	indexes;
+		bool				nomatch;
 
 		if (VERBOSE)
 			std::cout << "-----------------------------" << std::endl;
 
 		indexes = formMainAndPending(&data, pairSize / 2, current, getIte(current, pairSize));
-		current = jacobsthalMerge(&data, pairSize / 2, indexes, hasNomatch(indexes));
+		if (indexes.size() < 2)
+			nomatch = false;
+		else
+			nomatch = hasNomatch(indexes);
+		current = jacobsthalMerge(&data, pairSize / 2, indexes, nomatch);
 
 		if (VERBOSE)
 		{
