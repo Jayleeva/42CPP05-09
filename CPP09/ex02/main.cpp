@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 	else
 		std::cout << GREEN << "check: [DEQ] OK." << DEFAULT << std::endl;
 
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << YELLOW << "Comparaisons [VEC] : " << counterVec << DEFAULT << std::endl;
 		std::cout << YELLOW << "Comparaisons [DEQ] : " << counterDeq << DEFAULT << std::endl;

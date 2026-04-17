@@ -44,7 +44,10 @@ int	BitcoinExchange::setMap(std::string dataFile)
 	std::string firstline;
 	std::getline(data, firstline);
 	if (firstline.empty())
+	{
+		data.close();
 		return (0);
+	}
     for (std::string line; std::getline(data, line);)
 	{
 		std::string		key;
@@ -62,6 +65,7 @@ int	BitcoinExchange::setMap(std::string dataFile)
 		catch (std::exception &e)
 		{
 			std::cerr << e.what() << std::endl;
+			data.close();
 			return (0);
 		}
 	}
@@ -87,6 +91,7 @@ void	BitcoinExchange::printRes(char *inputFile)
 	if (firstline.empty() || !firstline.compare("date | value\n"))
 	{
 		std::cerr << "Error: wrong format." << std::endl;
+		file.close();
 		return ;
 	}
     for (std::string line; std::getline(file, line);)

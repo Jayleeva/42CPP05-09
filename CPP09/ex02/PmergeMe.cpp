@@ -67,7 +67,7 @@ std::vector<unsigned int>::iterator getIte(std::vector<unsigned int> &current, s
 
 void	updateIndexes(std::vector<ssize_t> &indexes, ssize_t i, ssize_t blockSize, bool nomatch)
 {
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << "-----------------------------\nentered updateIndexes with i = " << i << " blockSize = " << blockSize << std::endl;
 		std::cout << "indexes BEFORE UPDATE = ";
@@ -104,7 +104,7 @@ void	updateIndexes(std::vector<ssize_t> &indexes, ssize_t i, ssize_t blockSize, 
 	if (nomatch)
 		*(indexes.end()) = *(indexes.end() -1);
 
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << "indexes AFTER UPDATE = ";
 		printContainer(indexes, 1);
@@ -117,7 +117,7 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 	ssize_t								dist = (distance(min_, max_)) / blockSize;
 	std::vector<unsigned int>::iterator	it;
 
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << "*************************** HEAD = " << *(head) << std::endl;
 		std::cout << " dist = " << dist << " type = " << type << " min = " << *(min_) << " max = " << *(max_) << std::endl;		
@@ -149,13 +149,13 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 		{
 			if (*(head) < *(max_))
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") between min (" << *(min_) << ") and max (" << *(max_) << ")" << std::endl;
 				it = min_ + 1;
 			}
 			else
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") bigger than max (" << *(max_) << ")" << std::endl;
 				it = max_ + 1;
 			}
@@ -165,13 +165,13 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 		{
 			if (*(head) > *(min_))
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") between min (" << *(min_) << ") and max (" << *(max_) << ")" << std::endl;
 				it = min_ + 1; 
 			}
 			else
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
 				it = min_ - blockSize + 1;
 				
@@ -180,7 +180,7 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 		}
 		ssize_t tmp = distance(container.begin(), it);
 		container.insert(it, head - blockSize + 1, head + 1);
-		if (VERBIOSE)
+		if (VERBOSE)
 			std::cout << "distance begin (" << *(container.begin()) << ") it (" << *(container.begin() + tmp + blockSize -1) << ")" << std::endl;
 		updateIndexes(indexes, tmp + blockSize, blockSize, nomatch); 
 		return ;
@@ -190,7 +190,7 @@ void	binaryInsert(std::vector<unsigned int> &container, std::vector<unsigned int
 	{
 		ssize_t	middle = dist / 2;
 		it = min_ + middle * blockSize;
-		if (VERBIOSE)
+		if (VERBOSE)
 			std::cout << " middle = " << *(it) << std::endl;
 		g_counterVec ++;
 		if (*(head) > *(it))
@@ -216,7 +216,7 @@ std::vector<unsigned int>	normalMerge(t_dataVec *data, ssize_t blockSize, ssize_
 				if (i == n)
 					max_ = data->main.end() -1;
 				binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, 0, indexes, nomatch);
-				if (VERBIOSE)
+				if (VERBOSE)
 				{
 					std::cout << "main after new insertion = ";
 					printContainer(data->main, blockSize);
@@ -224,7 +224,7 @@ std::vector<unsigned int>	normalMerge(t_dataVec *data, ssize_t blockSize, ssize_
 			}
 			else
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "!!!!! already inserted !!!!" << std::endl;
 				break;
 			}
@@ -271,7 +271,7 @@ std::vector<unsigned int>	jacobsthalMerge(t_dataVec *data, ssize_t blockSize, st
 		
 		if (n < jacobsthal[1])
 			break;
-		if (VERBIOSE)
+		if (VERBOSE)
 			std::cout << "diffjac = " << diffjac << " jacobsthal = " << jacobsthal[1] << std::endl;
 		ssize_t	i = 0;
 		while (diffjac > 0)
@@ -282,7 +282,7 @@ std::vector<unsigned int>	jacobsthalMerge(t_dataVec *data, ssize_t blockSize, st
 				max_ = data->main.end() -1;
 			binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, 0, indexes, nomatch);
 			used[jacobsthal[1] -i -1] = true;
-			if (VERBIOSE)
+			if (VERBOSE)
 			{
 				std::cout << "main after new insertion = ";
 				printContainer(data->main, blockSize);
@@ -334,7 +334,7 @@ std::vector<ssize_t>	formMainAndPending(t_dataVec *data, ssize_t blockSize, std:
 		data->remaining.insert(data->remaining.end(), it, current.end());
 	}
 
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << "[MAIN] ";
 		printContainer(data->main, blockSize);
@@ -356,13 +356,13 @@ void	merging(ssize_t pairSize, std::vector<unsigned int> &current)
 		t_dataVec	data;
 		std::vector<ssize_t>	indexes;
 
-		if (VERBIOSE)
+		if (VERBOSE)
 			std::cout << "-----------------------------" << std::endl;
 
 		indexes = formMainAndPending(&data, pairSize / 2, current, getIte(current, pairSize));
 		current = jacobsthalMerge(&data, pairSize / 2, indexes, hasNomatch(indexes));
 
-		if (VERBIOSE)
+		if (VERBOSE)
 		{
 			std::cout << "*** merged = ";
 			printContainer(current, pairSize / 2);
@@ -405,7 +405,7 @@ ssize_t	swapping(ssize_t pairSize, ssize_t size, std::vector<unsigned int> &curr
 	while (size / pairSize >= 1)
 	{
 		sortPairs(pairSize, current, getIte(current, pairSize));
-		if (VERBIOSE)
+		if (VERBOSE)
 		{
 			std::cout << "*** sorted = ";
 			printContainer(current, pairSize / 2);		
@@ -439,7 +439,7 @@ std::deque<unsigned int>::iterator getIte(std::deque<unsigned int> &current, ssi
 
 void	updateIndexes(std::deque<ssize_t> &indexes, ssize_t i, ssize_t blockSize, bool nomatch)
 {
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << "-----------------------------\nentered updateIndexes with i = " << i << " blockSize = " << blockSize << std::endl;
 		std::cout << "indexes BEFORE UPDATE = ";
@@ -476,7 +476,7 @@ void	updateIndexes(std::deque<ssize_t> &indexes, ssize_t i, ssize_t blockSize, b
 	if (nomatch)
 		*(indexes.end()) = *(indexes.end() -1);
 
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << "indexes AFTER UPDATE = ";
 		printContainer(indexes, 1);
@@ -489,7 +489,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	ssize_t								dist = (distance(min_, max_)) / blockSize;
 	std::deque<unsigned int>::iterator	it;
 
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << "*************************** HEAD = " << *(head) << std::endl;
 		std::cout << " dist = " << dist << " type = " << type << " min = " << *(min_) << " max = " << *(max_) << std::endl;		
@@ -521,13 +521,13 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		{
 			if (*(head) < *(max_))
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") between min (" << *(min_) << ") and max (" << *(max_) << ")" << std::endl;
 				it = min_ + 1;
 			}
 			else
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") bigger than max (" << *(max_) << ")" << std::endl;
 				it = max_ + 1;
 			}
@@ -537,13 +537,13 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		{
 			if (*(head) > *(min_))
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") between min (" << *(min_) << ") and max (" << *(max_) << ")" << std::endl;
 				it = min_ + 1;
 			}
 			else
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
 				it = min_ - blockSize + 1;
 			}
@@ -551,7 +551,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 		}
 		ssize_t tmp = distance(container.begin(), it);
 		container.insert(it, head - blockSize + 1, head + 1);
-		if (VERBIOSE)
+		if (VERBOSE)
 			std::cout << "distance begin (" << *(container.begin()) << ") it (" << *(container.begin() + tmp + blockSize -1) << ")" << std::endl;
 		updateIndexes(indexes, tmp + blockSize, blockSize, nomatch); 
 		return ;
@@ -561,7 +561,7 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	{
 		ssize_t	middle = dist / 2;
 		it = min_ + middle * blockSize;
-		if (VERBIOSE)
+		if (VERBOSE)
 			std::cout << " middle = " << *(it) << std::endl;
 		g_counterDeq ++;
 		if (*(head) > *(it))
@@ -587,7 +587,7 @@ std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, ssize_t
 				if (i == n)
 					max_ = data->main.end() -1;
 				binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, 0, indexes, nomatch);
-				if (VERBIOSE)
+				if (VERBOSE)
 				{
 					std::cout << "main after new insertion = ";
 					printContainer(data->main, blockSize);
@@ -595,7 +595,7 @@ std::deque<unsigned int>	normalMerge(t_dataDeq *data, ssize_t blockSize, ssize_t
 			}
 			else
 			{
-				if (VERBIOSE)
+				if (VERBOSE)
 					std::cout << "!!!!! already inserted !!!!" << std::endl;
 				break;
 			}
@@ -640,7 +640,7 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std
 	{
 		if (n < jacobsthal[1])
 			break;
-		if (VERBIOSE)
+		if (VERBOSE)
 			std::cout << "diffjac = " << diffjac << " jacobsthal = " << jacobsthal[1] << std::endl;
 		ssize_t	i = 0;
 		while (diffjac > 0)
@@ -651,7 +651,7 @@ std::deque<unsigned int>	jacobsthalMerge(t_dataDeq *data, ssize_t blockSize, std
 				max_ = data->main.end() -1;
 			binaryInsert(data->main, head, blockSize, data->main.begin() + blockSize -1, max_, 0, indexes, nomatch);
 			used[jacobsthal[1] -i -1] = true;
-			if (VERBIOSE)
+			if (VERBOSE)
 			{
 				std::cout << "main after new insertion = ";
 				printContainer(data->main, blockSize);
@@ -704,7 +704,7 @@ std::deque<ssize_t>	formMainAndPending(t_dataDeq *data, ssize_t blockSize, std::
 		data->remaining.insert(data->remaining.end(), it, current.end());
 	}
 
-	if (VERBIOSE)
+	if (VERBOSE)
 	{
 		std::cout << "[MAIN] ";
 		printContainer(data->main, blockSize);
@@ -726,13 +726,13 @@ void	merging(ssize_t pairSize, std::deque<unsigned int> &current)
 		t_dataDeq	data;
 		std::deque<ssize_t>	indexes;
 
-		if (VERBIOSE)
+		if (VERBOSE)
 			std::cout << "-----------------------------" << std::endl;
 
 		indexes = formMainAndPending(&data, pairSize / 2, current, getIte(current, pairSize));
 		current = jacobsthalMerge(&data, pairSize / 2, indexes, hasNomatch(indexes));
 
-		if (VERBIOSE)
+		if (VERBOSE)
 		{
 			std::cout << "*** merged = ";
 			printContainer(current, pairSize / 2);
@@ -775,7 +775,7 @@ ssize_t	swapping(ssize_t pairSize, ssize_t size, std::deque<unsigned int> &curre
 	while (size / pairSize >= 1)
 	{
 		sortPairs(pairSize, current, getIte(current, pairSize));
-		if (VERBIOSE)
+		if (VERBOSE)
 		{
 			std::cout << "*** sorted = ";
 			printContainer(current, pairSize / 2);		

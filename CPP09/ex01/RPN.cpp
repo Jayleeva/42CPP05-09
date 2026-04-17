@@ -73,6 +73,15 @@ void	RPN::setQueue(std::string arg)
 		n ++;
 	}
 
+	for (int i = 0; arg[i + 1]; i ++)
+	{
+		if (isdigit(arg[i]))
+		{
+			if (arg[i + 1] != ' ')
+				throw InvalidArgumentException();
+		}
+	}
+
     while (getline(ss, element, ' '))
 		this->expression.push(element);
 }
@@ -105,7 +114,7 @@ long	operate(t_data *data)
 	else if (data->op == '*')
 		res *= data->operated.value;
 
-	if (VERBIOSE)
+	if (VERBOSE)
 		std::cout << data->operand.value << " " << data->op << " " << data->operated.value << " = " << res << std::endl;
 	return (res);
 }
@@ -254,7 +263,7 @@ void	RPN::printRes()
 	if (data.operand.full && data.operated.full && data.op == ' ')
 		throw InvalidArgumentException();
 
-	if (VERBIOSE)
+	if (VERBOSE)
 		std::cout << YELLOW << "Result : " << DEFAULT;
 	std::cout << res << std::endl; 
 }
