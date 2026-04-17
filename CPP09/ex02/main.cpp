@@ -54,83 +54,101 @@ int	parse_argDeq(char *arg, std::deque<unsigned int> deq)
 }
 
 // us = microsecondes = secondes / 1000000. ms = millisecondes = secondes / 1000.
-int main(int argc, char **argv)
-{
-	std::vector<unsigned int>	vec;
-	std::deque<unsigned int>	deq;
-    clock_t						startVec, endVec;
-    clock_t 					startDeq, endDeq;
-	PmergeMe					p;
-	size_t						size;
-
 	//TEST: ./PmergeMe `shuf -i 1-100000 -n 3000 | tr "\n" " "`
 	// TEST: ./PmergeMe 14 12 8 4 2 1 7 10 13 6 9 5 11 3 16 15
-	if (argc < 3)
+int main(int argc, char **argv)
+{
 	{
-		std::cerr << "Error: not enough arguments." << std::endl;
-		return (0);
-	}
-
-	size = argc -1;
-
-	startVec = clock();
-	for (size_t i = 0; i < size; i++)
-	{
-		int tmp = parse_argVec(argv[i + 1], vec);
-		if (tmp == -1)
+		std::cout << "Main 1: sorting a vector.\n-----------------" << std::endl;
+		PmergeMe					p;
+		size_t						size;
+		
+		if (argc < 3)
+		{
+			std::cerr << "Error: not enough arguments." << std::endl;
 			return (0);
-		unsigned int ui = static_cast<unsigned int>(tmp);
-		vec.push_back(ui);
+		}
+
+		size = argc -1;
+
+		std::vector<unsigned int>	vec;
+		clock_t						startVec, endVec;
+
+		startVec = clock();
+		for (size_t i = 0; i < size; i++)
+		{
+			int tmp = parse_argVec(argv[i + 1], vec);
+			if (tmp == -1)
+				return (0);
+			unsigned int ui = static_cast<unsigned int>(tmp);
+			vec.push_back(ui);
+		}
+		p.setVec(vec.begin(), vec.end());
+		std::cout << MAG << "[VEC] Before : ";
+		printContainer(vec, 0);
+		std::cout << DEFAULT;
+
+		ssize_t counterVec = p.sortVector();
+		endVec = clock();
+
+		std::cout << MAG << "[VEC] After : ";
+		vec = p.getVec();
+		printContainer(vec, 0);
+		std::cout << "[VEC] Time to process a range of " << p.getVec().size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) / 1000.0 << " ms" << DEFAULT << std::endl;
+
+		if (!is_sorted(size, p.getVec()))
+			std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
+		else
+			std::cout << GREEN << "check: [VEC] OK." << DEFAULT << std::endl;
+		if (VERBOSE)
+			std::cout << YELLOW << "Comparaisons [VEC] : " << counterVec << DEFAULT << std::endl;
 	}
-	p.setVec(vec.begin(), vec.end());
-	std::cout << MAG << "[VEC] Before : ";
-	printContainer(vec, 0);
-	std::cout << DEFAULT;
-
-	ssize_t counterVec = p.sortVector();
-	endVec = clock();
-
-	std::cout << MAG << "[VEC] After : ";
-	vec = p.getVec();
-	printContainer(vec, 0);
-	std::cout << "[VEC] Time to process a range of " << p.getVec().size() << " elements with std::" << "vector : " << static_cast<double>(endVec - startVec) / 1000.0 << " ms" << DEFAULT << std::endl;
-
-	startDeq = clock();
-	for (size_t i = 0; i < size; i++)
 	{
-		int tmp = parse_argDeq(argv[i + 1], deq);
-		if (tmp == -1)
+		std::cout << "\nMain 2: sorting a dequeue.\n-----------------" << std::endl;
+		PmergeMe					p;
+		size_t						size;
+		
+		if (argc < 3)
+		{
+			std::cerr << "Error: not enough arguments." << std::endl;
 			return (0);
-		unsigned int ui = static_cast<unsigned int>(tmp);
-		deq.push_back(ui);
-	}
+		}
 
-	p.setDeq(deq.begin(), deq.end());
-	std::cout << MAG << "\n[DEQ] Before : ";
-	printContainer(deq, 0);
-	std::cout << DEFAULT;
+		size = argc -1;
+	
+		std::deque<unsigned int>	deq;
+		clock_t 					startDeq, endDeq;
 
-	ssize_t counterDeq = p.sortDequeue();
-    endDeq = clock();
+		startDeq = clock();
+		for (size_t i = 0; i < size; i++)
+		{
+			int tmp = parse_argDeq(argv[i + 1], deq);
+			if (tmp == -1)
+				return (0);
+			unsigned int ui = static_cast<unsigned int>(tmp);
+			deq.push_back(ui);
+		}
 
-	deq = p.getDeq();
-	std::cout << MAG << "[DEQ] After : ";
-	printContainer(deq, 0);
-	std::cout << MAG << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) / 1000.0 << " ms" << DEFAULT << std::endl;
+		p.setDeq(deq.begin(), deq.end());
+		std::cout << MAG << "[DEQ] Before : ";
+		printContainer(deq, 0);
+		std::cout << DEFAULT;
 
-	if (!is_sorted(size, p.getVec()))
-		std::cout << RED << "check: [VEC] KO." << DEFAULT << std::endl;
-	else
-		std::cout << GREEN << "check: [VEC] OK." << DEFAULT << std::endl;
-	if (!is_sorted(size, p.getDeq()))
-		std::cout << RED << "check: [DEQ] KO." << DEFAULT << std::endl;
-	else
-		std::cout << GREEN << "check: [DEQ] OK." << DEFAULT << std::endl;
+		ssize_t counterDeq = p.sortDequeue();
+		endDeq = clock();
 
-	if (VERBOSE)
-	{
-		std::cout << YELLOW << "Comparaisons [VEC] : " << counterVec << DEFAULT << std::endl;
-		std::cout << YELLOW << "Comparaisons [DEQ] : " << counterDeq << DEFAULT << std::endl;
+		deq = p.getDeq();
+		std::cout << MAG << "[DEQ] After : ";
+		printContainer(deq, 0);
+		std::cout << MAG << "[DEQ] Time to process a range of " << p.getDeq().size() << " elements with std::" << "deque : " << static_cast<double>(endDeq - startDeq) / 1000.0 << " ms" << DEFAULT << std::endl;
+
+		if (!is_sorted(size, p.getDeq()))
+			std::cout << RED << "check: [DEQ] KO." << DEFAULT << std::endl;
+		else
+			std::cout << GREEN << "check: [DEQ] OK." << DEFAULT << std::endl;
+
+		if (VERBOSE)
+			std::cout << YELLOW << "Comparaisons [DEQ] : " << counterDeq << DEFAULT << std::endl;
 	}
 	return (1);
 }

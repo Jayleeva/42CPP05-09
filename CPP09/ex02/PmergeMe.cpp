@@ -307,10 +307,10 @@ bool	hasNomatch(std::vector<ssize_t>	indexes)
 
 std::vector<ssize_t>	formMainAndPending(t_dataVec *data, ssize_t blockSize, std::vector<unsigned int> &current, std::vector<unsigned int>::iterator ite)
 {
-	std::vector<ssize_t>	indexes;
+	std::vector<ssize_t>				indexes;
 	std::vector<unsigned int>::iterator	it = current.begin();
-	ssize_t				i = blockSize;
-	ssize_t				tmp;
+	ssize_t								i = blockSize;
+	ssize_t								tmp;
 
 	while (it != ite)
 	{
