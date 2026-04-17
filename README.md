@@ -203,7 +203,7 @@ Le dequeue alloue la mémoire pour ses éléments de façon segmentée, ce qui r
 
 ## stack
 
-On ajoute et on enleve des éléments depuis le "fond" de la stack (LIFO : dernier à rentrer est le premier à sortir).
+On ajoute et on enlève des éléments depuis le "fond" de la stack (LIFO : dernier à rentrer est le premier à sortir).
 
 ### Raisons du non-choix:
 - Accès dans le mauvais sens: j'avais besoin de lire le tout premier rentré, puis le suivant, etc et non l'inverse.
