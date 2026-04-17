@@ -1,7 +1,7 @@
 # Comment utiliser
-Cloner le git localement.
+Clôner le git localement.
 
-Acceder a l'exercice 02 du CPP09 dans le terminal 
+Accéder à l'exercice 02 du CPP09 dans le terminal 
 ```
 cd 42CPP05-09/CPP09/ex02
 ```
@@ -20,17 +20,17 @@ Ou utiliser un shuffle:
 ```
 ./PmergeMe `shuf -i 1-100000 -n 21 | tr "\n" " "`
 ```
-Les chiffres apres le i sont la range des chiffres que vous voulez.
+Les chiffres après le i sont la range des chiffres que vous voulez.
 
-Le chiffre apres le n est le nombre de chiffres que vous voulez. Si vous depassez 21, seuls les 21 premiers chiffres seront imprimes dans la sortie pour ne pas trop la surcharger, mais tous seront traites. Pour changer cette limite, changez la valeur de la variable max_ a la ligne 99 du fichier PmergeMe.hpp et recompilez. Pour annuler completement cette limite, commentez les lignes 99 puis 104 a 108 dans le fichier PmergeMe.hpp et recompilez:
+Le chiffre après le n est le nombre de chiffres que vous voulez. Si vous dépassez 21, seuls les 21 premiers chiffres seront imprimés dans la sortie pour ne pas trop la surcharger, mais tous seront traités. Pour changer cette limite, changez la valeur de la variable max_ à la ligne 99 du fichier PmergeMe.hpp et recompilez. Pour annuler complètement cette limite, commentez les lignes 99 puis 104 à 108 dans le fichier PmergeMe.hpp et recompilez:
 ```
 make re
 ```
-Vous pouvez egalement avoir une sortie plus verbeuse qui detaille les differentes etapes de l'algo en passant la macro VERBIOSE a true dans PmergeMe.hpp (ligne 14) et en recompilant.
+Vous pouvez également avoir une sortie plus verbeuse qui détaille les différentes étapes de l'algo en passant la macro VERBIOSE à true dans PmergeMe.hpp (ligne 14) et en recompilant.
 
 Lisez la sortie! :D
 
-Le but de l'exercice etant de nous faire comparer les temps d'execution d'un meme algo par deux containers differents, la sortie vous montre le resultat de l'algo d'abord quand il travaille avec un vector [VEC], puis quand il travaille avec un dequeue [DEQ].
+Le but de l'exercice étant de nous faire comparer les temps d'exécution d'un même algo par deux containers différents, la sortie vous montre le resultat de l'algo d'abord quand il travaille avec un vector [VEC], puis quand il travaille avec un dequeue [DEQ].
 
 
 # Exceptions
@@ -82,7 +82,7 @@ Et vous voyez, là ce qui est génial, c'est qu'au lieu d'avoir une fonction qui
 # Static method
 Une fonction membre qui peut etre appelle sans instancier la classe a laquelle elle appartient.
 
-Cependant, n'a acces qu'aux attributs et fonctions statiques.
+Cependant, n'a accès qu'aux attributs et fonctions statiques.
 
 
  
@@ -115,7 +115,7 @@ A utiliser par defaut.
 ## Dynamic cast
 Effectuée pendant l'exécution (!!DANGER!!).
 
-A utiliser lorsque le type d'une donnee a cast n'est defini que pendant l'execution (ex.: le type est genere aleatoirement), et pas a la compilation.
+A utiliser lorsque le type d'une donnee a cast n'est defini que pendant l'exécution (ex.: le type est généré aléatoirement), et pas à la compilation.
 
 Si on fait un dynamic_cast sur un pointeur, on sait que la conversion n'a pas marché si le pointeur est nul.
 
@@ -129,13 +129,13 @@ Cependant, si obligé, on peut utiliser const cast pour modifier une constante.
 
 **A savoir**
 - Un const_cast ne peut marcher QUE sur des pointeurs ou des références.
-- Vous n'avez pas besoin d'utiliser de const_cast pour le CPP05. Ignorez simplement la reassignation lors de la surcharge de l'operateur d'assignation.
+- Vous n'avez pas besoin d'utiliser de const_cast pour le CPP05. Ignorez simplement la réassignation lors de la surcharge de l'opérateur d'assignation.
 
 ## Reinterpret cast
 Permet de redonner le type d'un élément qui avait du le laisser derrière pour passer une fonction. Concrètement, c'est quelque chose qui peut arriver avec les chaussettes d'internet (les sockets).
 
 # Templates
-Permet de creer des fonctions capables de fonctionner avec n'importe quel type.
+Permet de créer des fonctions capables de fonctionner avec n'importe quel type.
 
 Ex:
 ```
@@ -152,97 +152,97 @@ void	yourFunction(T)
 # Containers
 Type de variable qui permet de contenir plusieurs valeurs.
 
-Certains sont dit "associatifs" car ils associent des valeurs ensemble (typiquement, la map associe une cle avec une valeur, par ex: un nom associe a un numero de telephone).
+Certains sont dit "associatifs" car ils associent des valeurs ensemble (typiquement, la map associe une clé avec une valeur, par ex: un nom associe à un numéro de telephone).
 
-Les particularites de chacun les rendent plus ou moins adaptes a ce qu'on veut faire.
+Les particularités de chacun les rendent plus ou moins adaptés à ce qu'on veut faire.
 
 ## array
 
-En C++98, on utilise les memes array qu'en C. C'est a partir du C++11 qu'elles existent avec le meme "format" (std::array<>) que les autres containers. On ne va donc pas les utiliser en tant que containers dans les presents modules.
+En C++98, on utilise les mêmes array qu'en C. C'est à partir du C++11 qu'elles existent avec le même "format" (std::array<>) que les autres containers. On ne va donc pas les utiliser en tant que containers dans les présents modules.
 
 ## list
 
-Fonctionne en liste chainee.
+Fonctionne en liste chaînée.
 
-Les iterateurs de type list ne beneficient pas du random access: il est plus couteux d'arriver a un certain element.
+Les itérateurs de type list ne bénéficient pas du random access: il est plus couteux d'arriver a un certain élément.
 
-Les iterateurs restent valides memes apres insertion/suppression d'elements.
+Les itérateurs restent valides mêmes après insertion/suppression d'éléments.
 
-La liste alloue la memoire pour ses elements de facon segmentee, ce qui evite d'avoir de la memoire preallouee.
+La liste alloue la mémoire pour ses éléments de facon segmentee, ce qui evite d'avoir de la mémoire preallouee.
 
 La liste n'a pas d'array "en-dessous", ce qui rend plus difficile de convertir la liste en array.
 
 ### Raisons du non-choix:
-- Les fonctions ne sont pas exactement les memes qu'avec vector et dequeue.
+- Les fonctions ne sont pas exactement les mêmes qu'avec vector et dequeue.
 
 ## vector
 
-Les iterateurs de type vector beneficient du random access: il est moins couteux d'arriver a un certain element.
+Les itérateurs de type vector bénéficient du random access: il est moins coùteux d'arriver à un certain élément.
 
-Les iterateurs ne sont plus valides apres insertion/suppression d'elements.
+Les itérateurs ne sont plus valides après insertion/suppression d'éléments.
 
-Le vector alloue la memoire pour ses elements de facon contigue, ce qui augmente le besoin de reallocations/copies quand la taille change mais augmente la vitesse d'acces.
+Le vector alloue la mémoire pour ses éléments de façon contigüe, ce qui augmente le besoin de réallocations/copies quand la taille change mais aussi la vitesse d'accès.
 
 Le vector a un array "en-dessous", ce qui rend plus facile de convertir la liste en array.
 
 ### Raisons du choix:
-- possibilite d'acceder et inserer ailleurs que juste "au fond" ou "a la surface", grace aux iterateurs et aux indexes.
-- memes fonctions que le dequeue.
+- possibilité d'accéder et insérer ailleurs que juste "au fond" ou "à la surface", grâce aux itérateurs et aux indexes.
+- mêmes fonctions que le dequeue.
 
 ## dequeue
 
-Les iterateurs de type dequeue beneficient du random access: il est moins couteux d'arriver a un certain element.
+Les itérateurs de type dequeue bénéficient du random access: il est moins coûteux d'arriver à un certain élément.
 
-Les iterateurs ne sont plus valides apres insertion/suppression d'elements.
+Les itérateurs ne sont plus valides après insertion/suppression d'éléments.
 
-Le vecteur alloue la memoire pour ses elements de facon segmentee, ce qui reduit le besoin de reallocation/copies quand la taille change, mais diminue la vitesse d'acces.
+Le dequeue alloue la mémoire pour ses éléments de façon segmentée, ce qui réduit le besoin de réallocation/copies quand la taille change, mais diminue la vitesse d'accès.
 
 ### Raisons du choix:
-- possibilite d'acceder et inserer ailleurs que juste "au fond" ou "a la surface", grace aux iterateurs et aux indexes.
-- memes fonctions que le vector.
+- possibilité d'accéder et insérer ailleurs que juste "au fond" ou "à la surface", grâce aux itérateurs et aux indexes.
+- mêmes fonctions que le vector.
 
 ## stack
 
-On ajoute et on enleve des elements depuis le "fond" de la stack (LIFO : dernier a rentrer est le premier a sortir).
+On ajoute et on enleve des éléments depuis le "fond" de la stack (LIFO : dernier à rentrer est le premier à sortir).
 
 ### Raisons du non-choix:
-- Acces dans le mauvais sens: j'avais besoin de lire le tout premier rentre, puis le suivant, etc et non l'inverse.
+- Accès dans le mauvais sens: j'avais besoin de lire le tout premier rentré, puis le suivant, etc et non l'inverse.
 
 ## queue
 
-On ajoute et on enleve des elements depuis la "surface" de la stack (FIFO : premier a rentrer est le premier a sortir).
+On ajoute et on enlève des éléments depuis la "surface" de la stack (FIFO : premier à rentrer est le premier à sortir).
 
 ### Raisons du choix:
-- Optimise si l'ordre de rentree des elements est important.
+- Optimisé si l'ordre de rentrée des éléments est important.
 
 ## map
 
 Type associatif.
 
-Utilise le "Red Black Tree" pour stocker ses elements, ce qui permet de rentrer les elements dans n'importe quel ordre et tout de meme les stocker de maniere triee, rendant leur recherche plus facile.
+Utilise le "Red Black Tree" pour stocker ses éléments, ce qui permet de rentrer les éléments dans n'importe quel ordre et tout de même les stocker de maniere triée, rendant leur recherche plus facile.
 
 ### Raisons du choix:
-- grace au "Red Black Tree", acces au upperbound ("le plus proche") si jamais la key cherchee n'existe pas.
+- grâce au "Red Black Tree", accès au upperbound ("le plus proche") si jamais la key cherchée n'existe pas.
 - association de la key avec la value permet de retrouver l'un ou l'autre facilement.
 
 ## set
 
-Utilise le "Red Black Tree" pour stocker ses elements.
+Utilise le "Red Black Tree" pour stocker ses éléments.
 
 ### Raisons du non-choix:
 - pas de stock de la value.
 
 # Itérateurs
-Permettent d'acceder aux elements contenus dans les differents containers.
+Permettent d'accéder aux éléments contenus dans les différents containers.
 
-On les declare de la facon suivante:
+On les déclare de la facon suivante:
 ```
 containerType<valueType>::iterator it;
 ```
-Ce sont des adresses. On leur attribue une valeur avec des fonctions specifiques au container:
+Ce sont des adresses. On leur attribue une valeur avec des fonctions spécifiques au container:
 ```
-it = container.begin(); // permet d'acceder au premier element du container
-it = container.end(); 	// permet d'acceder au dernier element du container
+it = container.begin(); // permet d'accéder au premier élément du container
+it = container.end(); 	// permet d'accéder au dernier élément du container
 ```
 
 # L'algorithme Ford-Johnson expliqué par et pour celleux qui n'aiment pas les maths
