@@ -16,7 +16,7 @@ int	is_year_bissextile(int year)
 	return (0);
 }
 
-int	is_year_valid(std::string year)
+int	is_year_valid(std::string year, t_date min_date)
 {
 	int	date;
 
@@ -28,12 +28,12 @@ int	is_year_valid(std::string year)
 			return (0);
 	}
 	date = atoi(year.c_str());
-	if (!is_valid(date, 2009, 2026))
+	if (date < min_date.year)
 		return (0);
 	return (1);
 }
 
-int	is_month_valid(std::string month, int year)
+int	is_month_valid(std::string month, int year, t_date min_date)
 {
 	int	date;
 
@@ -47,15 +47,12 @@ int	is_month_valid(std::string month, int year)
 	date = atoi(month.c_str());
 	if (!is_valid(date, 1, 12))
 		return (0);
-	if (year == 2026 && date > 4)
-	{
-		//std::cout << "in the futuuure" << std::endl;
+	if (year == min_date.year && date < min_date.month)
 		return (0);
-	}
 	return (1);
 }
 
-int	is_day_valid(std::string day, int month, int year)
+int	is_day_valid(std::string day, int month, int year, t_date min_date)
 {
 	int	date;
 	int	min = 1;
@@ -95,18 +92,12 @@ int	is_day_valid(std::string day, int month, int year)
 	date = atoi(day.c_str());
 	if (!is_valid(date, min, max))
 		return (0);
-	if (year == 2009 && month == 1 && date < 2)
+	if (year == min_date.year && month == min_date.month && date < min_date.day)
 		return (0);
-	if (year == 2026 && month == 4 && date > 20)
-	{
-		//std::cout << "in the futuuure" << std::endl;
-		return (0);
-	}
-		
 	return (1);
 }
 
-int	is_key_valid(std::string key)
+int	is_key_valid(std::string key, t_date min_date)
 {
 	std::string	year;
 	std::string	month;
@@ -119,13 +110,13 @@ int	is_key_valid(std::string key)
 		return (0);
 
 	year = key.substr(0, 4);
-	if (!is_year_valid(year))
+	if (!is_year_valid(year, min_date))
 		return (0);
 	month = key.substr(5, 2);
-	if (!is_month_valid(month, atoi(year.c_str())))
+	if (!is_month_valid(month, atoi(year.c_str()), min_date))
 		return (0);
 	day = key.substr(8, 2);
-	if (!is_day_valid(day, atoi(month.c_str()), atoi(year.c_str())))
+	if (!is_day_valid(day, atoi(month.c_str()), atoi(year.c_str()), min_date))
 		return (0);
 	return (1);
 }
@@ -212,7 +203,7 @@ std::string	getKey(std::string line)
 	}
 	catch (std::exception &e)
 	{
-		std::cerr << e.what() << std::endl;
+		std::cout << e.what() << std::endl;
 		return (NULL);
 	}
 	return (key);
@@ -249,7 +240,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		std::cerr << "Error: no file submitted." << std::endl;
+		std::cout << "Error: no file submitted." << std::endl;
 		return (1);
 	}
 	if (btc.setMap("data.csv"))

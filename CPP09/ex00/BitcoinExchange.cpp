@@ -48,6 +48,7 @@ int	BitcoinExchange::setMap(std::string dataFile)
 		data.close();
 		return (0);
 	}
+	int i = 0;
     for (std::string line; std::getline(data, line);)
 	{
 		std::string		key;
@@ -61,6 +62,13 @@ int	BitcoinExchange::setMap(std::string dataFile)
 			value = std::atof(valuestr.c_str());
 			std::pair<std::string, float> p = std::make_pair(key, value);
 			this->dataLines.insert(p);
+			if (i == 0)
+			{
+				this->min_date.year = atoi(key.substr(0,4).c_str());
+				this->min_date.month = atoi(key.substr(5,6).c_str());
+				this->min_date.day = atoi(key.substr(8,9).c_str());
+			}
+			i ++;
 		}
 		catch (std::exception &e)
 		{
@@ -70,6 +78,7 @@ int	BitcoinExchange::setMap(std::string dataFile)
 		}
 	}
 	data.close();
+
 	return (1);
 }
 
@@ -104,7 +113,7 @@ void	BitcoinExchange::printRes(char *inputFile)
 			continue;
 		}
 		key = getKey(line);
-		if (!is_key_valid(key))
+		if (!is_key_valid(key, this->min_date))
 		{
 			std::cout << "Error: bad input => " << key << std::endl;
 			continue ;
