@@ -110,6 +110,17 @@ void	updateIndexes(std::deque<ssize_t> &indexes, ssize_t i, ssize_t blockSize, b
 	}
 }
 
+int	ittoi(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator iter)
+{
+	std::deque<unsigned int>::iterator it = container.find(*iter);
+	if (it == container.end())
+		return (-1);
+	int i = 0;
+	for (std::deque<unsigned int>::iterator it = container.begin(); it != iter; it ++)
+		i ++;
+	return (i);
+}
+
 void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator head, ssize_t blockSize, std::deque<unsigned int>::iterator min_, std::deque<unsigned int>::iterator max_, int type, std::deque<ssize_t> &indexes, bool nomatch)
 {
 	ssize_t								dist = (distance(min_, max_)) / blockSize;
@@ -119,18 +130,6 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 	{
 		std::cout << "*************************** HEAD = " << *(head) << std::endl;
 		std::cout << " dist = " << dist << " type = " << type << " min = " << *(min_) << " max = " << *(max_) << std::endl;		
-	}
-
-	if (dist == 0)
-	{
-		if (*(head) < *(min_))
-			it = min_ - blockSize + 1; // avant min
-		else
-			it = min_ + 1; // après min
-		g_counterDeq ++;
-		container.insert(it, head - blockSize + 1, head + 1);
-		updateIndexes(indexes, distance(container.begin(), it), blockSize, nomatch);
-		return ;
 	}
 	
 	if (dist == 1)
@@ -171,6 +170,8 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			{
 				if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
+				if ()
+				int i = ittoi(container, min_);
 				it = min_ - blockSize;
 				it ++; // WTF
 			}
