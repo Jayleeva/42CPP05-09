@@ -112,7 +112,7 @@ void	updateIndexes(std::deque<ssize_t> &indexes, ssize_t i, ssize_t blockSize, b
 
 int	ittoi(std::deque<unsigned int> &container, std::deque<unsigned int>::iterator iter)
 {
-	std::deque<unsigned int>::iterator it = container.find(*iter);
+	std::deque<unsigned int>::iterator it = find(container.begin(), container.end(), *iter);
 	if (it == container.end())
 		return (-1);
 	int i = 0;
@@ -168,10 +168,11 @@ void	binaryInsert(std::deque<unsigned int> &container, std::deque<unsigned int>:
 			}
 			else
 			{
-				if (VERBOSE)
+				//if (VERBOSE)
 					std::cout << "[INSERTED] head (" << *(head) << ") smaller than min (" << *(min_) << ")" << std::endl;
-				if ()
-				int i = ittoi(container, min_);
+				int i = ittoi(container, min_ - blockSize + 1);
+				if (i == -1)
+					std::cout << "problem\n";
 				it = min_ - blockSize;
 				it ++; // WTF
 			}
