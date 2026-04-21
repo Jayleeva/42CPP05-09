@@ -26,7 +26,7 @@ Le chiffre après le n est le nombre de chiffres que vous voulez. Si vous dépas
 ```
 make re
 ```
-Vous pouvez également avoir une sortie plus verbeuse qui détaille les différentes étapes de l'algo en passant la macro VERBIOSE à true dans PmergeMe.hpp (ligne 14) et en recompilant.
+Vous pouvez également avoir une sortie plus verbeuse qui détaille les différentes étapes de l'algo en passant la macro VERBOSE à true dans PmergeMe.hpp (ligne 14) et en recompilant.
 
 Lisez la sortie! :D
 
